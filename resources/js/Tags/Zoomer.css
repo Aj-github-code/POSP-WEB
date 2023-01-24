@@ -1,0 +1,13 @@
+.zoomer__img img {
+    height: 100px;
+    width:450px
+}
+
+.zoomer__img {
+    max-width:100%;height:auto;
+    float:right;
+}
+
+.zoomer {
+    width:30%;
+}

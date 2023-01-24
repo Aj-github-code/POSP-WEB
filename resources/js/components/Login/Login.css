@@ -1,0 +1,24 @@
+div.login-box {
+    width: "60%"
+}
+@media screen and (min-width:721px) and (max-width:1280) {
+    div.login-box {
+        width: "60%"
+    }
+}
+
+
+
+@media screen and (min-width:481px) and (max-width:720px) {
+    div.login-box {
+        width: "75%"
+    }
+}
+
+
+@media screen and (min-width:270px) and (max-width:480px) {
+    div.login-box {
+        width: "90%"
+    }
+}
+

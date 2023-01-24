@@ -1,0 +1,26 @@
+[
+    {
+        "title":"26 New Messages!",
+        "color":"primary",
+        "icon":"envelope-open",
+        "link":"messages.html"
+    },
+    {
+        "title":"11 New Reviews!",
+        "color":"warning",
+        "icon":"star",
+        "link":"reviews.html"
+    },
+    {
+        "title":"10 New Bookings!",
+        "color":"success",
+        "icon":"calendar-check-o",
+        "link":"bookings.html"
+    },
+    {
+        "title":"10 New Bookmarks!",
+        "color":"danger",
+        "icon":"heart",
+        "link":"bookmarks.html"
+    }
+]

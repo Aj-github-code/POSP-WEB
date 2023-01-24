@@ -1,0 +1,97 @@
+html * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    background: #f8f8f8;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-family: "Poppins", Helvetica, sans-serif;
+    color: #555;
+  }
+  .bg_color_1 {
+    background-color: #fff;
+  }
+  .margin_80_55 {
+    padding-top: 80px;
+    padding-bottom: 55px;
+  }
+  @media (max-width: 991px) {
+    .margin_80_55 {
+      padding-top: 60px;
+      padding-bottom: 35px;
+    }
+  }
+  @media (max-width: 575px) {
+    .margin_80_55 {
+      padding-top: 45px;
+      padding-bottom: 15px;
+    }
+  }
+  @media (min-width: 1400px) {
+    .container-custom {
+      max-width: 1600px;
+      padding-left: 60px;
+      padding-right: 60px;
+    }
+  }
+  .main_title_2 {
+    text-align: center;
+    margin-bottom: 45px;
+    position: relative;
+  }
+  .main_title_2 span {
+    width: 120px;
+    height: 2px;
+    background-color: #e1e1e1;
+    display: block;
+    margin: auto;
+  }
+  .main_title_2 span em {
+    width: 60px;
+    height: 2px;
+    background-color: #fc5b62;
+    display: block;
+    margin: auto;
+  }
+  @media (max-width: 767px) {
+    .main_title_2 {
+      margin-bottom: 10px;
+    }
+  }
+  .main_title_2 h2 {
+    margin: 25px 0 0 0;
+  }
+  @media (max-width: 767px) {
+    .main_title_2 h2 {
+      font-size: 26px;
+      font-size: 1.625rem;
+    }
+  }
+  .main_title_2 h3 {
+    margin: 25px 0 0 0;
+  }
+  @media (max-width: 767px) {
+    .main_title_2 h3 {
+      font-size: 24px;
+      font-size: 1.5rem;
+    }
+  }
+  .main_title_2 p {
+    font-size: 24px;
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.4;
+  }
+  @media (max-width: 767px) {
+    .main_title_2 p {
+      font-size: 18px;
+      font-size: 1.125rem;
+    }
+  }
+  .adventure_feat h3 {
+    font-size: 21px;
+    font-size: 1.3125rem;
+    margin-top: 20px;
+  }  

@@ -1,0 +1,167 @@
+.call_section.adventure {
+    background: ("../../../assets/img/bg_call_action_adventure.jpg") center center no-repeat fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  html * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    background: #f8f8f8;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-family: "Poppins", Helvetica, sans-serif;
+    color: #555;
+  }
+  .animated .block-reveal {
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+  
+  .block-horizzontal, .block-vertical {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+  }
+  
+  .animated .block-horizzontal {
+    animation: reveal_left_to_right 1s ease-in-out;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    background: #0054a6;
+  }
+  .animated .block-vertical {
+    animation: reveal_top_to_bottom 1s ease-in-out;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    background: #0054a6;
+  }
+  
+  .block-reveal img {
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+  }
+  
+  .animated .block-reveal img {
+    animation: color 0.5s ease-in-out;
+    animation-delay: 0.5s;
+    -webkit-animation-delay: 0.5s;
+    -moz-animation-delay: 0.5s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    opacity: 0;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}    
+.wow {
+    visibility: hidden;
+  }
+  @keyframes reveal_top_to_bottom {
+    0% {
+      -webkit-transform: translateY(-100%);
+      -moz-transform: translateY(-100%);
+      -ms-transform: translateY(-100%);
+      -o-transform: translateY(-100%);
+      transform: translateY(-100%);
+    }
+    50% {
+      -webkit-transform: translateY(0);
+      -moz-transform: translateY(0);
+      -ms-transform: translateY(0);
+      -o-transform: translateY(0);
+      transform: translateY(0);
+    }
+    100% {
+      -webkit-transform: translateY(100%);
+      -moz-transform: translateY(100%);
+      -ms-transform: translateY(100%);
+      -o-transform: translateY(100%);
+      transform: translateY(100%);
+    }
+  }
+  @keyframes color {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .box_1 {
+    background-color: #121921;
+    color: #fff;
+    padding: 45px;
+    opacity: 0;
+  }
+  .box_1 p {
+    opacity: 0.8;
+  }
+  .box_1 h3 {
+    color: #fff;
+  }
+  
+  .animated .box_1 {
+    animation: color 0.3s ease-in-out;
+    animation-delay: 0.3s;
+    -webkit-animation-delay: 0.3s;
+    -moz-animation-delay: 0.3s;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    opacity: 0;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .call_section {
+    background: ("../../../assets/img/bg_call_section.jpg") center center no-repeat fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 400px;
+    padding: 10% 0;
+  }
+  
+  .box_faq {
+    position: relative;
+    padding-left: 50px;
+  }
+  .box_faq h4 {
+    font-size: 18px;
+    font-size: 1.125rem;
+  }
+  .box_faq i {
+    font-size: 36px;
+    font-size: 2.25rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #999;
+  }
