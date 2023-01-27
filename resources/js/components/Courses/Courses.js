@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import restaurant_1 from "../../../assets/img/restaurant_1.jpg";
 
-
+import { DataGrid } from '@mui/x-data-grid';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Api from '../../api';
@@ -184,23 +186,8 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                                 ?
                                           
                                                     <div className="modal fade" id={`exampleModalToggle${index}`} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-                                                        <div className="modal-dialog modal-dialog-centered">
-                                                            <div className="modal-content">
-                                                                <div className="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLongTitle">Assign Campaign</h5>
-                                                                    <div className="row ml-1" style={{ paddingTop: '2%'}}>
-                                                                        {/* <label><b>{props.params.any} Details</b></label> */}
-                                                                    </div>
-                                                                    <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                
-                                                                <div className="modal-body m-body">
-                                                                    <AssignCampaign visible={isVisible[index] === true ? true : false} key={index} id={index} campaign_code={value.campaign_code} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                          <AssignCampaign visible={isVisible[index] === true ? true : false} key={index} id={index} campaign_code={value.campaign_code} />
+                                                        
                                                     </div>
                                                 :
                                                 <div className="col-lg-12 d-flex" style={{justifyContent:'right'}}>
@@ -213,7 +200,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                                     pathname: '/exam',
                                                     state: {data:value}}} state={{ value }} >
                                                         <Button variant={'contained'} style={{ backgroundColor: '#1F5B54'}}  >
-                                                            Start Examination
+                                                          Take Test
                                                         </Button>
                                                         </Link>
 
@@ -321,9 +308,23 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
 
 const AssignCampaign = ({key, id, visible, campaign_code})=>{
 
-    const [user, setUser] = React.useState({});
-
+    const [user, setUser] = React.useState([]);
+    const [userdata,setUserdata]=useState([])
+    const [assign,setAssign]=useState()
+    const userData = [
+        { name: "Jeevan" ,user_id:1 },
+        { name: "Manish" ,user_id:2},
+        { name: "Prince" ,user_id:3},
+        { name: "Arti" ,user_id:4},
+        { name: "rahul" ,user_id:5 }
+      ];
+      
     let count = 1;
+    useEffect(() => {
+        setUserdata(userData);
+      }, []);
+    
+
     
     const apiCtrl = new Api;
     const [reload, setReload] = React.useState(false);
@@ -341,7 +342,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
     const userList = () => {
         setUser({});
         apiCtrl.callAxios('user-list-campaign', {campaign_code: campaign_code}).then((res)=>{
-            console.log('Response ',res);
+           // console.log('Response ',res);
             if(res.success == true){
                 setUser({...res.data});
                 Swal.close();
@@ -380,13 +381,103 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
         })
     }
 
+    const handleChange = (e ,userid,index) => {
+     //   console.log("value" ,e.target.checked,"userid",userid,"index",index)
+        if(e.target.checked){
+
+               setAssign(old =>({...old,[index]:userid }))
+               console.log("assignState---" ,assign)
+        }else{
+            deletebykey(index)
+        }
+
+      };
+
+ const assignagent=()=>{
+         alert() 
+    var data = [assign]
+
+    console.log("datassign=>",data)
+
+ }
+
+const  deletebykey=(index)=>{
+    alert("delete",index)
+    // console.log("delrowbyid",index)
+      const assigndelete= assign
+      console.log("alldataassign=>",assigndelete)
+      delete assigndelete[index]
+     console.log("deletedata=>",assigndelete)
+     this.setState(old=>({...old,assigndelete}))
+ 
+
+}
+
+
     return(
     
         <>
-            <div className="row" key={id}>
+
+            <div className="modal-dialog  modal-dialog modal-lg modal-dialog-centered">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Assign Agent</h5>
+                        <Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  onClick={assignagent} >Assign</Button>
+                        <div className="row ml-1" style={{ paddingTop: '2%'}}>
+                            {/* <label><b>{props.params.any} Details</b></label> */}
+                        </div>
+                        <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    
+                    <div className="modal-body m-body">
+
+                        <div className="row" key={id}>
+                        <div className="col-md-12">
+                        <table className="table">
+                            <tr>
+                                <td>#</td>
+                                <td>Name</td>
+                                <td>Action</td>
+
+                            </tr>
+                        
+                            
+                        
+                                
+                                {Object.entries(userData).map(([index, value])=>{
+                            
+                                return(
+                                    <tr key={index}>
+                                        <td>{count++}</td>
+                                        <td>{value.name}</td>
+                                        <td>  <FormControlLabel control={<Checkbox   onClick={(e)=>handleChange(e, value.user_id ,index)}/>}  /></td>
+                                        {/* <td><Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  onClick={()=>{handleAssign(value.user_id)}} >Assign</Button></td> */}
+                                    
+
+                                    </tr>
+                                    )
+                            })
+                        }
+                    
+                        </table>
+                    </div>
+                </div>
+        
+                      
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            {/* <div className="row" key={id}>
                 <div className="col-md-12">
                     <table className="table">
                         <tr>
+                        <td><input type="checkbox"/></td>
                             <td>#</td>
                             <td>Name</td>
                             <td>Action</td>
@@ -402,7 +493,8 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                                 <tr key={index}>
                                     <td>{count++}</td>
                                     <td>{value.name}</td>
-                                    <td><Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  onClick={()=>{handleAssign(value.user_id)}} >Assign</Button></td>
+                                    {/* <td><Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  onClick={()=>{handleAssign(value.user_id)}} >Assign</Button></td> 
+                                    <td><input type="checkbox"/></td>
 
                                 </tr>
                                 )
@@ -411,7 +503,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                 
                     </table>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 }

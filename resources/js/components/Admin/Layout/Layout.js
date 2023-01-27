@@ -17,7 +17,7 @@ import UserList from '../Pages/Users/UserList';
 import RolesList from '../Pages/Roles/RolesList';
 import AddRoles from '../Pages/Roles/AddRoles';
 import { ExcelUpload } from '../Pages/Excel_upload/Excel_upload';
-import Courses from '../Pages/Courses/Courses';
+import Courses from '../../Courses/Courses';
 import ResultList from '../Pages/Result_List/Result_List';
 
 

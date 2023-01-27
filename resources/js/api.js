@@ -145,14 +145,14 @@ callAxios(endPoint, reqData, auth=true){
       Promise.all([this.getBaseUrl(),this.getToken()])
         .then(data => {
           console.log(data);
-          console.log('================================>');
+       //   console.log('================================>');
           console.log('URL: ' + data[0] + endPoint);
          // console.log('TOKEN: ' + data[1]);
           // const reqDataHeader = {
           //   ...reqData,
           // };
          //console.log('Request Body : ' + JSON.stringify(reqDataHeader));
-          console.log('================================>');
+       //   console.log('================================>');
           const authtoken = auth ?  'Bearer '+data[1] : "";
           if (data[0] && data[0] != null) {
             axios
@@ -165,7 +165,7 @@ callAxios(endPoint, reqData, auth=true){
               }
               )
               .then((response) => {
-                 console.log('Request Respomse', response);
+                // console.log('Request Respomse', response);
                  if(response.data.success){
                   resolve({success: true, data: response.data});
                  }else{
@@ -192,14 +192,14 @@ callAxios(endPoint, reqData, auth=true){
     return new Promise((resolve, reject) => {
       Promise.all([this.getBaseUrl()])
         .then(data => {
-          console.log(data);
-          console.log('================================>');
+      //    console.log(data);
+         // console.log('================================>');
           console.log('URL: ' + data[0] + endPoint);
           const reqDataHeader = {
             ...reqData,
           };
-          console.log('Request Body : ' + JSON.stringify(reqDataHeader));
-          console.log('================================>');
+          //console.log('Request Body : ' + JSON.stringify(reqDataHeader));
+          //console.log('================================>');
           
           if (data[0] && data[0] != null) {
             axios
@@ -209,7 +209,7 @@ callAxios(endPoint, reqData, auth=true){
                 axiosRequestConfig
               )
               .then((response) => {
-                 console.log('Request Respomse', response);
+             //    console.log('Request Respomse', response);
                  if(response.data.success){
                   resolve({success: true, data: response.data});
                  }else{
@@ -238,9 +238,9 @@ callAxios(endPoint, reqData, auth=true){
     return new Promise((resolve, reject) => {
       Promise.all([this.getBaseUrl()])
         .then(data => {
-          console.log(data);
-          console.log('================================>');
-          console.log('URL: ' + data[0] + endPoint);            
+       //   console.log(data);
+        //  console.log('================================>');
+       //   console.log('URL: ' + data[0] + endPoint);            
           
           if (data[0] && data[0] != null) {
             axios
@@ -248,7 +248,7 @@ callAxios(endPoint, reqData, auth=true){
                 data[0] + endPoint,                            
               )
               .then((response) => {
-                 console.log('Request Respomse', response);
+            //     console.log('Request Respomse', response);
                  if(response.data.success){
                   resolve({success: true, data: response.data});
                  }else{
@@ -257,7 +257,7 @@ callAxios(endPoint, reqData, auth=true){
                 
               })
               .catch(err => {
-               console.log('Request Respomse', err);
+         //      console.log('Request Respomse', err);
                // resolve({success: false, data: err.message});
                 resolve({success: false, data:'Some Error occured!'});
               });
