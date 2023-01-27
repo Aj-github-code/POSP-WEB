@@ -150,13 +150,13 @@ export default function QNA() {
                     <div className='col-md-12 d-flex' style={{justifyContent:'space-between', marginBottom:'2%'}}>
                         <span style={{fontSize:"20px", fontWeight:'600'}} >Examination: {otherParamter.campaign.reference_type}</span>
                     
-                    <span> Time Left:- {hours} : {minutes} : {seconds}</span>
+                   <span> Time Left:- <strong>{hours} : {minutes} : {seconds}</strong></span>
                         <div className="row">
                             {campaign.campaign_type === 'exam' &&
                                 <div className="col-md-12 d-flex" >
                                     <span>Total Marks: <strong>{otherParamter.system_settings.total_marks}</strong>&nbsp;&nbsp;&nbsp;</span>
                                     |
-                                    <span> &nbsp;&nbsp;&nbsp;Passing Marks: <strong>{otherParamter.system_settings.passing_marks}</strong></span>
+                                    <span> &nbsp;&nbsp;&nbsp;Passing Marks: <strong style={{color:'green'}}>{otherParamter.system_settings.passing_marks}</strong></span>
                                 </div>
                             }
                         </div>

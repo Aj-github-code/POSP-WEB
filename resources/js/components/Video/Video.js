@@ -37,6 +37,8 @@ export default function Video(){
             }
         })
     }
+
+  //  console.log("campaign=>",campaign)
     // const {description, title, images} = (location.state);
   return (
     <div className="filters_listing sticky_horizontal" style={{marginTop:'8%'}}>
@@ -45,11 +47,12 @@ export default function Video(){
             <video src={URL+'uploads/videos/'+user_parameters.video} controls style={{ height:"40%", width:"60%"}} />
             <div className="row mt-2">
                 <div className="col-md-12">
-                    <h3><strong>{campaign_type}</strong> | {campaign.reference_type} </h3>
+                    {/* <h3><strong>{campaign_type}</strong> | {campaign.reference_type} </h3> */}
+                    <h3><strong>{campaign_type}</strong> | {campaign.title} </h3>
                 </div>
             </div>
             <div className=" d-flex" style={{justifyContent:"right"}}>
-                   <Button variant="contained" onClick={()=>{startExamination()}} style={{ backgroundColor: '#1F5B54'}}  >Start Examination</Button>
+                   <Button variant="contained" onClick={()=>{startExamination()}} style={{ backgroundColor: '#1F5B54'}}  >Take Test</Button>
                 <div className="float-right">
                 </div>
             </div>
