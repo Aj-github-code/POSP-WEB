@@ -1,24 +1,24 @@
 [
     {
-        "title":"26 New Messages!",
+        "title":"0 Dashboard 1!",
         "color":"primary",
         "icon":"envelope-open",
         "link":"messages.html"
     },
     {
-        "title":"11 New Reviews!",
+        "title":"0 Dashboard 2!",
         "color":"warning",
         "icon":"star",
         "link":"reviews.html"
     },
     {
-        "title":"10 New Bookings!",
+        "title":"0 Dashboard 3!",
         "color":"success",
         "icon":"calendar-check-o",
         "link":"bookings.html"
     },
     {
-        "title":"10 New Bookmarks!",
+        "title":"0 Dashboard 4!",
         "color":"danger",
         "icon":"heart",
         "link":"bookmarks.html"

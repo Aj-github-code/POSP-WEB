@@ -8,7 +8,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios"
 import Swal from "sweetalert2";
 
-
+export const API_CONSTANTS = process.env.MIX_API_URL;
 export const ExcelUpload=()=>{
     const [file,setFile]=useState()
     const apiCtrl=new Api
@@ -22,14 +22,13 @@ export const ExcelUpload=()=>{
 
      const submit= async (e)=>{
         e.preventDefault();
-        console.log("file=>",file)
-
+      
         const formData = new FormData();
         // formData.append('excel_file', file);
            formData.append("excel_file", file.selectedFile, file.selectedFile.name);
         var config = {
             method: 'post',
-            url: "https://online-exam.primarykeytech.in/api/api/upload-excel-campaign",
+            url: API_CONSTANTS+"upload-excel-campaign",
             headers: { 
              'Content-Type': 'multipart/form-data;boundary=SOME_BOUNDARY',
               'Authorization': 'Bearer '+localStorage.getItem('_token')
@@ -40,51 +39,36 @@ export const ExcelUpload=()=>{
       
         
        
-       let response=  axios(config)
-       if(response.success == true){
-           console.log("response=>",response)
-           Swal.fire({
-            title: "Excel",
-            text: "Upload Successfully",
-            icon: "success",
-            showConfirmButton: false,
-        })
+       axios(config).then((response)=>{
 
-        } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong!',
-        
-        })
-        }
+           if(response.data.status === 'success'){
+               
+               Swal.fire({
+                title: "Excel",
+                text: "Upload Successfully",
+                icon: "success",
+                showConfirmButton: false,
+            })
+    
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: response.data.message,
+                
+                })
+            }
+       })
      
-       
-        
-         
-     
-   
-
-    // apiCtrl.callAxios("upload-excel-campaign", formData).then(response => {
-    //     console.log("response=>",response)
-    // })
-
-
-
-
 
      }
-
-
-    
-    
     
     return(<>
 
         <BreadCrumb breadcrumb="Excel Upload"  />
             <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}>
                     <div className="row ml-1">
-                        <label><b>Excel Upload</b></label>
+                        <label><b>Excel Upload </b></label>
                     </div>
                     <Divider sx={{ borderColor: '#dac4c4',marginBottom:5}}    />
             <form onSubmit={submit}>

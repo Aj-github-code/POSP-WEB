@@ -181,7 +181,7 @@ function Action(props){
 
 function Model(props){
 
-  console.log( "modelprops==>",props)
+  // console.log( "modelprops==>",props)
  
   return(
     <>
