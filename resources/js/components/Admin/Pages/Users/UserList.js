@@ -6,7 +6,9 @@ import { Button } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import AddUsers from './AddUsers';
 import MaterialTextField from '../../../../Tags/MaterialTextField'
+import { TextField } from '@mui/material';
 import Api from '../../../../api';
+
 
 import Swal from 'sweetalert2';
 import MaterialSelect from '../../../../Tags/MaterialSelect';
@@ -23,6 +25,8 @@ export  class UserList extends React.Component {
       pageSize: 10,  
       paramsdata:[],
       userData:[],
+      statedata:[""],
+      citydata:[""]   ,
       
   }
   this.apiCtrl = new Api;
@@ -34,14 +38,24 @@ export  class UserList extends React.Component {
     
   }
 
- componentDidUpdate = (prevProps, prevState) =>{
+//  componentDidUpdate = (prevProps, prevState) =>{
+//   if(prevProps.params.any !== this.props.params.any){
+//     this.getUserList();
+//   }
+//   if (prevState.page !== this.state.page) {
+//     this.getUserList();
+//   }
+//  }
+
+ componentDidUpdate(prevProps, prevState){
+  // console.log('update')
+  if ((prevState.page !== this.state.page) || (prevState.filter !== this.state.filter)||(prevState.city !== this.state.city)) {
+         this.getUserList();
+  } 
   if(prevProps.params.any !== this.props.params.any){
     this.getUserList();
   }
-  if (prevState.page !== this.state.page) {
-    this.getUserList();
 }
- }
  
 
   getUserList = () =>{
@@ -50,7 +64,13 @@ export  class UserList extends React.Component {
     //  console.log("urldata===>",data)
 
     this.setState(old => ({...old, isLoading:true}))
-    this.apiCtrl.callAxios('users/list',{role_name:this.props.params.any,length:this.state.pageSize, start:this.state.page*this.state.pageSize}).then(response => {
+    var data = {role_name:this.props.params.any,city:this.state.city,length:this.state.pageSize, start:this.state.page*this.state.pageSize};
+
+    if(this.state.filter !== null){
+      data = {...data, filter: this.state.filter};
+    }
+    // this.apiCtrl.callAxios('users/list',{city:this.state.city},{role_name:this.props.params.any,length:this.state.pageSize, start:this.state.page*this.state.pageSize}).then(response => {
+      this.apiCtrl.callAxios('users/list',data).then(response => {
         
         if(response.success == true){
             this.setState(old => ({...old, data:response.data.aaData, total:response.data.iTotalRecords}))
@@ -85,6 +105,59 @@ export  class UserList extends React.Component {
  
   render() {
 
+    const getstatedata = () => {
+
+      if(Object.keys(this.state.statedata).length <= 1){
+          
+          Swal.fire({
+              title: 'Loading...',
+              didOpen: () => {
+                  Swal.showLoading()
+              }
+          })
+          console.log('loader stART', Object.keys(this.state.statedata).length)
+          this.apiCtrl.callAxios('states/list',{search:{country_id:1}}).then(res => {
+
+              var dataOfstate=[]
+              res.data.map((value)=>{                  
+                  // console.log("STATE==>",value)
+                      
+                  dataOfstate = {...dataOfstate, [value.id]:value.state_name};
+              })     
+              this.setState(old => ({...old, statedata: dataOfstate}));
+              
+          })
+          console.log('loader close')
+          Swal.close();     
+      }
+  }
+
+  const handlechang =(e)=>{
+   
+   
+    this.setState(old => ({...old , state:e.target.value}))
+       
+    Swal.fire({
+        title: 'Loading...',
+        didOpen: () => {
+    Swal.showLoading()
+        }
+    })
+    this.setState(old => ({...old, citydata: ""}));
+    this.apiCtrl.callAxios('cities/list',{search:{state_id:e.target.value}}).then(res => {
+         
+    var dataOfcity=[]
+    res.data.map((value)=>{                  
+        // console.log("Scity==>",value)
+            
+        dataOfcity = {...dataOfcity, [value.id]:value.city_name};
+    })     
+    this.setState(old => ({...old, citydata: dataOfcity}));
+    })  
+    Swal.close();      
+}
+
+
     const handleReload = (status) =>{
       if(status == true){
 
@@ -100,7 +173,7 @@ export  class UserList extends React.Component {
       { field: 'name', headerName: 'Name', width: 190 },
       { field: 'email', headerName: 'Email', width: 300 },
       { field: 'mobile', headerName: 'Mobile', width: 190 },
-      { field: 'action', headerName: 'Action',  width: 190,  renderCell: (params) => <Action func={handleClick} isLoading={handleReload}  key={params.row.id} param={params.row} />, },
+      { field: 'action', headerName: 'Action',  width: 300,  renderCell: (params) => <Action func={handleClick} isLoading={handleReload}  key={params.row.id} param={params.row} />, },
     ];
 
   //  console.log(this.state.role_name)
@@ -118,9 +191,35 @@ export  class UserList extends React.Component {
 
     <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}>
      
-     <div className='row mb-2'>
-      <div className='col-md-12'>
+     <div className='row mb-3'>
+      <div className='col-md-3'>
         <Button  type="button" style={{ backgroundColor: '#1F5B54',width:"auto", color:"#fff"}} href="#exampleModalToggle1" data-bs-toggle="modal" size='large' >Add {userType}</Button>
+      </div>
+      <div className='col-md-3'>
+      <MaterialSelect value={this.state.state?this.state.state:""}
+        onClick={getstatedata}       
+        data={this.state.statedata}  id="state_id" labelId="state" name="state"
+    
+        onChange={handlechang}   label="State *" fullWidth
+      
+      />
+
+      </div>
+      <div className='col-md-3'>
+      <MaterialSelect   value={this.state.city?this.state.city:""} 
+        data={this.state.citydata}  id="city_id" labelId="city-id" 
+        name="city"    onChange={(e)=>this.setState({city : e.target.value})}
+        
+        label="City *" fullWidth
+      />
+           
+
+      </div>
+      <div className='col-md-3'>
+         <MaterialTextField 
+           label={"Search"} size="large" 
+           fullWidth name='search'onChange={(e)=>this.setState(old => ({...old, filter: e.target.value}))}/>
+
       </div>
      </div>
    
@@ -155,6 +254,7 @@ export  class UserList extends React.Component {
 
 
     <Model />
+    <ViewResult/>
 
    <EditUser isLoading={handleReload}   params={this.state.userData}/>
    
@@ -246,7 +346,8 @@ function Action(props){
       <>
 
                <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} data-bs-toggle="modal" size='small' href="#exampleModalToggle" onClick={editUserdata}>Edit</Button>&nbsp;&nbsp;
-               <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} size='small' onClick={()=>deleteUser(props.param)}>Delete</Button>
+               <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} size='small' onClick={()=>deleteUser(props.param)}>Delete</Button>&nbsp;&nbsp;
+               <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} data-bs-toggle="modal" size='small' href="#exampleModalToggle2" >View Result</Button>
                
              
   </>
@@ -307,7 +408,78 @@ function Model(props){
 }
 
 
+function ViewResult(props){
+  
+  return(
+    <>
+   
+      <div className="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+        <div className="modal-dialog   modal-dialog-centered">
+        <div className="modal-content">
+        <div className="modal-header">
+            {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
+            <div className="row ml-1" style={{ paddingTop: '2%'}}>
+                {/* <label><b>{props.params.any} Details</b></label> */}
+            </div>
+            <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div className="modal-body m-body">
+            
+          <div className="row">
+          <fieldset className="form-group border border-primary p-3">
+            <div className="row " >
+              <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
+                <div className="col-sm-9">
+                  <div className="row">
 
+                  <div class="wrapper" >
+                  
+                    <h4 style={{ color: '#1F5B54'}}>{"Heavy Vehicle Insurance"}</h4>
+                    <p><span className="price">Name:<b>Test Agent</b></span></p>
+                  
+                    <p>Time: <strong>O.5 Hours</strong></p>
+                    <span className="price">Total Marks: <strong style={{ color: 'green'}}>60</strong>, Passing: <strong style={{color:'red'}}>25</strong></span><br/>
+                    <span> Marks Obtain: <strong style={{color:'red'}}>11</strong></span><br/>
+                    <span className="price"> Exam Result: <strong style={{ color: 'red'}}>  FAIL</strong></span>
+                      
+                  
+ 
+
+
+                  </div>
+
+                  </div> 
+                </div>  
+            </div>                    
+                              
+          </fieldset>                   
+            
+
+          </div>
+            
+          {/* <div className="modal-footer">
+                  
+
+                  <Button data-bs-dismiss="modal" style={{ backgroundColor: 'rgb(108 110 116)',color:"#fff"}}>Close</Button>&nbsp;&nbsp;
+                
+          
+                  {/* <Button data-bs-dismiss="modal" style={{ backgroundColor: '#183883',color:"#fff"}} onClick={ submituser }>Submit</Button> 
+                
+                </div>*/}
+          </div>  
+
+          
+        </div>
+      </div>
+      </div>
+
+
+    </>
+  )
+}
 
 
 

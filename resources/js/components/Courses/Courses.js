@@ -418,7 +418,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
             <div className="modal-dialog  modal-dialog modal-sm modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Assign Agent</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Assign To POSP</h5>
                         
                         <div className="row ml-1" style={{ paddingTop: '2%'}}>
                             {/* <label><b>{props.params.any} Details</b></label> */}
