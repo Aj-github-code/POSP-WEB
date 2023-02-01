@@ -79,7 +79,7 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
       
     };
 
-    // console.log("URL : "+process.env.MIX_API_URL);
+    console.log("URL : "+process.env.MIX_API_URL);
     // alert(process.env.MIX_API_URL);
     const submituser= async (e) => {
       e.preventDefault();
@@ -114,11 +114,11 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
                           })
                       }
                      // location.reload('/user-list')
-                      // console.log("Updateproduct===>",response);
+                      console.log("Updateproduct===>",response);
                       // sessionStorage.setItem('_token', response.data.)
                       
                     }).catch(function (error) {
-                      // console.log("Updateuser===>",error);
+                      console.log("Updateuser===>",error);
                     });
               }else{
                 this.apiCtrl.callAxios('product/create-product', data).then(response => {
@@ -175,6 +175,9 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
         // });
     } 
 
+ console.log(this.state.product_category_id);
+
+ console.log( "props==>",this.props)
  
     return (
       <>

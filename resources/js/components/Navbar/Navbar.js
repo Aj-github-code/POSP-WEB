@@ -7,7 +7,10 @@ import logo_sticky from "../../../assets/img/logo_sticky.png";
 import { Link } from 'react-router-dom';
 import Login from "../Login/Login";
 import Modals from "../Modal/Modals";
+import { useNavigate } from 'react-router-dom';
 function Navbar(){
+
+	const navigation = useNavigate();
 
 	const [modal, setmodal] = useState(false)
 
@@ -34,7 +37,7 @@ function Navbar(){
     <ul id="top_menu">
 			{/* <li><a href="cart-1.html" className="cart-menu-btn" title="Cart"><i className="fa fa-fw fa-shopping-cart"></i></a></li>
 			<li><a href="#" className="wishlist_bt_top" title="Your wishlist"><i className="fa fa-fw fa-shopping-bag"></i></a></li> */}
-			<li><a className="login" id="sign-in" title="Logout"   onClick={()=>{localStorage.clear(), location.reload('/')}}><i className="fa fa-fw fa-sign-in"></i></a></li>
+			<li><a className="login" id="sign-in" title="Logout"   onClick={()=>{localStorage.clear(),  navigation('/'), location.reload('/')}}><i className="fa fa-fw fa-sign-in"></i></a></li>
 			{/* onClick={() => setmodal(true)} */}
 			{/* <li><a href="cart-1.html" style={{height:'10px'}} className="fa fa-fw fa-shopping-cart" title="Cart"> </a>   </li>
 			<li><a className="fa fa-fw fa-sign-in" id="sign-in"   onClick={() => setmodal(true)} ></a></li>
@@ -50,12 +53,14 @@ function Navbar(){
 		</a>
 		<nav id="menu" className="main-menu">
 			<ul>
-						{/* <li><span><Link to="/">Home Default</Link></span></li> */}
+						{/* <li><span><Link to="/">Training</Link ></span></li> */}
+						<li><span><a href="/">Training</a></span></li>
 				
 		
-				<li><span><Link to="/">Courses</Link></span></li>
+				{/* <li><span><Link to="/courses">Courses</Link></span></li> */}
+				<li><span><a href="/courses">Courses</a></span></li>
 			
-				<li><span><a href="#">Others</a></span></li>
+				<li><span><a href="#">Past Score</a></span></li>
 			</ul>
 		</nav>
 		<Modals toggle={() => setmodal(!modal)} isOpen={modal} content={<Login />}></Modals>

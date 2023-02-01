@@ -1,26 +1,31 @@
 [
     {
-        "title":"0 Dashboard 1!",
+        "title":"8 Training Modules",
         "color":"primary",
         "icon":"envelope-open",
-        "link":"messages.html"
+        "link":"/courses",
+        "link_text":"View All training Modules"
+        
     },
     {
-        "title":"0 Dashboard 2!",
+        "title":"500 POSPs",
         "color":"warning",
-        "icon":"star",
-        "link":"reviews.html"
+        "icon":"user",
+        "link":"/user-list/agent",
+        "link_text":"View All Posps"
     },
     {
-        "title":"0 Dashboard 3!",
+        "title":"200 New Results",
         "color":"success",
         "icon":"calendar-check-o",
-        "link":"bookings.html"
+        "link":"/result-list",
+        "link_text":"View All Results"
     },
     {
-        "title":"0 Dashboard 4!",
+        "title":"0 New uploads",
         "color":"danger",
-        "icon":"heart",
-        "link":"bookmarks.html"
+        "icon":"upload",
+        "link":"/excel-uplaod",
+        "link_text":"Upload New Training Module"
     }
 ]

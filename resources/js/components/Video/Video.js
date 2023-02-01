@@ -51,11 +51,13 @@ export default function Video(){
                     <h3><strong>{campaign_type}</strong> | {campaign.title} </h3>
                 </div>
             </div>
+            {campaign_type!=="courses"?
             <div className=" d-flex" style={{justifyContent:"right"}}>
                    <Button variant="contained" onClick={()=>{startExamination()}} style={{ backgroundColor: '#1F5B54'}}  >Take Test</Button>
                 <div className="float-right">
                 </div>
-            </div>
+            </div>:""
+             }
         </div>
     </div>
   )

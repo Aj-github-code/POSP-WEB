@@ -92,7 +92,7 @@ export default class ResultList extends React.Component {
             { field: 'status', headerName: 'PASS/FAIL',  width: 190},
             { field: 'marks', headerName: 'Obtained Marks',  width: 190},
             // { field: 'action', headerName: 'Action',  width: 210,  renderCell: (params) => <Action key={params.row.id}  param={params.row} />, },
-            {field:'action',headerName:'Action',width:210 ,renderCell:(param)=><Action key={param.row.id} param={param.row}/>}
+           // {field:'action',headerName:'Action',width:210 ,renderCell:(param)=><Action key={param.row.id} param={param.row}/>}
           ];
 
     
@@ -157,4 +157,6 @@ function Action(props){
         
     );
   }
+
+
   

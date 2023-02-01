@@ -2,14 +2,16 @@ import React from 'react'
 import logo from "../../../../assets/img/logo.png";
 import logo_sticky from "../../../../assets/img/logo_sticky.png";
 import SideBar from '../SideBar/SideBar';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function NavBar() {
 
+const navigation = useNavigate();
     const logout = () => {
         localStorage.clear()
-        
+        navigation('/')
         location.reload('/')
+        
     }
   return (
     <>
@@ -21,7 +23,7 @@ export default function NavBar() {
             </button>
             <div className="collapse navbar-collapse" id="navbarResponsive">
                 <ul className="navbar-nav ml-auto">
-                    <li className="nav-item dropdown">
+                    {/* <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle mr-lg-2" style={{color:"#183883"}} id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fa fa-fw fa-envelope"></i>
                         <span className="d-lg-none">Messages
@@ -109,7 +111,7 @@ export default function NavBar() {
                         </span>
                         </div>
                     </form>
-                    </li>
+                    </li> */}
                     <li className="nav-item">
                     <a className="nav-link" style={{color:"#183883"}} onClick={()=>logout()} data-toggle="modal" data-target="#exampleModal">
                         <i className="fa fa-fw fa-sign-out"></i>Logout</a>

@@ -16,7 +16,7 @@ export default function Dashboard() {
       <BreadCrumb breadcrumb="Dashboard" breadcrumbItem1='My Dashboard' />
       <div className="row">
         {CardData.map((value, index) =>{
-         return <Card icon={value.icon} color={value.color} key={index} title={value.title} link={value.link}/>
+         return <Card icon={value.icon} color={value.color} key={index} title={value.title} link={value.link} link_text={value.link_text}/>
         })}
       </div>
     </>

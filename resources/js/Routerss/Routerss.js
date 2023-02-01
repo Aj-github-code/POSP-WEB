@@ -48,11 +48,12 @@ const Routerss = () => {
               <Navbar/>
               <Routes>       
   
-                  <Route exact path="/" element={<Courses head={'margin_60_35'} />} />
+                  <Route exact path="/" element={ <Courses campaign_type={"exam"}/>} />
+                  <Route exact path="/courses" element={<Courses campaign_type={"courses"}/>} />
                   <Route path="/adventure" element={<Adventure />} />
                   <Route path="/about" element={<About_us />} />
                   <Route path="/my-courses" element={<MyCourses />} />
-                  <Route path="/exam" element={<Video />} />
+                  <Route path="/training" element={<Video />} />
                   <Route path="/qna/:any" element={<QNA />} />
                   <Route path="/result/:any" element={<Results />} />
 

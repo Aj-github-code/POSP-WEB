@@ -22,6 +22,7 @@ export default function Courses(props) {
 // //             }
 // //         })
 // //     },[])
+console.log("props=>",props.campaign_type)
 
 const [isVisible, setIsVisible] = React.useState({'-1':false})
     const [btnVariant1, setBtnVariant1] = React.useState({variant:'outlined', backgroundColor:"#1F5B54"});
@@ -35,12 +36,21 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
         handleCampaign('all');
     },[search])
     const handleCampaign = (filter) => {
-        apiCtrl.callAxios('get-campaign', {assigned:filter, search: search}).then((res)=>{
+        Swal.fire({
+            title: 'Loading...',
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+        apiCtrl.callAxios('get-campaign',{campaign_type:props.campaign_type}, {assigned:filter, search: search}).then((res)=>{
             console.log('Response ',res);
+
             if(res.success == true){
                 setCourses({...res.data});
             }
+            Swal.close();  
         })
+       
     }
 
   return (
@@ -87,7 +97,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
         </div>
          */}
     
-        <div className={`container ${props.head}`} style={props.head != '' ? {marginTop:'4%'} : {} } >
+    <div className={`container ${props.head}`} style={props.head != '' ? {marginTop:'4%'} : {} } >
         {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
                                             ?
                                             <></>
@@ -101,179 +111,176 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                     </div>
                 </div>
                 }
-                <div className="col-lg-12 d-flex" style={{justifyContent:"right"}}>
-                    <div className="row no-gutters custom-search-input-2 inner">
-                        <div className="col-lg-8">
-                            <div className="form-group">
-                                <input className="form-control" onChange={(e)=>{setSearch(e.target.value)}} type="text" placeholder="Search Here..." />
-                                <i className="icon_search"></i>
-                            </div>
-                        </div>
-                        {/* <div className="col-lg-3">
-                            <div className="form-group">
-                                <input className="form-control" type="text" placeholder="Where" />
-                                <i className="fa fa-fw fa-map-marker"></i>
-                            </div>
-                        </div>
-                        <div className="col-lg-3">
-                            <select className="wide">
-                                <option>All Categories</option>	
-                                <option>Restaurants</option>
-                                <option>Bars</option>
-                                <option>Coffee Bars</option>
-                            </select>
-                        </div> */}
-                        <div className="col-lg-4">
-                            <input type="submit" className="btn_search" value="Search" />
+            <div className="col-lg-12 d-flex" style={{justifyContent:"right"}}>
+                <div className="row no-gutters custom-search-input-2 inner">
+                    <div className="col-lg-8">
+                        <div className="form-group">
+                            <input className="form-control" onChange={(e)=>{setSearch(e.target.value)}} type="text" placeholder="Search Here..." />
+                            <i className="icon_search"></i>
                         </div>
                     </div>
-                    
-                </div>
-                
-                <div className="isotope-wrapper">
-                    <div className="row">
-                    {
-                        Object.keys(courses).length >= 1 
-                        ?
-                            Object.entries(courses).map(([index, value])=>{
-                                var values = JSON.parse(value.other_parameter)
-                                const {system_settings, user_parameters, campaign } = values;
-                                //  console.log('Value ', values)
-                                
-                                return(
-                                        <div class="col-xl-4 col-lg-6 col-md-6 isotope-item popular">
-                                            <div class="box_grid">
-                                                {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
-                                                    ?
-                                                    <Button 
-                                                        onClick={()=>{setIsVisible(old=>({...old, [index]:true}))}} key={index} data-bs-toggle="modal" size='small' href={`#exampleModalToggle${index}`}
-                                                        
-                                                        >
-                                                        <figure>
-                                                            <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-                                                            <small>{value.campaign_type}</small>
-                                                        </figure>
-                                                    </Button>
-                                                    :
-                                                    (value.assigned_name !== null) ?
-                                                        <Link 
-                                                            to={{
-                                                            pathname: '/exam',
-                                                            state: {data:value}}} state={{ value }} >
-                                                            <figure>
-                                                                <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-
-                                                                <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
-                                                            </figure>
-                                                        </Link>
-                                                    
-                                                        :
-                                                        
-                                                        <figure>
-                                                            <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-
-                                                            <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
-                                                        </figure>
-                                                }   
-                                                <div class="wrapper" >
-                                                    
-                                                    <h4 style={{ color: '#1F5B54'}}>{campaign.title? campaign.title.toUpperCase():''}</h4>
-                                                    <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
-                                                
-                                                    <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
-                                                </div>
-                                                <ul>
-                                                
-                                                    <li>
-                                                    {
-                                                        ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
-                                                            ?
-                                                    
-                                                                <div className="modal fade" id={`exampleModalToggle${index}`} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-                                                                    <AssignCampaign visible={isVisible[index] === true ? true : false} key={index} id={index} campaign_code={value.campaign_code} />
-                                                                    
-                                                                </div>
-                                                            :
-                                                                <div className="col-lg-12 d-flex" style={{justifyContent:'right'}}>
-                                                                {
-                                                                    (value.assigned_name === null) ?
-                                                                    <SelfAssigned key={index} id={index} campaign_code={value.campaign_code} />
-                                                                    :
-                                                                    <Link 
-                                                                    to={{
-                                                                    pathname: '/exam',
-                                                                    state: {data:value}}} state={{ value }} >
-                                                                        <Button variant={'contained'} style={{ backgroundColor: '#1F5B54'}}  >
-                                                                        Take Test
-                                                                        </Button>
-                                                                        </Link>
-
-                                                                }
-                                                                </div>
-                                                        }
-                                                    </li>
-                                                    <li></li>
-                                                
-                                                </ul>
-                                            </div>  
-                                        </div>
-
-                                    // <div className="box_list isotope-item popular">
-                                    //     <div className="row no-gutters">
-                                    //         <div className="col-lg-5">
-                                    //             <figure>
-                                    //                 <small>{value.campaign_type}</small>
-                                    //                  <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-                                    //                 <a href="#"> 
-                                    //                 {/* <i style={{ color: '#1F5B54', position:'absolute', top:0, bottom:0, margin: 'auto 0'}} className="fa fa-fw fa-play"></i> */}
-                                    //                 {/* <img src={restaurant_1} /> */}
-                                    //                 <div className="read_more">
-                                    //                     <span>Read more</span></div></a>
-                                    //             </figure>
-                                    //         </div>
-                                    //         <div className="col-lg-7">
-                                    //             <div className="wrapper">
-                                    
-                                    //                 {/* <a href="#0" className="wish_bt"><i style={{ color: '#1F5B54'}} className="fa fa-fw fa-pin"></i></a> */}
-                                    //                 <h3 style={{ color: '#1F5B54'}}>{campaign.title? campaign.title.toUpperCase():''}</h3>
-                                    //                 <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
-                                    //                 {/* <p>Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.</p> */}
-                                    //                 <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
-                                    //             </div>
-                                    //             <ul>
-                                    //                 <li>
-                                    //                 {/* <i className="ti-eye"></i> 164 views */}
-                                    //                 </li>
-                                    //                 <li>
-                                    //                         <Link 
-                                    //                             to={{
-                                        //                             pathname: '/exam',
-                                    //                             state: {data:value}}} state={{ value }} >
-                                    //                             <Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  label="Assign" >Start</Button></Link>
-                                    //                     <div className="score">
-                                    //                         {/* <span>Superb<em>350 Reviews</em></span><strong>8.9</strong> */}
-                                    //                     </div>
-                                    //                 </li>
-                                    //             </ul>
-                                    //         </div>
-                                    //     </div>
-                                    // </div>
-                    
-                                )
-                            })
-                        :
-                        <div className="col-lg-12">
-                            <h1>No Courses Available..</h1>
+                    {/* <div className="col-lg-3">
+                        <div className="form-group">
+                            <input className="form-control" type="text" placeholder="Where" />
+                            <i className="fa fa-fw fa-map-marker"></i>
                         </div>
-                    }
-        
+                    </div>
+                    <div className="col-lg-3">
+                        <select className="wide">
+                            <option>All Categories</option>	
+                            <option>Restaurants</option>
+                            <option>Bars</option>
+                            <option>Coffee Bars</option>
+                        </select>
+                    </div> */}
+                    <div className="col-lg-4">
+                        <input type="submit" className="btn_search" value="Search" />
+                    </div>
                 </div>
-        
+                
             </div>
-                
-                
-            <p className="text-center add_top_30"><a href="#0" className="btn_search btn_1 rounded">Load more</a></p>
+            
+            <div className="isotope-wrapper">
+                <div className="row">
+                {
+                    Object.entries(courses).map(([index, value])=>{
+                        var values = JSON.parse(value.other_parameter) 
+                        const {system_settings, user_parameters, campaign } = values;
+            //  console.log('Value ', values)
+                        
+                        return(
+                                <div class="col-xl-4 col-lg-6 col-md-6 isotope-item popular">
+                                    <div class="box_grid">
+                                     {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
+                                            ?
+                                            <Button 
+                                                 onClick={()=>{setIsVisible(old=>({...old, [index]:true}))}} key={index} data-bs-toggle="modal" size='small' href={`#exampleModalToggle${index}`}
+                                                
+                                                >
+                                                <figure>
+                                                    <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+                                                    <small>{value.campaign_type}</small>
+                                                </figure>
+                                            </Button>
+                                            :
+                                            (value.assigned_name !== null) ?
+                                            <Link 
+                                                to={{
+                                                pathname: '/exam',
+                                                state: {data:value}}} state={{ value }} >
+                                                <figure>
+                                                    <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
 
+                                                    <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
+                                                </figure>
+                                            </Link>
+                                            
+                                                :
+                                              
+                                                <figure>
+                                                    <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+
+                                                    <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
+                                                </figure>
+                                            }   
+                                        <div class="wrapper" >
+                                             
+                                            <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
+                                            <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
+                                         
+                                            <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
+                                        </div>
+                                        <ul>
+                                        
+                                        <li>
+                                        {
+                                                ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
+                                                ?
+                                          
+                                                    <div className="modal fade" id={`exampleModalToggle${index}`} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+                                                          <AssignCampaign visible={isVisible[index] === true ? true : false} key={index} id={index} campaign_code={value.campaign_code} />
+                                                        
+                                                    </div>
+                                                :
+                                                <div className="col-lg-12 d-flex" style={{justifyContent:'right'}}>
+                                                {
+                                                    (value.assigned_name === null) ?
+                                                    <SelfAssigned key={index} id={index} campaign_code={value.campaign_code} />
+                                                    :
+                                                    <Link 
+                                                    to={{
+                                                    pathname: '/training',
+                                                    state: {data:value}}} state={{ value }} >
+                                                        <Button variant={'contained'} style={{ backgroundColor: '#1F5B54'}}  >
+                                                         Start Module Training
+                                                        </Button>
+                                                        </Link>
+
+                                                }
+                                                </div>
+                                            }
+                                        </li>
+                                             <li></li>
+                                           
+                                        </ul>
+                                    </div>
+
+                                
+                                            
+                                </div>
+
+                            // <div className="box_list isotope-item popular">
+                            //     <div className="row no-gutters">
+                            //         <div className="col-lg-5">
+                            //             <figure>
+                            //                 <small>{value.campaign_type}</small>
+                            //                  <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+                            //                 <a href="#"> 
+                            //                 {/* <i style={{ color: '#1F5B54', position:'absolute', top:0, bottom:0, margin: 'auto 0'}} className="fa fa-fw fa-play"></i> */}
+                            //                 {/* <img src={restaurant_1} /> */}
+                            //                 <div className="read_more">
+                            //                     <span>Read more</span></div></a>
+                            //             </figure>
+                            //         </div>
+                            //         <div className="col-lg-7">
+                            //             <div className="wrapper">
+                            
+                            //                 {/* <a href="#0" className="wish_bt"><i style={{ color: '#1F5B54'}} className="fa fa-fw fa-pin"></i></a> */}
+                            //                 <h3 style={{ color: '#1F5B54'}}>{campaign.reference_type.toUpperCase()}</h3>
+                            //                 <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
+                            //                 {/* <p>Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.</p> */}
+                            //                 <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
+                            //             </div>
+                            //             <ul>
+                            //                 <li>
+                            //                 {/* <i className="ti-eye"></i> 164 views */}
+                            //                 </li>
+                            //                 <li>
+                            //                         <Link 
+                            //                             to={{
+                                //                             pathname: '/exam',
+                            //                             state: {data:value}}} state={{ value }} >
+                            //                             <Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  label="Assign" >Start</Button></Link>
+                            //                     <div className="score">
+                            //                         {/* <span>Superb<em>350 Reviews</em></span><strong>8.9</strong> */}
+                            //                     </div>
+                            //                 </li>
+                            //             </ul>
+                            //         </div>
+                            //     </div>
+                            // </div>
+            
+                        )
+                    })
+                }
+       
+                    </div>
+            
+            </div>
+            
+            
+            <p className="text-center add_top_30"><a href="#0" className="btn_search btn_1 rounded">Load more</a></p>
+        
         </div>
 {/*         
         <div className="bg_color_1">
@@ -309,7 +316,6 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
     </>
   )
 }
-
 
 const AssignCampaign = ({key, id, visible, campaign_code})=>{
 

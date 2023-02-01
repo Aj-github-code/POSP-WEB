@@ -6,7 +6,7 @@ const axiosRequestConfig = {
     headers: { 'Content-Type': 'application/json' }
   }
 export const URL = process.env.MIX_URL;
-export const API_CONSTANTS = process.env.MIX_API_URL;
+ export const API_CONSTANTS = process.env.MIX_API_URL;
 export default class Api extends React.Component {
     constructor(props) {
         super(props);

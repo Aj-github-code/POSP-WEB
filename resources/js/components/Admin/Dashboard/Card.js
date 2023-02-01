@@ -13,9 +13,9 @@ export default function Card(props) {
               <div className="mr-5"><h5>{props.title}</h5></div>
             </div>
             <a className="card-footer text-white clearfix small z-1" href={props.link}>
-              <span className="float-left">View Details</span>
+              <span className="float-left">{props.link_text?props.link_text:"View Details"}</span>
               <span className="float-right">
-                <i className="fa fa-angle-right"></i>
+                <i className="fa fa-angle-right"></i><i className="fa fa-angle-right"></i>
               </span>
             </a>
           </div>
