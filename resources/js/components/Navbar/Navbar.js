@@ -60,7 +60,7 @@ function Navbar(){
 				{/* <li><span><Link to="/courses">Courses</Link></span></li> */}
 				<li><span><a href="/courses">Courses</a></span></li>
 			
-				<li><span><a href="#">Past Score</a></span></li>
+				<li><span><a href="/training/result-history">Past Score</a></span></li>
 			</ul>
 		</nav>
 		<Modals toggle={() => setmodal(!modal)} isOpen={modal} content={<Login />}></Modals>

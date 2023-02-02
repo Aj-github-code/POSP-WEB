@@ -19,6 +19,7 @@ import AddRoles from '../Pages/Roles/AddRoles';
 import { ExcelUpload } from '../Pages/Excel_upload/Excel_upload';
 import Courses from '../../Courses/Courses';
 import ResultList from '../Pages/Result_List/Result_List';
+import ResultHistory from '../Pages/Result_History/Result_History';
 
 
 
@@ -84,6 +85,8 @@ export default function Layout() {
               <Route path="/role-list" element={<RolesList />} /> 
               <Route path='/courses' element={<Courses/>}/>
               <Route path='/result-list' element={<ResultList/>}/>
+              <Route path='/result-history' element={<ResultHistory/>}/>
+          
                
               </Routes> 
               : ''}  

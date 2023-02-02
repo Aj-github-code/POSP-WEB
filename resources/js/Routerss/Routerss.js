@@ -1,24 +1,9 @@
 import React from 'react'
-import { BrowserRouter as Router , Routes, Route } from 'react-router-dom'
-import Navbar from '../components/Navbar/Navbar'
-import About_us from '../Pages/About'
-import MainHomePage from '../Pages/Main_home_page'
-import Adventure from '../Pages/Adventure'
 
-import Form from '../Pages/Form'
-import SiderBar from '../components/SiderBar/SiderBar'
-
-import SignUp from '../components/SignUp/SignUp';
 import Layout from '../components/Admin/Layout/Layout'
 
 import Login  from '../components/Login/Login'
-
-import Courses from '../components/Courses/Courses'
-import MyCourses from '../components/MyCourses/MyCourses'
-import Video from '../components/Video/Video'
-import QNA from '../components/QNA/QNA'
-import Results from '../components/Results/Results'
-
+import Frontend from '../components/Frontend/Frontend'
 
 const isLoggedIn = () => {
   
@@ -43,23 +28,7 @@ const Routerss = () => {
             ?
             <Layout />
             :
-            <Router> 
-
-              <Navbar/>
-              <Routes>       
-  
-                  <Route exact path="/" element={ <Courses campaign_type={"exam"}/>} />
-                  <Route exact path="/courses" element={<Courses campaign_type={"courses"}/>} />
-                  <Route path="/adventure" element={<Adventure />} />
-                  <Route path="/about" element={<About_us />} />
-                  <Route path="/my-courses" element={<MyCourses />} />
-                  <Route path="/training" element={<Video />} />
-                  <Route path="/qna/:any" element={<QNA />} />
-                  <Route path="/result/:any" element={<Results />} />
-
-                  {/* <Route path="/login" element={<Login />} /> */}
-                </Routes>
-                </Router>
+            <Frontend />
             }
         </>
           

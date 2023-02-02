@@ -77,7 +77,7 @@ export default function Results() {
                     </div>
                     <div className='col-md-12 '>
                             <p>Name: {result.name}</p>
-                            <p>Marks Obtain: {result.marks}</p>
+                            <p>Percentage: {result.marks}</p>
                             <p>Exam Result: {result.status}</p>
                        
                     </div>

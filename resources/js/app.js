@@ -6,11 +6,7 @@
  window.$ = window.jQuery = require('jquery');
  require('jquery-ui-bundle');
  
- require('../assets/js/admin/admin.js');
- require('../css/admin/admin.css');
  
- require('../css/admin/font-awesome.min.css');
- require('../assets/js/admin/jquery.easing.min.js');
  
  require('./bootstrap');
 

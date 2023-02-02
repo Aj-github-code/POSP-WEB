@@ -166,7 +166,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                             (value.assigned_name !== null) ?
                                             <Link 
                                                 to={{
-                                                pathname: '/exam',
+                                                pathname: '/training',
                                                 state: {data:value}}} state={{ value }} >
                                                 <figure>
                                                     <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />

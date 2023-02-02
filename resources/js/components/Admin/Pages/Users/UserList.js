@@ -8,6 +8,7 @@ import AddUsers from './AddUsers';
 import MaterialTextField from '../../../../Tags/MaterialTextField'
 import { TextField } from '@mui/material';
 import Api from '../../../../api';
+import { Link } from "react-router-dom";
 
 
 import Swal from 'sweetalert2';
@@ -49,7 +50,7 @@ export  class UserList extends React.Component {
 
  componentDidUpdate(prevProps, prevState){
   // console.log('update')
-  if ((prevState.page !== this.state.page) || (prevState.filter !== this.state.filter)||(prevState.city !== this.state.city)) {
+  if ((prevState.page !== this.state.page) || (prevState.filter !== this.state.filter)||(prevState.city !== this.state.city)||(prevState.state !== this.state.state)) {
          this.getUserList();
   } 
   if(prevProps.params.any !== this.props.params.any){
@@ -64,7 +65,7 @@ export  class UserList extends React.Component {
     //  console.log("urldata===>",data)
 
     this.setState(old => ({...old, isLoading:true}))
-    var data = {role_name:this.props.params.any,city:this.state.city,length:this.state.pageSize, start:this.state.page*this.state.pageSize};
+    var data = {role_name:this.props.params.any,state:this.state.state,city:this.state.city,length:this.state.pageSize, start:this.state.page*this.state.pageSize};
 
     if(this.state.filter !== null){
       data = {...data, filter: this.state.filter};
@@ -347,7 +348,8 @@ function Action(props){
 
                <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} data-bs-toggle="modal" size='small' href="#exampleModalToggle" onClick={editUserdata}>Edit</Button>&nbsp;&nbsp;
                <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} size='small' onClick={()=>deleteUser(props.param)}>Delete</Button>&nbsp;&nbsp;
-               <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} data-bs-toggle="modal" size='small' href="#exampleModalToggle2" >View Result</Button>
+               <Link key={props.key} to='/result-history' state={{param:props.param}}>  <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} size='small' >View Result</Button></Link>  
+              
                
              
   </>
@@ -414,7 +416,7 @@ function ViewResult(props){
     <>
    
       <div className="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-        <div className="modal-dialog   modal-dialog-centered">
+        <div className="modal-dialog modal-lg  modal-dialog-centered">
         <div className="modal-content">
         <div className="modal-header">
             {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
@@ -429,7 +431,7 @@ function ViewResult(props){
           <div className="modal-body m-body">
             
           <div className="row">
-          <fieldset className="form-group border border-primary p-3">
+          <fieldset className="form-group border border-primary mb-2 p-3">
             <div className="row " >
               <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
                 <div className="col-sm-9">
@@ -439,7 +441,61 @@ function ViewResult(props){
                   
                     <h4 style={{ color: '#1F5B54'}}>{"Heavy Vehicle Insurance"}</h4>
                     <p><span className="price">Name:<b>Test Agent</b></span></p>
+                    
+                    <p>Time: <strong>O.5 Hours</strong></p>
+                    <span className="price">Total Marks: <strong style={{ color: 'green'}}>60</strong>, Passing: <strong style={{color:'red'}}>25</strong></span><br/>
+                    <span> Marks Obtain: <strong style={{color:'red'}}>11</strong></span><br/>
+                    <span className="price"> Exam Result: <strong style={{ color: 'red'}}>  FAIL</strong></span>
+                      
                   
+ 
+
+
+                  </div>
+
+                  </div> 
+                </div>  
+            </div>                    
+                              
+          </fieldset>
+          <fieldset className="form-group border border-primary mb-2 p-3">
+            <div className="row " >
+              <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
+                <div className="col-sm-9">
+                  <div className="row">
+
+                  <div class="wrapper" >
+                  
+                    <h4 style={{ color: '#1F5B54'}}>{"Heavy Vehicle Insurance"}</h4>
+                    <p><span className="price">Name:<b>Test Agent</b></span></p>
+                    
+                    <p>Time: <strong>O.5 Hours</strong></p>
+                    <span className="price">Total Marks: <strong style={{ color: 'green'}}>60</strong>, Passing: <strong style={{color:'red'}}>25</strong></span><br/>
+                    <span> Marks Obtain: <strong style={{color:'red'}}>11</strong></span><br/>
+                    <span className="price"> Exam Result: <strong style={{ color: 'red'}}>  FAIL</strong></span>
+                      
+                  
+ 
+
+
+                  </div>
+
+                  </div> 
+                </div>  
+            </div>                    
+                              
+          </fieldset>
+          <fieldset className="form-group border border-primary mb-2 p-3">
+            <div className="row " >
+              <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
+                <div className="col-sm-9">
+                  <div className="row">
+
+                  <div class="wrapper" >
+                  
+                    <h4 style={{ color: '#1F5B54'}}>{"Heavy Vehicle Insurance"}</h4>
+                    <p><span className="price">Name:<b>Test Agent</b></span></p>
+                    
                     <p>Time: <strong>O.5 Hours</strong></p>
                     <span className="price">Total Marks: <strong style={{ color: 'green'}}>60</strong>, Passing: <strong style={{color:'red'}}>25</strong></span><br/>
                     <span> Marks Obtain: <strong style={{color:'red'}}>11</strong></span><br/>
