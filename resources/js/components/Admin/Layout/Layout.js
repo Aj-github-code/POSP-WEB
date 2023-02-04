@@ -83,7 +83,8 @@ export default function Layout() {
               <Route path="/user-list/:any" element={<UserList />} /> 
               <Route path="/create-role" element={<AddRoles />} /> 
               <Route path="/role-list" element={<RolesList />} /> 
-              <Route path='/courses' element={<Courses/>}/>
+              <Route exact path='/courses' element={<Courses campaign_type={"courses"} head='' />}/>
+              <Route exact path="/training" element={ <Courses campaign_type={"training"} head='' />} />
               <Route path='/result-list' element={<ResultList/>}/>
               <Route path='/result-history' element={<ResultHistory/>}/>
           

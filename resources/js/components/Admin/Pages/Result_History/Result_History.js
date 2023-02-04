@@ -100,7 +100,7 @@ export default class ResultHistory extends React.Component {
 
     <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}>
 
-<div className="row mb-4">
+<div className="row mb-4" style={{marginTop:"66px"}}>
   <div className='col-md-6'></div>
   <div className='col-md-6' style={{display:'flex', justifyContent:"flex-end"}}>
     <span style={{marginTop: '5px'}}>Search:   </span>&nbsp;&nbsp;&nbsp;

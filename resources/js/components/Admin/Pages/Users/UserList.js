@@ -26,7 +26,7 @@ export  class UserList extends React.Component {
       pageSize: 10,  
       paramsdata:[],
       userData:[],
-      statedata:[""],
+      statedata:[],
       citydata:[""]   ,
       
   }
@@ -108,7 +108,7 @@ export  class UserList extends React.Component {
 
     const getstatedata = () => {
 
-      if(Object.keys(this.state.statedata).length <= 1){
+      if(Object.keys(this.state.statedata).length < 1){
           
           Swal.fire({
               title: 'Loading...',
@@ -119,17 +119,18 @@ export  class UserList extends React.Component {
           console.log('loader stART', Object.keys(this.state.statedata).length)
           this.apiCtrl.callAxios('states/list',{search:{country_id:1}}).then(res => {
 
-              var dataOfstate=[]
+              var dataOfstate=[];
+              dataOfstate = {...dataOfstate, ['']:'Select State'};
               res.data.map((value)=>{                  
-                  // console.log("STATE==>",value)
-                      
-                  dataOfstate = {...dataOfstate, [value.id]:value.state_name};
+                // console.log("STATE==>",value)
+                
+                dataOfstate = {...dataOfstate, [value.id]:value.state_name};
               })     
-              this.setState(old => ({...old, statedata: dataOfstate}));
               
-          })
+              this.setState(old => ({...old, statedata: dataOfstate}));
+              Swal.close();     
+            })
           console.log('loader close')
-          Swal.close();     
       }
   }
 
@@ -148,6 +149,8 @@ export  class UserList extends React.Component {
     this.apiCtrl.callAxios('cities/list',{search:{state_id:e.target.value}}).then(res => {
          
     var dataOfcity=[]
+    
+    dataOfcity = {...dataOfcity, ['']:'Select City'};
     res.data.map((value)=>{                  
         // console.log("Scity==>",value)
             
@@ -181,11 +184,12 @@ export  class UserList extends React.Component {
 
    // console.log(this.state.data.aaData.id)
    let user =  this.props.params.any.replace(/-/g, " "); 
-   var userType = user
-   .toLowerCase()
-   .split(' ')
-   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-   .join(' ');
+  //  var userType = user
+  //  .toLowerCase()
+  //  .split(' ')
+  //  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  //  .join(' ');
+   var userType= user.toUpperCase()
   return (
     <>
     <BreadCrumb breadcrumb={`${userType} List`} />
@@ -198,10 +202,10 @@ export  class UserList extends React.Component {
       </div>
       <div className='col-md-3'>
       <MaterialSelect value={this.state.state?this.state.state:""}
-        onClick={getstatedata}       
+        onMouseEnter={()=>{getstatedata()}}       
         data={this.state.statedata}  id="state_id" labelId="state" name="state"
     
-        onChange={handlechang}   label="State *" fullWidth
+        onChange={(e)=>{handlechang(e )}}   label="State *" fullWidth
       
       />
 

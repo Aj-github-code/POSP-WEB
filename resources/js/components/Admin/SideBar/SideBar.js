@@ -15,7 +15,7 @@ export default function SideBar() {
         </li>
    
       
-        <li className="nav-item" data-toggle="tooltip" style={{borderBottomColor:"#183883", borderBottomWidth:"thin"}}  data-placement="right" title="My listings">
+        <li className="nav-item" data-toggle="tooltip" style={{borderBottomColor:"#1F5B54", borderBottomWidth:"thin"}}  data-placement="right" title="My listings">
           <a className="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylistings">
             <i className="fa fa-fw fa-list"></i>
             <span className="nav-link-text">&nbsp;Master List</span>
@@ -25,7 +25,7 @@ export default function SideBar() {
               <Link to="/user-list/admin">Admin List</Link>
             </li>
             <li>
-              <Link to="/user-list/agent">Agent List</Link>
+              <Link to="/user-list/posp">POSP List</Link>
             </li>
            
             <li>
@@ -69,7 +69,14 @@ export default function SideBar() {
           </Link>
          
         </li>
-     
+        <li className="nav-item" data-toggle="tooltip" data-placement="right" style={{borderBottomColor:"#183883", borderBottomWidth:"thin"}}  title="Courses">
+        
+        <Link className="nav-link" to="/training">
+            <i className="fa fa-fw fa-book"></i>
+            <span className="nav-link-text">&nbsp;Training</span>
+          </Link>
+         
+        </li>
         {/* <li className="nav-item" data-toggle="tooltip" data-placement="right" title="Courses">
           <Link to="/courses">
             <a className="nav-link" >

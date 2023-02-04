@@ -15,6 +15,7 @@ import MyCourses from '../MyCourses/MyCourses'
 import Video from '../Video/Video'
 import QNA from '../QNA/QNA'
 import Results from '../Results/Results'
+import Dashboard from'../Dashboard/Dashboard'
 
 import '../../../assets/js/admin/admin.js';
  import '../../../css/admin/admin.css';
@@ -33,8 +34,8 @@ import ResultHistory from '../Admin/Pages/Result_History/Result_History'
         <Navbar/>
         <Routes>       
 
-            <Route exact path="/" element={ <Courses campaign_type={"exam"}/>} />
-            <Route exact path="/courses" element={<Courses campaign_type={"courses"}/>} />
+            <Route exact path="/" element={ <Courses campaign_type={"training"} head={'margin_60_35'} />} />
+            <Route exact path="/courses" element={<Courses campaign_type={"courses"} head={'margin_60_35'} />} />
             <Route path="/adventure" element={<Adventure />} />
             <Route path="/about" element={<About_us />} />
             <Route path="/my-courses" element={<MyCourses />} />
@@ -42,6 +43,7 @@ import ResultHistory from '../Admin/Pages/Result_History/Result_History'
             <Route path="/qna/:any" element={<QNA />} />
             <Route path="/result/:any" element={<Results />} />
             <Route path ='/training/result-history' element={<ResultHistory/>}/>
+            <Route path ='/dashboard' element={<Dashboard/>}/>
            
 
             {/* <Route path="/login" element={<Login />} /> */}

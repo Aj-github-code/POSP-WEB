@@ -25,7 +25,7 @@ export default function SideBar() {
               <Link to="/user-list/admin">Admin List</Link>
             </li>
             <li>
-              <Link to="/user-list/agent">Agent List</Link>
+              <Link to="/user-list/posp">POSP List</Link>
             </li>
            
             <li>

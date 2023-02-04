@@ -110,7 +110,7 @@ export const ExcelUpload=()=>{
 
                         <div className="col-md-3">
                             {/* <Button style={{ backgroundColor: '#183883'}} type="submit">Submit</Button> */}
-                            <a href={'https://online-exam.primarykeytech.in/api/public/upload/excel/ExamsExcel.xlsx'}>  <Button style={{ backgroundColor: '#1F5B54'}} type="button">Download Exam Excel Format</Button></a>
+                            <a href={'https://online-exam.primarykeytech.in/api/public/upload/excel/TrainingExcel.xlsx'}>  <Button style={{ backgroundColor: '#1F5B54'}} type="button">Download Training Excel Format</Button></a>
                         </div>
                 </div>
 

@@ -1,31 +1,47 @@
+
+
 [
     {
-        "title":"8 Training Modules",
+        "title":"100 Total POSP",
         "color":"primary",
         "icon":"envelope-open",
         "link":"/courses",
-        "link_text":"View All training Modules"
+        "link_text":"View All Total POSP"
         
     },
     {
-        "title":"500 POSPs",
-        "color":"warning",
+        "title":"1 Total Modules",
+        "color":"success",
         "icon":"user",
         "link":"/user-list/agent",
-        "link_text":"View All Posps"
+        "link_text":" View All Total Modules"
     },
     {
-        "title":"200 New Results",
-        "color":"success",
+        "title":"5 Module Pending POSP",
+        "color":"warning",
         "icon":"calendar-check-o",
         "link":"/result-list",
-        "link_text":"View All Results"
+        "link_text":"View All Module Pending POSP"
     },
     {
-        "title":"0 New uploads",
-        "color":"danger",
+        "title":"Module Started POSP",
+        "color":"secondary",
         "icon":"upload",
         "link":"/excel-uplaod",
-        "link_text":"Upload New Training Module"
+        "link_text":"View All Module Started POSP"
+    },
+    {
+        "title":"6 Test Taken",
+        "color":"success",
+        "icon":"upload",
+        "link":"/excel-uplaod",
+        "link_text":" View All Test Taken"
+    },
+    {
+        "title":"10 Test Pending",
+        "color":"warning",
+        "icon":"upload",
+        "link":"/excel-uplaod",
+        "link_text":" View All Test Pending"
     }
 ]

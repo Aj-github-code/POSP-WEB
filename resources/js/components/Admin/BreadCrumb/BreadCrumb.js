@@ -5,7 +5,7 @@ export default function BreadCrumb(props) {
     <>
        <ol className="breadcrumb" style={{backgroundColor:"#EEF5FF"}}>
             <li className="breadcrumb-item">
-                <a href="#">{props.breadcrumb}</a>
+                <a href="#" style={{color:"#1F5B54"}}>{props.breadcrumb}</a>
             </li>
           
             {props.breadcrumbItem1 != null ? props.breadcrumbItem1.length > 0 ? <li className="breadcrumb-item active">{props.breadcrumbItem1}</li> : '' : ''

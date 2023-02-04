@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import "../../../css/Style.css"
-
+import  "../../../assets/vendors.css"
+// import  "../../../assets/js/common_scripts.js"
+// import  "../../../assets/js/main.js"
 
 import logo from "../../../assets/img/logo.png";
 import logo_sticky from "../../../assets/img/logo_sticky.png";
@@ -26,7 +28,8 @@ function Navbar(){
 	window.addEventListener('scroll', changeColor);
 
   return (
-    <header className={color ? 'header header-sticky' : 'header'}>
+    <header className={'header '}>
+		{/* <div id="preloader"><div data-loader="circle-side"></div></div> */}
 			<Link to="/">
 		<div id="logo">
 				<p style={{marginLeft:"15px", color:"white", height:"20px",fontSize:25, fontWeight:"bold"}}>POSP Training</p>
@@ -34,15 +37,7 @@ function Navbar(){
 				<img src={logo_sticky} width="150" height="36" alt="" className="logo_sticky" /> */}
 		</div>
 			</Link>
-    <ul id="top_menu">
-			{/* <li><a href="cart-1.html" className="cart-menu-btn" title="Cart"><i className="fa fa-fw fa-shopping-cart"></i></a></li>
-			<li><a href="#" className="wishlist_bt_top" title="Your wishlist"><i className="fa fa-fw fa-shopping-bag"></i></a></li> */}
-			<li><a className="login" id="sign-in" title="Logout"   onClick={()=>{localStorage.clear(),  navigation('/'), location.reload('/')}}><i className="fa fa-fw fa-sign-in"></i></a></li>
-			{/* onClick={() => setmodal(true)} */}
-			{/* <li><a href="cart-1.html" style={{height:'10px'}} className="fa fa-fw fa-shopping-cart" title="Cart"> </a>   </li>
-			<li><a className="fa fa-fw fa-sign-in" id="sign-in"   onClick={() => setmodal(true)} ></a></li>
-			<li><a href="wishlist.html" className="fa fa-fw fa-shopping-bag" title="Your wishlist"></a></li> */}
-		</ul>
+
 
     <a href="#menu" className="btn_mobile">
 			<div className="hamburger hamburger--spin" id="hamburger">
@@ -53,6 +48,7 @@ function Navbar(){
 		</a>
 		<nav id="menu" className="main-menu">
 			<ul>
+			<li><span><a href="dashboard">Dashboard</a></span></li>
 						{/* <li><span><Link to="/">Training</Link ></span></li> */}
 						<li><span><a href="/">Training</a></span></li>
 				
@@ -61,6 +57,8 @@ function Navbar(){
 				<li><span><a href="/courses">Courses</a></span></li>
 			
 				<li><span><a href="/training/result-history">Past Score</a></span></li>
+			<li><a className="login" id="sign-in" title="Logout" style={{color:'white'}}   onClick={()=>{localStorage.clear(),  navigation('/'), location.reload('/')}}><i className="fa fa-fw fa-sign-in"></i></a></li>
+
 			</ul>
 		</nav>
 		<Modals toggle={() => setmodal(!modal)} isOpen={modal} content={<Login />}></Modals>

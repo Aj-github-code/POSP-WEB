@@ -1198,3 +1198,11 @@ html {
     margin-left: auto!important;
 }
 
+@media screen and (min-width: 200px) and (max-width: 900px){
+  #mainNav.navbar-dark .navbar-collapse .navbar-sidenav > .nav-item > .nav-link {
+    color: #1F5B54;
+  }
+  #mainNav.navbar-dark .navbar-collapse .navbar-sidenav > .nav-item > .nav-link:hover {
+    color: #1F5B54;
+  }
+}

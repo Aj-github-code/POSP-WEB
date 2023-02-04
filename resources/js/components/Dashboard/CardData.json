@@ -1,0 +1,39 @@
+
+[
+    {
+        "title":"8 Total Modules",
+        "color":"primary",
+        "icon":"envelope-open",
+        "link":"/courses",
+        "link_text":"View All Total Modules"
+        
+    },
+    {
+        "title":"3 Module Pending",
+        "color":"warning",
+        "icon":"user",
+        "link":"/user-list/agent",
+        "link_text":" View All Module Pending"
+    },
+    {
+        "title":"Module Started",
+        "color":"success",
+        "icon":"calendar-check-o",
+        "link":"/result-list",
+        "link_text":"View All Module Started"
+    },
+    {
+        "title":"5 Test Taken",
+        "color":"secondary",
+        "icon":"book",
+        "link":"/excel-uplaod",
+        "link_text":"View All Test Taken"
+    },
+    {
+        "title":"10 Test Pending",
+        "color":"danger",
+        "icon":"book",
+        "link":"/excel-uplaod",
+        "link_text":" View All Test Pending"
+    }
+]

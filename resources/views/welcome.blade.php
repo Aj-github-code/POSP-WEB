@@ -24,5 +24,7 @@
        <!-- <h1> Hello Laravel & React Js</h1> -->
        <div id="root"></div>
        <script src="{{ asset('/js/app.js') }}"></script>
+       <script src="{{ asset('/js/common_scripts.js') }}"></script>
+       <script src="{{ asset('/js/main.js') }}"></script>
     </body>
 </html>

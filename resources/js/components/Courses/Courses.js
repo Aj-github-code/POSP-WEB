@@ -53,6 +53,10 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
        
     }
 
+    React.useEffect(()=>{
+        handleCampaign('all');
+    }, [props.campaign_type])
+
   return (
     <>
          
@@ -97,12 +101,12 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
         </div>
          */}
     
-    <div className={`container ${props.head}`} style={props.head != '' ? {marginTop:'4%'} : {} } >
+    <div className={`container ${props.head}`} style={props.head != '' ? {marginTop:'8%'} : {marginTop:'4%'} } >
         {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
                                             ?
                                             <></>
                 :
-            <div className="row">
+            <div className="row mb-3">
                     <div className="col-lg-12">
                     <Button onClick={()=>{handleCampaign('all')}} variant={btnVariant1.variant} style={{ backgroundColor: `${btnVariant1.backgroundColor}`, borderColor:"#1F5B54", borderRadius:'20px'}} onMouseLeave={()=>{setBtnVariant1({variant:'contained', backgroundColor:"#1F5B54"})}}  onMouseEnter={()=>{setBtnVariant1({variant:'outlined', borderColor:"#1F5B54", backgroundColor: 'white'})}} >All</Button>&nbsp;&nbsp;&nbsp;&nbsp;
                     <Button onClick={()=>{handleCampaign('admin')}}  variant={btnVariant2.variant} style={{ backgroundColor: `${btnVariant2.backgroundColor}`, borderColor:"#1F5B54", borderRadius:'20px'}} onMouseLeave={()=>{setBtnVariant2({variant:'contained', backgroundColor:"#1F5B54"})}}  onMouseEnter={()=>{setBtnVariant2({variant:'outlined', borderColor:"#1F5B54", backgroundColor: 'white'})}} >Assigned By Admin</Button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -147,7 +151,10 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                         var values = JSON.parse(value.other_parameter) 
                         const {system_settings, user_parameters, campaign } = values;
             //  console.log('Value ', values)
-                        
+                  
+
+                     
+
                         return(
                                 <div class="col-xl-4 col-lg-6 col-md-6 isotope-item popular">
                                     <div class="box_grid">
@@ -189,6 +196,8 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                             <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
                                          
                                             <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
+                                        <br />
+                                            <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
                                         </div>
                                         <ul>
                                         
@@ -279,7 +288,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
             </div>
             
             
-            <p className="text-center add_top_30"><a href="#0" className="btn_search btn_1 rounded">Load more</a></p>
+            {/* <p className="text-center add_top_30"><a href="#0" className="btn_search btn_1 rounded">Load more</a></p> */}
         
         </div>
 {/*         
