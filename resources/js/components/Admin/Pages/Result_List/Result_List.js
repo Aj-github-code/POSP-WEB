@@ -3,8 +3,11 @@ import { Box } from '@mui/material';
 import {TextField} from '@mui/material';
 import BreadCrumb from '../../BreadCrumb/BreadCrumb';
 import { DataGrid, renderActionsCell } from '@mui/x-data-grid';
+import MaterialSelect from "../../../../Tags/MaterialSelect";
+import MaterialTextField from "../../../../Tags/MaterialTextField";
 import { Button } from "react-bootstrap";
 import Api from "../../../../api";
+import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { param } from "jquery";
 
@@ -21,6 +24,8 @@ export default class ResultList extends React.Component {
             pageSize: 10,
             filter : null,
             claimData : null,
+            statedata:[],
+            citydata:[""]   ,
 
         }
         // this.getClaimList();
@@ -35,7 +40,7 @@ export default class ResultList extends React.Component {
        
    
         this.setState(old => ({...old, isLoading:true}))
-        var data = {length:this.state.pageSize, start:this.state.page*this.state.pageSize};
+        var data = {state:this.state.state,city:this.state.city,length:this.state.pageSize, start:this.state.page*this.state.pageSize};
 
         if(this.state.filter !== null){
           data = {...data, filter: this.state.filter};
@@ -70,7 +75,7 @@ export default class ResultList extends React.Component {
     }
     componentDidUpdate(prevProps, prevState){
         // console.log('update')
-        if ((prevState.page !== this.state.page) || (prevState.filter !== this.state.filter)) {
+        if ((prevState.page !== this.state.page) || (prevState.filter !== this.state.filter)||(prevState.city !== this.state.city)||(prevState.state !== this.state.state)) {
             this.getClaimList();
         } 
       }
@@ -83,6 +88,62 @@ export default class ResultList extends React.Component {
       const handleModel = (data) => {
         this.setState({claimData:data})
       }
+
+      const getstatedata = () => {
+
+        if(Object.keys(this.state.statedata).length < 1){
+            
+            Swal.fire({
+                title: 'Loading...',
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+            console.log('loader stART', Object.keys(this.state.statedata).length)
+            this.apiCtrl.callAxios('states/list',{search:{country_id:1}}).then(res => {
+  
+                var dataOfstate=[];
+                dataOfstate = {...dataOfstate, ['']:'Select State'};
+                res.data.map((value)=>{                  
+                  // console.log("STATE==>",value)
+                  
+                  dataOfstate = {...dataOfstate, [value.id]:value.state_name};
+                })     
+                
+                this.setState(old => ({...old, statedata: dataOfstate}));
+                Swal.close();     
+              })
+            console.log('loader close')
+        }
+    }
+  
+    const handlechang =(e)=>{
+     
+     
+      this.setState(old => ({...old , state:e.target.value}))
+         
+      Swal.fire({
+          title: 'Loading...',
+          didOpen: () => {
+      Swal.showLoading()
+          }
+      })
+      this.setState(old => ({...old, citydata: ""}));
+      this.apiCtrl.callAxios('cities/list',{search:{state_id:e.target.value}}).then(res => {
+           
+      var dataOfcity=[]
+      
+      dataOfcity = {...dataOfcity, ['']:'Select City'};
+      res.data.map((value)=>{                  
+          // console.log("Scity==>",value)
+              
+          dataOfcity = {...dataOfcity, [value.id]:value.city_name};
+      })     
+      this.setState(old => ({...old, citydata: dataOfcity}));
+      })  
+      Swal.close();      
+  }
+  
         const columns = [
             { field: 'id', headerName: 'ID', width: 100},
             { field: 'mobile', headerName: 'Mobile',  width: 120},
@@ -104,11 +165,38 @@ export default class ResultList extends React.Component {
     <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}>
 
 <div className="row mb-4">
-  <div className='col-md-6'></div>
-  <div className='col-md-6' style={{display:'flex', justifyContent:"flex-end"}}>
+      <div className="col-md-1"></div>
+      <div className='col-md-3'>
+      <MaterialSelect value={this.state.state?this.state.state:""}
+        onMouseEnter={()=>{getstatedata()}}       
+        data={this.state.statedata}  id="state_id" labelId="state" name="state"
+    
+        onChange={(e)=>{handlechang(e )}}   label="State *" fullWidth
+      
+      />
+
+      </div>
+      <div className='col-md-3'>
+      <MaterialSelect   value={this.state.city?this.state.city:""} 
+        data={this.state.citydata}  id="city_id" labelId="city-id" 
+        name="city"    onChange={(e)=>this.setState({city : e.target.value})}
+        
+        label="City *" fullWidth
+      />
+           
+
+      </div>
+      <div className='col-md-3'>
+         <MaterialTextField 
+           label={"Search"} size="large" 
+           fullWidth name='search'onChange={(e)=>this.setState(old => ({...old, filter: e.target.value}))}/>
+
+      </div>
+      <div className="col-md-1"></div>
+  {/* <div className='col-md-6' style={{display:'flex', justifyContent:"flex-end"}}>
     <span style={{marginTop: '5px'}}>Search:   </span>&nbsp;&nbsp;&nbsp;
   <TextField size="small" name='search' InputProps={{ style: {height:"37px", width:"130px"}}} onChange={(e)=>this.setState(old => ({...old, filter: e.target.value}))}/>
-  </div>
+  </div> */}
 </div>
     <div style={{ height: 650, width: '100%' }}>
    

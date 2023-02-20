@@ -35,11 +35,11 @@ export default function SideBar() {
         </li>
 
         <li className="nav-item" data-toggle="tooltip" style={{borderBottomColor:"#183883", borderBottomWidth:"thin"}}  data-placement="right" title="My listings">
-          <a className="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylistings">
+          <a className="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylisting">
             <i className="fa fa-fw fa-list"></i>
             <span className="nav-link-text">&nbsp;Exams </span>
           </a>
-          <ul className="sidenav-second-level collapse" id="collapseMylistings">
+          <ul className="sidenav-second-level collapse" id="collapseMylisting">
             <li>
               <Link to="/result-list">Result List</Link>
             </li>

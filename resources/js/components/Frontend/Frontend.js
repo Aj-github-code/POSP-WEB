@@ -25,6 +25,7 @@ import '../../../assets/js/admin/admin.js';
 
 import { BrowserRouter as Router , Routes, Route } from 'react-router-dom'
 import ResultHistory from '../Admin/Pages/Result_History/Result_History'
+import { ExamAnswerList } from '../Admin/Pages/Result_History/Examanswer'
 
  const Frontend = () => {
     return (
@@ -43,6 +44,7 @@ import ResultHistory from '../Admin/Pages/Result_History/Result_History'
             <Route path="/qna/:any" element={<QNA />} />
             <Route path="/result/:any" element={<Results />} />
             <Route path ='/training/result-history' element={<ResultHistory/>}/>
+            <Route path='/examans-list' element={<ExamAnswerList head={'margin_60_35'}/>}/>
             <Route path ='/dashboard' element={<Dashboard/>}/>
            
 

@@ -6,6 +6,10 @@ import { DataGrid, renderActionsCell } from '@mui/x-data-grid';
 import { Button } from "react-bootstrap";
 import Api from "../../../../api";
 
+import { Link } from "react-router-dom";
+
+import Swal from "sweetalert2";
+
 export default class ResultHistory extends React.Component {
     constructor(props){
         super(props);
@@ -17,7 +21,7 @@ export default class ResultHistory extends React.Component {
             page: 0,
             pageSize: 10,
             filter : null,
-            claimData : null,
+          examData :[],
 
         }
         // this.getClaimList();
@@ -31,7 +35,7 @@ export default class ResultHistory extends React.Component {
     getClaimList = () => {
        
    
-        this.setState(old => ({...old, isLoading:true}))
+       // this.setState(old => ({...old, isLoading:true}))
         var data = {length:this.state.pageSize, start:this.state.page*this.state.pageSize};
 
         if(this.state.filter !== null){
@@ -78,7 +82,7 @@ export default class ResultHistory extends React.Component {
 
       
       const handleModel = (data) => {
-        this.setState({claimData:data})
+        this.setState({examData:data})
       }
         const columns = [
             { field: 'id', headerName: 'ID', width: 100},
@@ -89,7 +93,7 @@ export default class ResultHistory extends React.Component {
             { field: 'status', headerName: 'PASS/FAIL',  width: 190},
             { field: 'marks', headerName: 'Obtained Marks',  width: 190},
             // { field: 'action', headerName: 'Action',  width: 210,  renderCell: (params) => <Action key={params.row.id}  param={params.row} />, },
-            {field:'action',headerName:'Action',width:210 ,renderCell:(param)=><Action key={param.row.id} param={param.row}/>}
+            {field:'action',headerName:'Action',width:210 ,renderCell:(param)=><Action func={handleModel} key={param.row.id} param={param.row}/>}
           ];
 
     
@@ -137,95 +141,270 @@ export default class ResultHistory extends React.Component {
           
     </div>
 
-    <ViewResult/>
+    <ViewResult  param={this.state.examData}/>
     </Box>
+    
     </>
   );
     }
 }
 
-function Action(){
+function Action(props){
+
+  const examdata=()=>{
+     props.func(props.param)
+    //console.log("evenr=>",event)
+  }
+
 
     return(<>
-            <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} data-bs-toggle="modal" size='small' href="#exampleModalToggle2" >View Result</Button>
+            <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} data-bs-toggle="modal" size='small' href="#exampleModalToggle3" onClick={examdata} >View Result</Button>
     </>)
    
 }
 
 
-function ViewResult(props){
-  
-    return(
-      <>
-     
-        <div className="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-          <div className="modal-dialog modal-lg  modal-dialog-centered">
-          <div className="modal-content">
-          <div className="modal-header">
-              {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
-              <div className="row ml-1" style={{ paddingTop: '2%'}}>
-                  {/* <label><b>{props.params.any} Details</b></label> */}
-              </div>
-              <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            
-            <div className="modal-body m-body">
-              
-            <div className="row">
-            <fieldset className="form-group border border-primary mb-2 p-3">
-              <div className="row " >
-                <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
-                  <div className="col-sm-9">
-                    <div className="row">
-  
-                    <div class="wrapper" >
-                    
-                      <h4 style={{ color: '#1F5B54'}}>{"Heavy Vehicle Insurance"}</h4>
-                      <p><span className="price">Name:<b>Test Agent</b></span></p>
+// function ViewResult(props){
+//   const [data,setData]=useState(
+//     props.param
+//   )
+//   const propsdata={
+//       exam_code:"exam-camp_1V6w0m-3-1",
+//       user_id:3
 
-                      <p>Date Of Exam: <strong>01/02/2023</strong></p>
-                      <p>Time: <strong>O.5 Hours</strong></p>
-                      <span className="price">Total Marks: <strong style={{ color: 'green'}}>60</strong>, Passing: <strong style={{color:'red'}}>25</strong></span><br/>
-                      <span> Percentage: <strong style={{color:'red'}}>15%</strong></span><br/>
-                      <span className="price"> Exam Result: <strong style={{ color: 'red'}}>  FAIL</strong></span>
+//   }
+
+//   const apiCtrl=new Api
+
+  
+//  // console.log("viewresult=>",data)
+
+  
+
+
+//   useEffect(()=>{
+   
+//     // if(props.param!==null){
+//     //   setData(props.param)
+//     // }
+ 
+//      console.log("viewresult=>",props.param)
+
+//   // apiCtrl.callAxios("userexamdetail",).then((res)=>{
+//   //   console.log("res=>",res)
+//   // })
+//   },[])
+  
+//     return(
+//       <>
+     
+//         <div className="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+//           <div className="modal-dialog modal-lg  modal-dialog-centered">
+//           <div className="modal-content">
+//           <div className="modal-header">
+//               {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
+//               <div className="row ml-1" style={{ paddingTop: '2%'}}>
+//                   {/* <label><b>{props.params.any} Details</b></label> */}
+//               </div>
+//               <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
+//                 <span aria-hidden="true">&times;</span>
+//               </button>
+//             </div>
+            
+//             <div className="modal-body m-body">
+              
+//             <div className="row">
+//             <fieldset className="form-group border border-primary mb-2 p-3">
+//               <div className="row " >
+//                 <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
+//                   <div className="col-sm-9">
+//                     <div className="row">
+  
+//                     <div className="wrapper" >
+                    
+//                       <h4 style={{ color: '#1F5B54'}}>{"Heavy Vehicle Insurance"}</h4>
+//                       <p><span className="price">Name:<b>Test Agent</b></span></p>
+
+//                       <p>Date Of Exam: <strong>01/02/2023</strong></p>
+//                       <p>Time: <strong>O.5 Hours</strong></p>
+//                       <span className="price">Total Marks: <strong style={{ color: 'green'}}>60</strong>, Passing: <strong style={{color:'red'}}>25</strong></span><br/>
+//                       <span> Percentage: <strong style={{color:'red'}}>15%</strong></span><br/>
+//                       <span className="price"> Exam Result: <strong style={{ color: 'red'}}>  FAIL</strong></span>
                         
                     
    
   
   
-                    </div>
+//                     </div>
   
-                    </div> 
-                  </div>  
-              </div>                    
+//                     </div> 
+//                   </div>  
+//               </div>                    
                                 
-            </fieldset>
+//             </fieldset>
                              
               
   
-            </div>
+//             </div>
               
-            {/* <div className="modal-footer">
+//             <div className="modal-footer">
                     
-  
-                    <Button data-bs-dismiss="modal" style={{ backgroundColor: 'rgb(108 110 116)',color:"#fff"}}>Close</Button>&nbsp;&nbsp;
+//                   <Link  to={"/examans-list"}>
+//                     <Button  style={{ backgroundColor: 'rgb(108 110 116)',color:"#fff"}}>View Exam Answer </Button>&nbsp;&nbsp;
+//                   </Link>
+
                   
-            
-                    {/* <Button data-bs-dismiss="modal" style={{ backgroundColor: '#183883',color:"#fff"}} onClick={ submituser }>Submit</Button> 
+                   
                   
-                  </div>*/}
-            </div>  
+//                   </div>
+//             </div>  
   
             
+//           </div>
+//         </div>
+//         </div>
+  
+  
+//       </>
+//     )
+//   }
+
+
+class ViewResult extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+       status:"",
+       datetime:"",
+      campaign:{},
+      system_settings:{},
+      roles:{}
+    }
+    
+    this.apiCtrl = new Api;
+ 
+   
+  }
+
+  componentDidUpdate(prevProps,prevState){
+     
+    if(prevProps.param.id !== this.props.param.id && this.props.param!==null){
+      console.log("props=>",this.props)
+     
+      const data={
+        exam_code:this.props.param.exam_code,
+        user_id:this.props.param.id
+      }
+
+      this.apiCtrl.callAxios("userexamdetail",data).then(response => {
+        //  location.reload('/user-list')
+       console.log("response=>",response)
+
+        Object.entries(response.data).map(([index,value])=>{
+          
+             //  console.log("value=>",value)
+             var date1 = new Date(value.campaign.created_at);
+             var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
+               this.setState(old=>({...old,...value.campaign.other_parameter,status:value.status,datetime:dateTime}))
+          // Object.entries(value.campaign).map(([index1,value2])=>{
+          //  console.log("state=>",this.state)
+
+
+          // })
+
+
+
+
+        })
+
+        //this.setState(response.data[0])
+       
+      })
+
+      
+     
+     
+
+    } 
+  }
+
+
+  render(){
+
+    // console.log("props",this.props)
+    console.log("STATE=>",this.state)
+
+    //  const data =()=>{
+    //   this.state.other_parameter!==""?
+    //   Object.entries(this.state.other_parameter).map(([index,value])=>{
+    //       console.log("index",index,"value",value)
+    
+    //   })
+    //  }
+    return(<>
+
+      
+       <div className="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+          <div className="modal-dialog modal-lg  modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                  {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
+                  <div className="row ml-1" style={{ paddingTop: '2%'}}>
+                      {/* <label><b>{props.params.any} Details</b></label> */}
+                  </div>
+                  <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+            {this.state.status!==""?<>
+
+                <div className="modal-body m-body">
+                  <div className="row">
+                    <fieldset className="form-group border border-primary mb-2 p-3">
+                      <div className="row " >
+                        <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
+                          <div className="col-sm-9">
+                            <div className="row">
+          
+                            <div class="wrapper" >
+                            
+                              <h4 style={{ color: '#1F5B54'}}>{this.state.campaign.title}</h4>
+                              <p><span className="price">Name:<b>{this.props.param.name}</b></span></p>
+
+                              <p>Date Of Exam & Time: <strong>{this.state.datetime}</strong></p>
+                              <p>Time: <strong>{this.state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
+                                            
+                              {/* <p>Time: <strong>O.5 Hours</strong></p> */}
+                              <span className="price">Total Marks: <strong style={{ color: 'green'}}>{this.state.system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{this.state.system_settings.passing_marks}</strong></span><br/>
+                              <span> Percentage: <strong style={{color:'red'}}>15%</strong></span><br/>
+                              <span className="price"> Exam Result: <strong style={{ color: 'red'}}>{this.state.status}</strong></span>
+                                
+                            
+          
+          
+          
+                            </div>
+          
+                            </div> 
+                          </div>  
+                      </div>                    
+                                        
+                    </fieldset>
+                  </div>
+                </div>
+              </>:""
+             } 
+        
+
+
+             
+            </div>
           </div>
         </div>
-        </div>
-  
-  
-      </>
-    )
+
+
+    </>)
   }
+}
   
   

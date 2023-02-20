@@ -74,71 +74,178 @@ export default class Api extends React.Component {
     
   }
 
-callAxios(endPoint, reqData, auth=true){
-    return new Promise((resolve, reject) => {
-        Promise.all([this.getBaseUrl(),this.getToken()])
-        .then(data => {
-            console.log(reqData);
-          
-          // console.log('================================>');
-          // console.log('URL: ' + data[0] + endPoint);
-        //  console.log('TOKEN: ' + data[1]);
-          const reqDataHeader = {
-            ...reqData,
-          };
-          console.log('Request Body : ' + JSON.stringify(reqDataHeader));
-          console.log('================================>');
-          const authtoken = auth ?  'Bearer '+ data[1] : "";
-          
-          if ( data[0] != null) {
-            // console.log( { headers: { 'Content-Type': 'application/json',
-            // 'Authorization': authtoken}})
-            axios
-              .post(
-                data[0] + endPoint,
-                { ...reqData},                    
-                {
-                  headers: { 'Content-Type': 'application/json',
-                  'Authorization': authtoken
+  callAxios(endPoint, reqData, auth=true,type='application/json'){
+    console.log( 'data', reqData)
+      return new Promise((resolve, reject) => {
+          Promise.all([this.getBaseUrl(),this.getToken()])
+          .then(data => {
+              console.log(reqData);
+            
+            // console.log('================================>');
+            // console.log('URL: ' + data[0] + endPoint);
+          //  console.log('TOKEN: ' + data[1]);
+            const reqDataHeader = {
+              ...reqData,
+            };
+            // console.log('Request Body : ' + JSON.stringify(reqDataHeader));
+            // console.log('================================>');
+            const authtoken = auth ?  'Bearer '+ data[1] : "";
+            
+            if ( data[0] != null) {
+              console.log( { headers: { 'Content-Type': type,
+              'Authorization': authtoken}})
+              axios
+                .post(
+                  data[0] + endPoint,
+                  { ...reqData},                    
+                  {
+                    headers: { 'Content-Type': type,
+                    'Authorization': authtoken
+                  }
                 }
-              }
-              )
-              .then((response) => {
-                 console.log('Request Respomse', response);
-                 if(response.data.access_token){ 
-                  // let timeObject = new Date();
-                  // let milliseconds= 3600 * 1000; // 10 seconds = 10000 milliseconds
-                  // timeObject = new Date(timeObject.getTime() + milliseconds);
-                  // localStorage.setItem('expire_token', timeObject);
-                  resolve({success: true, access_token: response.data.access_token, data:response.data.data, message: response.data.message});
-                 }else if(response.data.aaData){
-                  resolve({success: true, data: response.data});
-                }else if(response.data.status == "success") {
-                    resolve({success: true, data: response.data.data , message: response.data.message});
-                 }else if(response.data.status == "error" || response.data.status == false){
-                  resolve({success: false, message: response.data.message, data: response.data.data});
-                 }else{
-                  // Alert.alert(''+response.data.message);
-                  resolve({success: false, data: response.data.message});
-                 }                   
-                
-              })
-              .catch((err) => {
-                //resolve({success: false, data: err.message});
-                resolve({success: false, data:'Some Error occured!'});
-              });
-          } else {
-            resolve({success: false, data: 'Some Error occured!'});
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
+                )
+                .then((response) => {
+                  //  console.log('Request Respomse', response);
+                   if(response.data.access_token){ 
+                    // let timeObject = new Date();
+                    // let milliseconds= 3600 * 1000; // 10 seconds = 10000 milliseconds
+                    // timeObject = new Date(timeObject.getTime() + milliseconds);
+                    // localStorage.setItem('expire_token', timeObject);
+                    resolve({success: true, access_token: response.data.access_token, data:response.data.data, message: response.data.message});
+                   }else if(response.data.aaData){
+                    resolve({success: true, data: response.data});
+                  }else if(response.data.status == "success") {
+                      resolve({success: true, data: response.data.data , message: response.data.message});
+                   }else if(response.data.status == "error" || response.data.status == false){
+                    var $str = response.data.data;
+                    if(typeof response.data.errorcode!=='undefined' && response.data.errorcode===409){
+                      var msg = Object.entries(response.data.message);
+                      console.log("message=",msg);
+                      $str = '';
+                      msg.map((msg, key)=>{
+                        console.log("api controller ".msg);
+                        $str+=msg[1]+"<br>";
+                      })
+  
+                      Swal.fire({
+                        title: "Following Error Detected",
+                        html: $str,
+                        icon: "error",
+                        showConfirmButton: false,
+                      })
+                    }else{
+  
+                      resolve({success: false, message: response.data.message, data: $str});
+                    }
+                   }else{
+                    // Alert.alert(''+response.data.message);
+                    resolve({success: false, data: response.data.message});
+                   }                   
+                  
+                })
+                .catch((err) => {
+                  //resolve({success: false, data: err.message});
+                  resolve({success: false, data:'Some Error occured!'});
+                });
+            } else {
+              resolve({success: false, data: 'Some Error occured!'});
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+  
+  
+      
+    }
 
-
-    
-  }
+  
+  callAxiosFile(endPoint, reqData, auth=true){
+    console.log( 'data', reqData)
+      return new Promise((resolve, reject) => {
+          Promise.all([this.getBaseUrl(),this.getToken()])
+          .then(data => {
+              console.log(reqData);
+            
+            // console.log('================================>');
+            // console.log('URL: ' + data[0] + endPoint);
+          //  console.log('TOKEN: ' + data[1]);
+            // const reqDataHeader = {
+            //   ...reqData,
+            // };
+            // console.log('Request Body : ' + JSON.stringify(reqDataHeader));
+            // console.log('================================>');
+            const authtoken = auth ?  'Bearer '+ data[1] : "";
+            
+            if ( data[0] != null) {
+              console.log( { headers: { 'Content-Type': "multipart/form-data",
+              'Authorization': authtoken}})
+              axios
+                .post(
+                  data[0] + endPoint,
+                   reqData,                    
+                  {
+                    headers: { 'Content-Type': "multipart/form-data",
+                    'Authorization': authtoken
+                  }
+                }
+                )
+                .then((response) => {
+                  //  console.log('Request Respomse', response);
+                   if(response.data.access_token){ 
+                    // let timeObject = new Date();
+                    // let milliseconds= 3600 * 1000; // 10 seconds = 10000 milliseconds
+                    // timeObject = new Date(timeObject.getTime() + milliseconds);
+                    // localStorage.setItem('expire_token', timeObject);
+                    resolve({success: true, access_token: response.data.access_token, data:response.data.data, message: response.data.message});
+                   }else if(response.data.aaData){
+                    resolve({success: true, data: response.data});
+                  }else if(response.data.status == "success") {
+                      resolve({success: true, data: response.data.data , message: response.data.message});
+                   }else if(response.data.status == "error" || response.data.status == false){
+                    var $str = response.data.data;
+                    if(typeof response.data.errorcode!=='undefined' && response.data.errorcode===409){
+                      var msg = Object.entries(response.data.message);
+                      console.log("message=",msg);
+                      $str = '';
+                      msg.map((msg, key)=>{
+                        console.log("api controller ".msg);
+                        $str+=msg[1]+"<br>";
+                      })
+  
+                      Swal.fire({
+                        title: "Following Error Detected",
+                        html: $str,
+                        icon: "error",
+                        showConfirmButton: false,
+                      })
+                    }else{
+  
+                      resolve({success: false, message: response.data.message, data: $str});
+                    }
+                   }else{
+                    // Alert.alert(''+response.data.message);
+                    resolve({success: false, data: response.data.message});
+                   }                   
+                  
+                })
+                .catch((err) => {
+                  //resolve({success: false, data: err.message});
+                  resolve({success: false, data:'Some Error occured!'});
+                });
+            } else {
+              resolve({success: false, data: 'Some Error occured!'});
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+  
+  
+      
+    }
 
   callAxiosGet(endPoint, auth=true){
     return new Promise((resolve, reject) => {

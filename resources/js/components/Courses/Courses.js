@@ -152,6 +152,11 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                         const {system_settings, user_parameters, campaign } = values;
             //  console.log('Value ', values)
                   
+            var date1 = new Date(value.previous_result.created);
+            var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
+               // var date2= date1.moment().format('ddd MMM DD YYYY hh:mm:ss')
+               // console.log("date=>",dateTime)
+
 
                      
 
@@ -190,7 +195,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                                     <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
                                                 </figure>
                                             }   
-                                        <div class="wrapper" >
+                                        {/* <div class="wrapper" >
                                              
                                             <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
                                             <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
@@ -198,6 +203,24 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                             <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
                                         <br />
                                             <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
+                                        </div> */}
+
+                                        <div class="wrapper" >
+                                             
+                                            <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
+                                            <p style={{marginBottom:'7px'}}>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>                                       
+                                            <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
+                                            <br />
+                                            <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
+                                            <br />
+                                            <span className='d-flex justify-content-between'  data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample"><label style={{width:'auto'}}><b>{"Previous Report"}</b></label></span>
+                                            
+                                            <div className="row mb-4 collapse" id="collapseExample1">  
+                                            <p> <span className="price">Marks: <strong>{value.previous_result.marks}</strong>,Result: <strong style={{color:'red'}}>{value.previous_result.status}</strong></span></p>
+                                            
+                                            <span>Exam Date & Time:{dateTime} </span> 
+                                            </div>
+
                                         </div>
                                         <ul>
                                         
@@ -330,7 +353,8 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
 
     const [user, setUser] = React.useState([]);
     const [userdata,setUserdata]=useState([])
-    const [assign,setAssign]=useState()
+    const [assign,setAssign]=useState({})
+    const [allcheck,setAllcheck]=useState(false)
     const userData = [
         { name: "Jeevan" ,user_id:1 },
         { name: "Manish" ,user_id:2},
@@ -402,23 +426,51 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
     }
 
     const handleChange = (e,index) => {
-     //   console.log("value" ,e.target.checked,"userid",userid,"index",index)
+        console.log("e==>",e.target.value)
+      //  alert()
+    //    console.log("value" ,e.target.checked,"userid","index",index)
         if(e.target.checked){
-
                setAssign(old =>({...old,[index]:e.target.value }))
-            //    console.log("assignState---" ,assign)
-        }else{
-            // deletebykey(index)
-            const assignData = assign
-            delete assignData[index]
-            //  console.log("deletedata=>",assigndelete)
-             setAssign(assignData)
-        }
+                    // console.log("assign=>",assign)
+            }else{
+                // deletebykey(index)
+                const assignData = assign
+                delete assignData[index]
+                //  console.log("deletedata=>",assigndelete)
+                setAssign(assignData)
+            }
+            
+            
+            
+        };
+        
+        const checkall=(e)=>{
+            //    console.log("chekall=>",e.target.value) 
+            
+            // console.log("checkall=>",e.target.checked?true:false)
+            setAllcheck(e.target.checked?true:false)
+            
+            // if(e.target.checked){
+                
+                Object.entries(user).map(([index, value])=>{
+                    console.log("index",index)
+                console.log("chekall=>",value) 
+                // return handleChange(e, value.user_id)
+                e.target.value=value.user_id
+                 return handleChange(e, index)
+               })
+            //     alert()
+            //     handleChange()
+            
+           // console.log("assignState---" ,assign)
+        // }
 
-      };
+        
+      }
 
 
-
+      console.log("assign=>",assign)
+      console.log("allcheck=>",allcheck)
 
     return(
     
@@ -447,6 +499,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                                     <td>#</td>
                                     <td>Name</td>
                                     <td>Action</td>
+                                    <td> <FormControlLabel control={<Checkbox  onClick={checkall}  />} label={" All"} /></td>
 
                                 </tr>
                             </thead>
@@ -460,7 +513,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                                             <tr key={index}>
                                                 <td>{count++}</td>
                                                 <td>{value.name}</td>
-                                                <td>  <FormControlLabel control={<Checkbox   onClick={(e)=>handleChange(e,index)}/>} value={value.user_id} /></td>
+                                                <td>  <FormControlLabel control={<Checkbox  checked={allcheck ? allcheck : assign[value.user_id] }  onChange={(e)=>handleChange(e,index)}      />} value={value.user_id} /></td>
                                                 {/* <td><Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  onClick={()=>{handleAssign(value.user_id)}} >Assign</Button></td> */}
                                             </tr>
                                             )

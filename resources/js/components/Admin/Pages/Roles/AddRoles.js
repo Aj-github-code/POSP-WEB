@@ -5,6 +5,7 @@ import { Box, Divider } from '@mui/material';
 import BreadCrumb from '../../BreadCrumb/BreadCrumb';
 import Api from '../../../../api';
 import RolesList from './RolesList'
+import '../Roles/RolesList.css'
 
 export default class AddRoles extends React.Component {
     constructor(props){

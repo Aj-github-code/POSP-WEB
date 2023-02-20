@@ -20,6 +20,8 @@ import { ExcelUpload } from '../Pages/Excel_upload/Excel_upload';
 import Courses from '../../Courses/Courses';
 import ResultList from '../Pages/Result_List/Result_List';
 import ResultHistory from '../Pages/Result_History/Result_History';
+import { FileUploadCampaign } from '../Pages/File_upload_Campaign/File_Upload_Campaign';
+import { ExamAnswerList } from '../Pages/Result_History/Examanswer';
 
 
 
@@ -87,6 +89,9 @@ export default function Layout() {
               <Route exact path="/training" element={ <Courses campaign_type={"training"} head='' />} />
               <Route path='/result-list' element={<ResultList/>}/>
               <Route path='/result-history' element={<ResultHistory/>}/>
+              <Route path='/upload-file' element={<FileUploadCampaign/>}/>
+              <Route path='/fileUploadCampaign' element={<FileUploadCampaign/>}/>
+              {/* <Route path='/examans-list' element={<ExamAnswerList/>}/> */}
           
                
               </Routes> 
