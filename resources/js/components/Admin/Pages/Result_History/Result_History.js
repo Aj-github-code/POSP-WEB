@@ -1,14 +1,20 @@
-import React from "react";
-import { Box } from '@mui/material';
+
+import React,{useEffect,useRef,useState} from 'react';
+import { Box,Divider} from '@mui/material';
 import {TextField} from '@mui/material';
 import BreadCrumb from '../../BreadCrumb/BreadCrumb';
 import { DataGrid, renderActionsCell } from '@mui/x-data-grid';
 import { Button } from "react-bootstrap";
+
 import Api from "../../../../api";
 
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
+import { Loader } from "../../../Loader/Loader";
+import { useReactToPrint } from "react-to-print";
+import { Table } from 'react-bootstrap'
+
 
 export default class ResultHistory extends React.Component {
     constructor(props){
@@ -35,7 +41,7 @@ export default class ResultHistory extends React.Component {
     getClaimList = () => {
        
    
-       // this.setState(old => ({...old, isLoading:true}))
+       this.setState(old => ({...old, isLoading:true}))
         var data = {length:this.state.pageSize, start:this.state.page*this.state.pageSize};
 
         if(this.state.filter !== null){
@@ -85,14 +91,12 @@ export default class ResultHistory extends React.Component {
         this.setState({examData:data})
       }
         const columns = [
-            { field: 'id', headerName: 'ID', width: 100},
-            { field: 'mobile', headerName: 'Mobile',  width: 120},
+            { field: 'id', headerName: 'Sr.No', width: 100},
+            { field: 'name', headerName: 'Name',  width: 120},
             { field: 'email', headerName: 'Email',  width: 120},
+            { field: 'status', headerName: 'PASS/FAIL',  width: 100},
+            {field:"created_at",headerName:'Create Date',width:120},
             { field: 'exam_code', headerName: 'Exam Code',  width: 190},
-            { field: 'campaign_code', headerName: 'Campaign Code',  width: 100},
-            { field: 'status', headerName: 'PASS/FAIL',  width: 190},
-            { field: 'marks', headerName: 'Obtained Marks',  width: 190},
-            // { field: 'action', headerName: 'Action',  width: 210,  renderCell: (params) => <Action key={params.row.id}  param={params.row} />, },
             {field:'action',headerName:'Action',width:210 ,renderCell:(param)=><Action func={handleModel} key={param.row.id} param={param.row}/>}
           ];
 
@@ -164,247 +168,483 @@ function Action(props){
 }
 
 
-// function ViewResult(props){
-//   const [data,setData]=useState(
-//     props.param
-//   )
-//   const propsdata={
-//       exam_code:"exam-camp_1V6w0m-3-1",
-//       user_id:3
-
-//   }
-
-//   const apiCtrl=new Api
-
-  
-//  // console.log("viewresult=>",data)
-
-  
 
 
-//   useEffect(()=>{
-   
-//     // if(props.param!==null){
-//     //   setData(props.param)
-//     // }
- 
-//      console.log("viewresult=>",props.param)
-
-//   // apiCtrl.callAxios("userexamdetail",).then((res)=>{
-//   //   console.log("res=>",res)
-//   // })
-//   },[])
-  
-//     return(
-//       <>
-     
-//         <div className="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-//           <div className="modal-dialog modal-lg  modal-dialog-centered">
-//           <div className="modal-content">
-//           <div className="modal-header">
-//               {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
-//               <div className="row ml-1" style={{ paddingTop: '2%'}}>
-//                   {/* <label><b>{props.params.any} Details</b></label> */}
-//               </div>
-//               <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
-//                 <span aria-hidden="true">&times;</span>
-//               </button>
-//             </div>
-            
-//             <div className="modal-body m-body">
-              
-//             <div className="row">
-//             <fieldset className="form-group border border-primary mb-2 p-3">
-//               <div className="row " >
-//                 <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
-//                   <div className="col-sm-9">
-//                     <div className="row">
-  
-//                     <div className="wrapper" >
-                    
-//                       <h4 style={{ color: '#1F5B54'}}>{"Heavy Vehicle Insurance"}</h4>
-//                       <p><span className="price">Name:<b>Test Agent</b></span></p>
-
-//                       <p>Date Of Exam: <strong>01/02/2023</strong></p>
-//                       <p>Time: <strong>O.5 Hours</strong></p>
-//                       <span className="price">Total Marks: <strong style={{ color: 'green'}}>60</strong>, Passing: <strong style={{color:'red'}}>25</strong></span><br/>
-//                       <span> Percentage: <strong style={{color:'red'}}>15%</strong></span><br/>
-//                       <span className="price"> Exam Result: <strong style={{ color: 'red'}}>  FAIL</strong></span>
-                        
-                    
-   
-  
-  
-//                     </div>
-  
-//                     </div> 
-//                   </div>  
-//               </div>                    
-                                
-//             </fieldset>
-                             
-              
-  
-//             </div>
-              
-//             <div className="modal-footer">
-                    
-//                   <Link  to={"/examans-list"}>
-//                     <Button  style={{ backgroundColor: 'rgb(108 110 116)',color:"#fff"}}>View Exam Answer </Button>&nbsp;&nbsp;
-//                   </Link>
-
-                  
-                   
-                  
-//                   </div>
-//             </div>  
-  
-            
-//           </div>
-//         </div>
-//         </div>
-  
-  
-//       </>
-//     )
-//   }
-
-
-class ViewResult extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-       status:"",
-       datetime:"",
-      campaign:{},
-      system_settings:{},
-      roles:{}
-    }
+// class Report extends React.Component {
+//   constructor(props){
+//     super(props);
+//     this.state = {
+//        status:"",
+//        isLoading:true,
+//        datetime:"",
+//       campaign:{},
+//       system_settings:{},
+//       roles:{}
+//     }
     
-    this.apiCtrl = new Api;
+//     this.apiCtrl = new Api;
  
    
-  }
+//   }
 
-  componentDidUpdate(prevProps,prevState){
+//   componentDidUpdate(prevProps,prevState){     
+//     if(prevProps.param.id !== this.props.param.id && this.props.param!==null){
+//       this.setState(({isLoading:true}))
+//       console.log("props=>",this.props)
      
-    if(prevProps.param.id !== this.props.param.id && this.props.param!==null){
-      console.log("props=>",this.props)
-     
-      const data={
-        exam_code:this.props.param.exam_code,
-        user_id:this.props.param.id
-      }
-
-      this.apiCtrl.callAxios("userexamdetail",data).then(response => {
-        //  location.reload('/user-list')
-       console.log("response=>",response)
-
-        Object.entries(response.data).map(([index,value])=>{
+//       const data={
+//         exam_code:this.props.param.exam_code,
+//         user_id:this.props.param.id
+//       }
+      
+      
+//       this.apiCtrl.callAxios("userexamdetail",data).then(response => {
+//         //  location.reload('/user-list')
+//        console.log("response=>",response)
+         
+//         if(response.data.length > 0){
+//           this.setState(old=>({...old,isLoading:false}))
+//           Object.entries(response.data).map(([index,value])=>{
           
-             //  console.log("value=>",value)
-             var date1 = new Date(value.campaign.created_at);
-             var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
-               this.setState(old=>({...old,...value.campaign.other_parameter,status:value.status,datetime:dateTime}))
-          // Object.entries(value.campaign).map(([index1,value2])=>{
-          //  console.log("state=>",this.state)
+//             //  console.log("value=>",value)
+//             var date1 = new Date(value.campaign.created_at);
+//             var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
+//               this.setState(old=>({...old,...value.campaign.other_parameter,status:value.status,datetime:dateTime}))
+//           })
+//         }else{
 
+          
+//           this.setState({
+//             status:"", 
+//             datetime:"",
+//             isLoading:false,
+//             campaign:{},
+//             system_settings:{},
+//             roles:{}
+//           })
+//         }
+//       })
+//     } 
+//   }
+  
 
-          // })
-
-
-
-
-        })
-
-        //this.setState(response.data[0])
+//   render(){
+//      const loderactive =()=>{
+//          this.setState({isLoading:true})
+//      }
+//     return(<>
        
-      })
 
-      
-     
-     
-
-    } 
-  }
-
-
-  render(){
-
-    // console.log("props",this.props)
-    console.log("STATE=>",this.state)
-
-    //  const data =()=>{
-    //   this.state.other_parameter!==""?
-    //   Object.entries(this.state.other_parameter).map(([index,value])=>{
-    //       console.log("index",index,"value",value)
     
-    //   })
-    //  }
-    return(<>
+//         <div className="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+//             <div className="modal-dialog  modal-lg modal-dialog-centered">
+             
+//                 <div className="modal-content">
+//                   {!this.state.isLoading?<>
+                      
+//                     {this.state.status!==""?<>
 
-      
-       <div className="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-          <div className="modal-dialog modal-lg  modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                  {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
-                  <div className="row ml-1" style={{ paddingTop: '2%'}}>
-                      {/* <label><b>{props.params.any} Details</b></label> */}
-                  </div>
-                  <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-            {this.state.status!==""?<>
+//                       <div className="modal-header">
+//                           <h5 class="modal-title" id="exampleModalLongTitle"> <h4 style={{ color: '#1F5B54'}}>{"Result:"} {this.state.campaign.title}</h4></h5>
+//                           <div className="row ml-1" style={{ paddingTop: '2%'}}>
+//                               {/* <label><b>{props.params.any} Details</b></label> */}
+//                           </div>
+//                           <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close" onClick={loderactive}>
+//                             <span aria-hidden="true">&times;</span>
+//                           </button>
+//                       </div>
 
-                <div className="modal-body m-body">
-                  <div className="row">
-                    <fieldset className="form-group border border-primary mb-2 p-3">
-                      <div className="row " >
-                        <legend className="col-form-label col-sm-2  pt-0" >  <h4 style={{ color: '#1F5B54'}}>{"Result:"}</h4></legend>
-                          <div className="col-sm-9">
-                            <div className="row">
-          
-                            <div class="wrapper" >
+
+//                       <div className="modal-body m-body">
+
+//                       <Table className="table table-hover ">
+//                         <tbody>
+//                           <tr>
+//                             <th>Sr.No</th>
+//                             <td>1</td>
+//                           </tr>
+//                           <tr>
+//                             <th className="thead-light" scope="col">Name</th>
+//                             <td>{this.props.param.name}</td>
+//                           </tr>
+//                           <tr>
+//                             <th scope="col">Time</th>
+//                             <td>{this.state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</td>
+//                           </tr>
+//                           <tr>
+//                             <th scope="col">Total Marks</th>
+//                               <td><strong style={{ color: 'green'}}>{this.state.system_settings.total_marks}</strong></td>
                             
-                              <h4 style={{ color: '#1F5B54'}}>{this.state.campaign.title}</h4>
-                              <p><span className="price">Name:<b>{this.props.param.name}</b></span></p>
-
-                              <p>Date Of Exam & Time: <strong>{this.state.datetime}</strong></p>
-                              <p>Time: <strong>{this.state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
-                                            
-                              {/* <p>Time: <strong>O.5 Hours</strong></p> */}
-                              <span className="price">Total Marks: <strong style={{ color: 'green'}}>{this.state.system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{this.state.system_settings.passing_marks}</strong></span><br/>
-                              <span> Percentage: <strong style={{color:'red'}}>15%</strong></span><br/>
-                              <span className="price"> Exam Result: <strong style={{ color: 'red'}}>{this.state.status}</strong></span>
-                                
+//                           </tr>
+//                           <tr>
+//                             <th scope="col">Passing</th>
+//                             <td> <strong style={{color:'red'}}>{this.state.system_settings.passing_marks}</strong></td>
                             
-          
-          
-          
-                            </div>
-          
-                            </div> 
-                          </div>  
-                      </div>                    
+//                           </tr>
+//                           <tr>
+//                           <th scope="col">Date Of Test & Time</th>
+//                             <td>{this.state.datetime}</td>
+//                           </tr>
+//                           <tr>
+//                             <th scope="col">Percentage</th>
+//                             <td><strong style={{color:'red'}}>15%</strong></td>
+//                           </tr>
+//                           <tr>
+//                             <th scope="col">Exam Result</th>
+//                             <td><strong style={{ color: 'red'}}>{this.state.status}</strong></td>
+//                           </tr>
+//                         </tbody>
+//                       </Table>
+
+
+//                       {/* <table className="table table-hover ">
+//                         <thead className="thead-light">
+//                           <tr>
+//                             <th scope="col">Sr.No</th>
+//                             <th scope="col">Name</th>
+//                             <th scope="col">Time</th>
+//                             <th scope="col">Total Marks</th>
+//                             <th scope="col">Passing</th>
+//                             <th scope="col">Date Of Test & Time</th>
+//                             <th scope="col">Percentage</th>
+//                             <th scope="col">Exam Result</th>
+//                           </tr>
+//                         </thead>
+//                         <tbody>
+//                           <tr>
+//                             <th scope="row">1</th>
+//                             <td>{this.props.param.name}</td>
+//                             <td>{this.state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</td>
+//                             <td>{this.state.system_settings.total_marks}</td>
+//                             <td> <strong style={{color:'red'}}>{this.state.system_settings.passing_marks}</strong></td>
+//                             <td>{this.state.datetime}</td>
+//                             <td><strong style={{color:'red'}}>15%</strong></td>
+//                             <td><strong style={{ color: 'red'}}>{this.state.status}</strong></td>
+//                           </tr>
+                      
+//                         </tbody>
+//                       </table> */}
+
+
+
+//                       {/* <div className="row">
+//                           <fieldset className="form-group mb-2 p-3">
+//                             <div className="row " >  
+//                               <legend className="col-form-label" >  <h6 style={{ color: '#1F5B54'}}>{"Exam Details:"}</h6></legend>      
+                                                          
+//                                   <p style={{marginBottom:"0%"}}><span className="price">Name:<b>{this.props.param.name}</b></span></p>
+//                                   <p style={{marginBottom:"0%"}}>Time: <strong>{this.state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
+                                  
+//                                   <span className="price">Total Marks: <strong style={{ color: 'green'}}>{this.state.system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{this.state.system_settings.passing_marks}</strong></span><br/>   
+//                                   <p style={{marginBottom:"0%",fontSize: "80%"}}>Date Of Test & Time: <b>{this.state.datetime}</b></p>
+
                                         
-                    </fieldset>
-                  </div>
-                </div>
-              </>:""
-             } 
+                                  
+                                    
+                
+                                  
+//                             </div>  
+//                             <Divider sx={{ borderColor: '#dac4c4'}} className="mb-3"/> 
+//                             <div className="row " >
+                            
+//                             <legend className="col-form-label   pt-0" >  <h6 style={{ color: '#1F5B54'}}>{"Result Details:"}</h6></legend>      
+//                                         <span> Percentage: <strong style={{color:'red'}}>15%</strong></span><br/> 
+//                                       <span className="price"> Exam Result: <strong style={{ color: 'red'}}>{this.state.status}</strong></span>
+                                                            
+                                    
+                                    
+                
+                                  
+//                             </div>                 
+                                              
+//                           </fieldset>
+//                       </div> */}
+                      
+//                       </div>
+
+//                       <div className="modal-footer">
+
+//                         <Link to={"/examans-list"}>
+//                           <button type="button" class="btn btn-outline-secondary">View Answer</button>
+//                         </Link>
+
+//                         {/* <button type="button" class="btn btn-outline-secondary">Dawnload</button> */}
+                                    
+                      
+
+//                       </div>
+
+//                       </>:<p className="d-flex justify-content-center" style={{marginTop: "10%"}}>Result Not Available</p>
+//                     } 
+//                   </>:<Loader/>
+//                   }
+
+
+                
+            
+
+
+                
+//                 </div>
+              
+//             </div>
+//         </div>
+       
+
+
+//     </>)
+//   }
+// }
+
+
+export const ViewResult=(props)=>{
+  const [state,setState]=useState({
+    status:"",
+    isLoading:true,
+    datetime:"",
+    campaign:{title:''},
+    system_settings:{},
+    roles:{}
+  })
+
+  // const [reload, setReload] = React
+
+  const apiCtrl=new Api
+  // if((props.param!==null) && (typeof props.param !== 'undefined')){
+  //   setReload(true);
+  // }
+  useEffect(()=>{
+    
+      if((props.param!==null) && (typeof props.param !== 'undefined')){
+                 setState(({isLoading:true}))
+                //console.log("props=>",props)
+      
+                const data={
+                    exam_code:props.param.exam_code,
+                    user_id:props.param.id
+                  }
+        
+            
+            apiCtrl.callAxios("userexamdetail",data).then(response => {
+              //  location.reload('/user-list')
+  
+              if(response.data.length > 0){
+                  console.log("res=>",response)
+                  // setState(old=>({isLoading:false}))
+                  Object.entries(response.data).map(([index,value])=>{
+      
+                      //  console.log("value=>",value)
+                      var date1 = new Date(value.campaign.created_at);
+                      var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
+                        setState(old=>({...old, ...value.campaign.other_parameter,status:value.status,datetime:dateTime,isLoading:false}))
+                    })
+
+                    // console.log("state=>",state)
+                  }else{
+        
+        
+                      setState({
+                          status:"", 
+                          datetime:"",
+                          isLoading:false,
+                          campaign:{},
+                          system_settings:{},
+                          roles:{}
+                        })
+                      }
+                    })
+                  } 
+          
+          },[props])
+          // console.log('props',props, 'State', state)
+          // return(<></>);
+          const componentRef = useRef();
+
+          const handlePrint = useReactToPrint({
+            content: () => componentRef.current,
+          });
+          const loderactive =()=>{
+            setState({isLoading:true})
+          }
+
+          console.log("state=>",state)
+  return(<>
+
+    <div className="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+          <div className="modal-dialog  modal-lg modal-dialog-centered">
+          
+              <div className="modal-content">
+                {!state.isLoading?
+                <>
+                  
+                  {state.status!==""?<>
+
+                    <div className="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle"> <h4 style={{ color: '#1F5B54'}}>{"Result:"} {state.campaign.title}</h4></h5>
+                        <div className="row ml-1" style={{ paddingTop: '2%'}}>
+                            {/* <label><b>{props.params.any} Details</b></label> */}
+                        </div>
+                        {/* <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close"> */}
+                        <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close" onClick={loderactive}>
+
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+
+                    <div className="modal-body m-body">
+
+                    <Table ref={componentRef} className="table table-hover ">
+                      <tbody>
+                        <tr>
+                          <th>Sr.No</th>
+                          <td>1</td>
+                        </tr>
+                        <tr>
+                          <th className="thead-light" scope="col">Name</th>
+                          <td>{props.param.name}</td>
+                        </tr>
+                        <tr>
+                          <th scope="col">Time</th>
+                          <td>{state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</td>
+                        </tr>
+                        <tr>
+                          <th scope="col">Total Marks</th>
+                            <td><strong style={{ color: 'green'}}>{state.system_settings.total_marks}</strong></td>
+                        
+                        </tr>
+                        <tr>
+                          <th scope="col">Passing</th>
+                          <td> <strong style={{color:'red'}}>{state.system_settings.passing_marks}</strong></td>
+                        
+                        </tr>
+                        <tr>
+                        <th scope="col">Date Of Test & Time</th>
+                          <td>{state.datetime}</td>
+                        </tr>
+                        <tr>
+                          <th scope="col">Percentage</th>
+                          <td><strong style={{color:'red'}}>15%</strong></td>
+                        </tr>
+                        <tr>
+                          <th scope="col">Exam Result</th>
+                          <td><strong style={{ color: 'red'}}>{state.status}</strong></td>
+                        </tr>
+                      </tbody>
+                    </Table>
+
+
+                  {/* <table className="table table-hover ">
+                      <thead className="thead-light">
+                        <tr>
+                          <th scope="col">Sr.No</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Time</th>
+                          <th scope="col">Total Marks</th>
+                          <th scope="col">Passing</th>
+                          <th scope="col">Date Of Test & Time</th>
+                          <th scope="col">Percentage</th>
+                          <th scope="col">Exam Result</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">1</th>
+                          <td>{props.param.name}</td>
+                          <td>{this.state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</td>
+                          <td>{this.state.system_settings.total_marks}</td>
+                          <td> <strong style={{color:'red'}}>{this.state.system_settings.passing_marks}</strong></td>
+                          <td>{this.state.datetime}</td>
+                          <td><strong style={{color:'red'}}>15%</strong></td>
+                          <td><strong style={{ color: 'red'}}>{this.state.status}</strong></td>
+                        </tr>
+                  
+                      </tbody>
+                    </table> */}
+
+
+
+                    {/* <div className="row">
+                        <fieldset className="form-group mb-2 p-3">
+                          <div className="row " >  
+                            <legend className="col-form-label" >  <h6 style={{ color: '#1F5B54'}}>{"Exam Details:"}</h6></legend>      
+                                                      
+                                <p style={{marginBottom:"0%"}}><span className="price">Name:<b>{this.props.param.name}</b></span></p>
+                                <p style={{marginBottom:"0%"}}>Time: <strong>{this.state.system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
+                              
+                                <span className="price">Total Marks: <strong style={{ color: 'green'}}>{this.state.system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{this.state.system_settings.passing_marks}</strong></span><br/>   
+                                <p style={{marginBottom:"0%",fontSize: "80%"}}>Date Of Test & Time: <b>{this.state.datetime}</b></p>
+
+                                    
+                              
+                                
+            
+                              
+                          </div>  
+                          <Divider sx={{ borderColor: '#dac4c4'}} className="mb-3"/> 
+                          <div className="row " >
+                        
+                          <legend className="col-form-label   pt-0" >  <h6 style={{ color: '#1F5B54'}}>{"Result Details:"}</h6></legend>      
+                                      <span> Percentage: <strong style={{color:'red'}}>15%</strong></span><br/> 
+                                    <span className="price"> Exam Result: <strong style={{ color: 'red'}}>{this.state.status}</strong></span>
+                                                        
+                                
+                                
+            
+                              
+                          </div>                 
+                                          
+                        </fieldset>
+                    </div> */}
+                  
+                    </div>
+
+                    <div className="modal-footer">
+
+                      <Link to={"/examans-list"}>
+                        <button type="button" class="btn btn-outline-secondary">View Answer</button>
+                      </Link>
+                      <button onClick={handlePrint} className="btn btn-primary" >Print</button>
+
+                      {/* <button type="button" class="btn btn-outline-secondary">Dawnload</button> */}
+                                
+                  
+
+                    </div>
+
+                    </>:<p className="d-flex justify-content-center" style={{marginTop: "10%"}}>Result Not Available</p>
+                  } 
+                </>:<Loader/>
+                }
+
+
+            
         
 
 
-             
-            </div>
+            
+              </div>
+          
           </div>
-        </div>
+    </div>
 
 
-    </>)
-  }
+   
+  </>)
 }
+
+
+// export function (props){
+
+//   // console.log('Ref current', componentRef.current)
+//   return (
+//     <div>
+//       <Report ref={componentRef} {...props} />
+//     </div>
+//   )
+// }
+
+
+
   
   

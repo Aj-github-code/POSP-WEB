@@ -26,6 +26,8 @@ import '../../../assets/js/admin/admin.js';
 import { BrowserRouter as Router , Routes, Route } from 'react-router-dom'
 import ResultHistory from '../Admin/Pages/Result_History/Result_History'
 import { ExamAnswerList } from '../Admin/Pages/Result_History/Examanswer'
+import My_Profile from '../MyProfile/My_Profile'
+
 
  const Frontend = () => {
     return (
@@ -46,6 +48,8 @@ import { ExamAnswerList } from '../Admin/Pages/Result_History/Examanswer'
             <Route path ='/training/result-history' element={<ResultHistory/>}/>
             <Route path='/examans-list' element={<ExamAnswerList head={'margin_60_35'}/>}/>
             <Route path ='/dashboard' element={<Dashboard/>}/>
+            {/* <Route path='/my-profile' element={<MyProfile/>}/> */}
+            {<Route path='/my-profile' element={<My_Profile/>}/>}
            
 
             {/* <Route path="/login" element={<Login />} /> */}

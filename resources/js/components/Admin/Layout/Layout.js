@@ -22,6 +22,8 @@ import ResultList from '../Pages/Result_List/Result_List';
 import ResultHistory from '../Pages/Result_History/Result_History';
 import { FileUploadCampaign } from '../Pages/File_upload_Campaign/File_Upload_Campaign';
 import { ExamAnswerList } from '../Pages/Result_History/Examanswer';
+import { Tag } from '../Pages/Master Tag/Tag';
+import Taglist from '../Pages/Master Tag/Tag_List';
 
 
 
@@ -92,6 +94,9 @@ export default function Layout() {
               <Route path='/upload-file' element={<FileUploadCampaign/>}/>
               <Route path='/fileUploadCampaign' element={<FileUploadCampaign/>}/>
               {/* <Route path='/examans-list' element={<ExamAnswerList/>}/> */}
+              <Route path='/tag' element={<Tag/>}/>
+              <Route path='/tag-list' element={<Taglist/>}/>
+           
           
                
               </Routes> 

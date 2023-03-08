@@ -34,6 +34,23 @@ export default function SideBar() {
           </ul>
         </li>
 
+        <li className="nav-item" data-toggle="tooltip" style={{borderBottomColor:"#1F5B54", borderBottomWidth:"thin"}}  data-placement="right" title="My listings">
+          <a className="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylistingss">
+            <i className="fa fa-fw fa-list"></i>
+            <span className="nav-link-text">&nbsp;Master Tag</span>
+          </a>
+          <ul className="sidenav-second-level collapse" id="collapseMylistingss">
+            <li>
+              <Link to="/tag-list">Tag List</Link>
+            </li>
+            
+           
+            <li>
+              {/* <a >Expired <span className="badge badge-pill badge-danger">6</span></a> */}
+            </li>
+          </ul>
+        </li>
+
         <li className="nav-item" data-toggle="tooltip" style={{borderBottomColor:"#183883", borderBottomWidth:"thin"}}  data-placement="right" title="My listings">
           <a className="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylisting">
             <i className="fa fa-fw fa-list"></i>

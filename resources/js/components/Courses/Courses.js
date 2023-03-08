@@ -6,8 +6,11 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import MaterialSelect from'../../Tags/MaterialSelect'
 import Api from '../../api';
 import Swal from 'sweetalert2';
+import { Upload } from '@mui/icons-material';
+
 export default function Courses(props) {
     var roles = JSON.parse(localStorage.getItem('user_roles'))
 
@@ -55,7 +58,11 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
 
     React.useEffect(()=>{
         handleCampaign('all');
+       
     }, [props.campaign_type])
+
+
+    
 
   return (
     <>
@@ -150,18 +157,50 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                     Object.entries(courses).map(([index, value])=>{
                         var values = JSON.parse(value.other_parameter) 
                         const {system_settings, user_parameters, campaign } = values;
-            //  console.log('Value ', values)
-                  
-            var date1 = new Date(value.previous_result.created);
-            var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
-               // var date2= date1.moment().format('ddd MMM DD YYYY hh:mm:ss')
-               // console.log("date=>",dateTime)
+                        //  console.log('Value ', values)
+                        const uploaddate =value.created_at
+                       
+                            
+                        var date1 = new Date(value.previous_result.created);
+                        var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
+                        // var date2= date1.moment().format('ddd MMM DD YYYY hh:mm:ss')
+                        // console.log("date=>",dateTime)
+
+                        var days =  secondsToTime(uploaddate)                        ;
+                            function secondsToTime(uploaddate){
+                            var x = moment(uploaddate);
+                            var y = moment();
+                    
+                            let seconds = y.diff(x)/1000;
+                            //  console.log("seconds: "+seconds)
+                            seconds = Number(seconds);
+                            var d = Math.floor(seconds / (3600*24));
+                            var h = Math.floor(seconds % (3600*24) / 3600);
+                            var m = Math.floor(seconds % 3600 / 60);
+                            var s = Math.floor(seconds % 60);
 
 
+
+                            
+                            // var dDisplay = d > 0 ? d + (d == 1 ? " day " : " Days ") : "";
+                            var dDisplay = d > 0 ? d :"";
+                            var hDisplay = h > 0 ? h + (h == 1 ? "": "") : "";
+                            var mDisplay = m > 0 ? m + (m == 1 ? " min " : " Min ") : "";
+                            var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+                            //  console.log('TIme '+ dDisplay + hDisplay + mDisplay + sDisplay)
+                            // console.log("dDisplay",dDisplay)
+                            if(dDisplay !== "")  {
+                                return {day:dDisplay , color: "#FFA6A6"}
+                            }
+                            
+                            }
+                    //  console.log("timer=.",day)
+                     
                      
 
                         return(
                                 <div class="col-xl-4 col-lg-6 col-md-6 isotope-item popular">
+                                  
                                     <div class="box_grid">
                                      {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
                                             ?
@@ -169,7 +208,13 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                                  onClick={()=>{setIsVisible(old=>({...old, [index]:true}))}} key={index} data-bs-toggle="modal" size='small' href={`#exampleModalToggle${index}`}
                                                 
                                                 >
+                                                    
                                                 <figure>
+                                                {days.day<=7?<>
+                                                    <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
+                                                    
+                                                    </>:""} 
+                                               
                                                     <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
                                                     <small>{value.campaign_type}</small>
                                                 </figure>
@@ -181,15 +226,27 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                                 pathname: '/training',
                                                 state: {data:value}}} state={{ value }} >
                                                 <figure>
+                                                    {days.day<=7?<>
+                                                    <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
+                                                    
+                                                    </>:""}
+                                                  
+                                                  
                                                     <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+                                                    
 
                                                     <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
+                                                   
                                                 </figure>
                                             </Link>
                                             
                                                 :
                                               
                                                 <figure>
+                                                     {days.day<=7?<>
+                                                    <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
+                                                    
+                                                    </>:""} 
                                                     <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
 
                                                     <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
@@ -213,13 +270,21 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                             <br />
                                             <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
                                             <br />
-                                            <span className='d-flex justify-content-between'  data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample"><label style={{width:'auto'}}><b>{"Previous Report"}</b></label></span>
+                                            {((roles[0].role_code === "AG"))
+                                                ?
+                                                <>
+                                                    <span className='d-flex justify-content-between'  data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample"><label style={{width:'auto'}}><b>{"Previous Report"}</b></label></span>
                                             
-                                            <div className="row mb-4 collapse" id="collapseExample1">  
-                                            <p> <span className="price">Marks: <strong>{value.previous_result.marks}</strong>,Result: <strong style={{color:'red'}}>{value.previous_result.status}</strong></span></p>
-                                            
-                                            <span>Exam Date & Time:{dateTime} </span> 
-                                            </div>
+                                                        <div className="row mb-4 collapse" id="collapseExample1">  
+                                                        <p> <span className="price">Marks: <strong>{value.previous_result.marks}</strong>,Result: <strong style={{color:'red'}}>{value.previous_result.status}</strong></span></p>
+                                                        
+                                                        <span>Exam Date & Time:{dateTime} </span> 
+                                                    </div>
+
+                                                   
+                                                </>:""
+                                            }
+                                           
 
                                         </div>
                                         <ul>
@@ -354,7 +419,11 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
     const [user, setUser] = React.useState([]);
     const [userdata,setUserdata]=useState([])
     const [assign,setAssign]=useState({})
+    //const [assign,setAssign]=useState([3,58,59,60,61,62])
+  
     const [allcheck,setAllcheck]=useState(false)
+   
+    
     const userData = [
         { name: "Jeevan" ,user_id:1 },
         { name: "Manish" ,user_id:2},
@@ -372,6 +441,12 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
     
     const apiCtrl = new Api;
     const [reload, setReload] = React.useState(false);
+    const [statedata,setStatedata]=useState([])
+    const[citydata,setCitydata]=useState([])
+    const [state,setState]=useState({
+      state:{},
+      city:{}
+    })
     
     React.useEffect(()=>{
         // visible &&
@@ -426,57 +501,115 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
     }
 
     const handleChange = (e,index) => {
-        console.log("e==>",e.target.value)
+        //console.log("e==>",e.target.checked)
+        console.log("value" ,e.target.value,"index",index)
+     const  value=e.target.value
       //  alert()
-    //    console.log("value" ,e.target.checked,"userid","index",index)
-        if(e.target.checked){
-               setAssign(old =>({...old,[index]:e.target.value }))
+      if(e.target.checked){
+        
+          setAssign(old =>({...old,[index]:value}))
+          //setAssign(old =>({...old,[index]:value }))
                     // console.log("assign=>",assign)
             }else{
-                // deletebykey(index)
+
+                setAllcheck(false)
+              
+                //setUncheckall(false)                
                 const assignData = assign
-                delete assignData[index]
-                //  console.log("deletedata=>",assigndelete)
-                setAssign(assignData)
+                console.log("deletedata=>",assignData[index])
+                setAssign(old =>({...old,[index]:''}))
+                assignData[index] = false
+                
+                // setAssign(...assignData)              
             }
             
             
             
+            console.log("value" ,e.target.value,"index",index)
         };
-        
+
         const checkall=(e)=>{
-            //    console.log("chekall=>",e.target.value) 
-            
-            // console.log("checkall=>",e.target.checked?true:false)
-            setAllcheck(e.target.checked?true:false)
-            
-            // if(e.target.checked){
-                
-                Object.entries(user).map(([index, value])=>{
-                    console.log("index",index)
-                console.log("chekall=>",value) 
-                // return handleChange(e, value.user_id)
+            setAllcheck(true)
+            //setUncheckall(true)
+            Object.entries(user).map(([index, value])=>{
+                //    console.log("index",index)
+              //  console.log("chekall=>",value) 
+              //  // return handleChange(e, value.user_id)
                 e.target.value=value.user_id
                  return handleChange(e, index)
                })
-            //     alert()
-            //     handleChange()
-            
-           // console.log("assignState---" ,assign)
-        // }
 
+        }
         
-      }
+     
+    const getstatedata = () => {
+
+        if(Object.keys(statedata).length < 1){
+            
+            Swal.fire({
+                title: 'Loading...',
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+           // console.log('loader stART', Object.keys(statedata).length)
+            apiCtrl.callAxios('states/list',{search:{country_id:1}}).then(res => {
+  
+                var dataOfstate=[];
+                dataOfstate = {...dataOfstate, ['']:'Select State'};
+                res.data.map((value)=>{                  
+                  // console.log("STATE==>",value)
+                  
+                  dataOfstate = {...dataOfstate, [value.id]:value.state_name};
+                })     
+                
+            //    console.log("datastate=>",dataOfstate)
+               
+             setStatedata(dataOfstate);
+             console.log("datastate=>",statedata)
+             
+                Swal.close();     
+              })
+            console.log('loader close')
+        }
+    }
+     
+    const handlechang =(e)=>{
+   
+   
+        setState(old => ({...old , state:e.target.value}))
+           
+        Swal.fire({
+            title: 'Loading...',
+            didOpen: () => {
+        Swal.showLoading()
+            }
+        })
+        setCitydata("");
+        apiCtrl.callAxios('cities/list',{search:{state_id:e.target.value}}).then(res => {
+             
+        var dataOfcity=[]
+        
+        dataOfcity = {...dataOfcity, ['']:'Select City'};
+        res.data.map((value)=>{                  
+            // console.log("Scity==>",value)
+                
+            dataOfcity = {...dataOfcity, [value.id]:value.city_name};
+        })     
+        setCitydata( dataOfcity);
+        })  
+        Swal.close();      
+    }
 
 
       console.log("assign=>",assign)
-      console.log("allcheck=>",allcheck)
+    //  console.log("allcheck=>",allcheck)
 
     return(
     
         <>
 
-            <div className="modal-dialog  modal-dialog modal-sm modal-dialog-centered">
+            <div className="modal-dialog  modal-dialog modal-lg modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Assign To POSP</h5>
@@ -491,6 +624,31 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                     
                     <div className="modal-body m-body">
 
+                       <div className='row'>
+
+                        <div className='col-md-6'>
+                        <MaterialSelect value={state.state?state.state:""}
+                            onMouseEnter={()=>{getstatedata()}}       
+                            data={statedata}  id="state_id" labelId="state" name="state"
+                            size={"small"}
+                        
+                            onChange={(e)=>{handlechang(e )}}   label="State" fullWidth
+                        
+                        />
+
+                        </div>
+                        <div className='col-md-6'>
+                            <MaterialSelect   value={state.city?state.city:""} 
+                                data={citydata}  id="city_id" labelId="city-id" 
+                                name="city"    onChange={(e)=>setState(old=>({...old,city : e.target.value}))}
+                                size={"small"}
+                                label="City *" fullWidth
+                            />
+
+                        </div>
+
+                       </div>
+
                         <div className="row" key={id}>
                         <div className="col-md-12">
                         <table className="table table-striped">
@@ -498,8 +656,8 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                                 <tr>
                                     <td>#</td>
                                     <td>Name</td>
-                                    <td>Action</td>
-                                    <td> <FormControlLabel control={<Checkbox  onClick={checkall}  />} label={" All"} /></td>
+                                    {/* <td>Action</td> */}
+                                    <td> <FormControlLabel control={<Checkbox checked={allcheck}  onClick={checkall}  />} label={" All"} /></td>
 
                                 </tr>
                             </thead>
@@ -513,7 +671,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                                             <tr key={index}>
                                                 <td>{count++}</td>
                                                 <td>{value.name}</td>
-                                                <td>  <FormControlLabel control={<Checkbox  checked={allcheck ? allcheck : assign[value.user_id] }  onChange={(e)=>handleChange(e,index)}      />} value={value.user_id} /></td>
+                                                <td>  <FormControlLabel control={<Checkbox  checked={assign[index] ? true : false}  onChange={(e)=>handleChange(e,index)}      />} value={value.user_id} /></td>
                                                 {/* <td><Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  onClick={()=>{handleAssign(value.user_id)}} >Assign</Button></td> */}
                                             </tr>
                                             )
@@ -528,7 +686,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                     
                         </table>
                     </div>
-                </div>
+                        </div>
         
                       
                     </div>

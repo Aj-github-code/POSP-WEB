@@ -1,0 +1,15 @@
+
+   .posp-picture {
+    display: flex;
+    margin: auto;
+    align-items: baseline;
+    align-content: center;
+      justify-content: center;
+
+  }
+
+  
+ .img-nav {
+    border-radius: 50%;
+   
+  }

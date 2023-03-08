@@ -4,9 +4,11 @@ import { Box } from '@mui/material';
 import Api from "../../../../api";
 import { useState } from "react";
 import '../Result_History/Examanswer.css'
+import { Loader } from "../../../Loader/Loader";
 
 export const ExamAnswerList=(props)=>{
     const [examanswer,setExamanswer]=useState([])
+    const [isLoading,setIsloading]=useState(true)
 
     const apiCtrl = new Api;
     const success={
@@ -18,7 +20,8 @@ export const ExamAnswerList=(props)=>{
        color:"#fff"
     }
     const undefined={
-        color:"black"
+        background:"#d2c9c9",
+        color:"#fff"
     }
 
     const data={
@@ -30,6 +33,7 @@ export const ExamAnswerList=(props)=>{
         
        
         apiCtrl.callAxios('userexamlist',data).then((res)=>{
+            setIsloading(false)
             console.log("res=>",res)
             setExamanswer(res.data)
 
@@ -49,12 +53,12 @@ export const ExamAnswerList=(props)=>{
 
         <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }} style={props.head != '' ? {marginTop:'8%'} : {marginTop:'4%'} }>
             
-
-        {examanswer.length >0?
+          {!isLoading?<>
+                {examanswer.length >0?
                     Object.entries(examanswer).map(([key, val])=>{
-                       console.log("key",key,"val",val)
+                        console.log("key",key,"val",val)
                     //   console.log("userans=>",val.user_ans)
-                       
+                        
                         return(<>
                             
                             
@@ -72,58 +76,25 @@ export const ExamAnswerList=(props)=>{
                                             return(<>
                                                 <strong></strong>
                                                 {/* <label className="options rounded d-flex justify-content-between  "  style={val.user_ans[0]==val1.id?{background:"#ADE792", color:"#fff"}:{color:""}}><span >{val1.answers}</span> <span >{val.user_ans[0]==val1.id?<><i className="fa fa-fw fa-angle-left  "></i></>:""}</span> </label>  */}
-                                                <label className="options rounded d-flex justify-content-between  "  style={(typeof ansval !== 'undefined')?((val1.is_ans === "1")?success:fail):{}}><span >{val1.answers}</span> <span >{(typeof ansval !== 'undefined')?((val1.is_ans === "1")?<i className="fa fa-fw fa-check  "></i>:<i className="fa fa-fw fa-times  "></i>):{}?<></>:""}</span> </label> 
+                                                <label className="options rounded d-flex justify-content-between  "  style={(typeof ansval !== 'undefined')?((val1.is_ans === "1")?success:fail):(typeof ansval == 'undefined')&&(val1.is_ans === "1")?undefined:{}}><span >{val1.answers}</span> <span >{(typeof ansval !== 'undefined')?((val1.is_ans === "1")?<i className="fa fa-fw fa-check  "></i>:<i className="fa fa-fw fa-times  "></i>):{}?<></>:""}</span> </label> 
 
 
                                             </>)
                                         })}
-                                       
+                                        
                                     </div>
                                 </div>
                             </div>
 
 
-                                {/* <div className="row" style={{marginLeft:'2%'}} key={key}>
-
-                                    <div className="col-md-12 d-flex" style={{justifyContent:'space-between'}}>
-                                        <span style={{fontSize:'20px'}}>Q{(++key)}{val.question_ans.question}</span>
-                                        
-                                        
-                                    </div>
-                                    <div className="col-md-12">
-                                        {Object.entries(val.question_ans.campaign_answer).map(([key1,val1])=>{
-                                            //    console.log("key2",key1,"val2",val1)
-                                            return(<>
-                                                <strong>{val1.answers}</strong>
-
-                                            </>)
-                                        })}
-
-                                    </div>
-
-                                </div> */}
-
-                       
-
-                                    {/* <div className="row ">
-                                        <div className="col-md-12">
-
-                                            <label>Q{(++key)}{val.question_ans.question}</label>
-
-                                          
-                                            {Object.entries(val.question_ans.campaign_answer).map(([key1,val1])=>{
-                                                         //    console.log("key2",key1,"val2",val1)
-                                                        return(<>
-                                                            <strong>{val1.answers}</strong>
-
-                                                        </>)
-                                                    })}
-                                        </div>
-                                    </div> */}
-                              
+                                
+                                
                         </>)
                     })
-               :"" }
+                :"" 
+                }
+            </>:<Loader/>
+          }
         </Box>
 
    {/* <div className={`container ${props.head}`} style={props.head != '' ? {marginTop:'8%'} : {marginTop:'4%'} } >

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import "../../../css/Style.css"
 import  "../../../assets/vendors.css"
+import { ProfileImage } from '../Admin/Pages/ProfileImage/ProfileImage'
 // import  "../../../assets/js/common_scripts.js"
 // import  "../../../assets/js/main.js"
+import './profile.css'
 
 import logo from "../../../assets/img/logo.png";
 import logo_sticky from "../../../assets/img/logo_sticky.png";
@@ -10,13 +12,14 @@ import { Link } from 'react-router-dom';
 import Login from "../Login/Login";
 import Modals from "../Modal/Modals";
 import { useNavigate } from 'react-router-dom';
-function Navbar(){
-
+function Navbar(props){
+   
 	const navigation = useNavigate();
 
 	const [modal, setmodal] = useState(false)
 
 	const [color, setColor] = useState(false);
+	
 	const changeColor = () => {
 		if(window.scrollY >= 70){
 			setColor(true)
@@ -25,7 +28,12 @@ function Navbar(){
 		}
 	}
 
+
 	window.addEventListener('scroll', changeColor);
+	
+
+	 console.log("navprops=>",props)
+	
 
   return (
     <header className={'header '}>
@@ -57,6 +65,29 @@ function Navbar(){
 				<li><span><a href="/courses">Courses</a></span></li>
 			
 				<li><span><a href="/training/result-history">Past Score</a></span></li>
+				<li>
+					<Link to={"/my-profile"}> 
+						<div className="dropdown" >
+							<div className="btn dropbtn"   >
+								<div className="d-flex mr-auto">
+									{/* <div className="profile-img me-2">
+									<img width="50" height="50" src={"https://www.w3schools.com/howto/img_avatar.png"} />
+									</div>
+									{"nikhil"} */}
+									<div className="img-nav me-2">
+									<img style={{borderRadius: "55%"}} width="50" height="50" src={props.img?props.img:"https://www.w3schools.com/howto/img_avatar.png"} />
+									{/* <ProfileImage   borderRadius={"55%"}  width={'50'} height={'50'}/> */}
+									{"nikhil"}
+									</div>
+									
+								</div>
+							</div>
+		
+						</div>
+					
+					</Link>
+				   
+				</li>
 			<li><a className="login" id="sign-in" title="Logout" style={{color:'white'}}   onClick={()=>{localStorage.clear(),  navigation('/'), location.reload('/')}}><i className="fa fa-fw fa-sign-in"></i></a></li>
 
 			</ul>
@@ -69,3 +100,5 @@ function Navbar(){
 }
 
 export default Navbar
+
+

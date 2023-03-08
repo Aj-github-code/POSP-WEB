@@ -1,0 +1,25 @@
+/*  */
+  .profile-img img {
+    border-radius: 50%;
+    width: 12.7rem;
+    height: 12.7rem;
+    mix-blend-mode: unset !important;
+   
+
+  }
+ 
+  .img_edit {
+    margin: 60px 0px 0px -24px;
+    background-color: #00b050;
+    color: #fff;
+  }
+ 
+  .img_fold {
+     /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    background-color: #fff;
+    /* // margin: 29px 0px; */
+    /* // padding: 23px 21px; */
+    border-right: 1px solid #e5e2d8;
+  }
+ 
+  
