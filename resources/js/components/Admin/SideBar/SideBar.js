@@ -37,11 +37,11 @@ export default function SideBar() {
         <li className="nav-item" data-toggle="tooltip" style={{borderBottomColor:"#1F5B54", borderBottomWidth:"thin"}}  data-placement="right" title="My listings">
           <a className="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMylistingss">
             <i className="fa fa-fw fa-list"></i>
-            <span className="nav-link-text">&nbsp;Master Tag</span>
+            <span className="nav-link-text">&nbsp;Master Source</span>
           </a>
           <ul className="sidenav-second-level collapse" id="collapseMylistingss">
             <li>
-              <Link to="/tag-list">Tag List</Link>
+              <Link to="/source-list">Source List</Link>
             </li>
             
            
@@ -72,6 +72,15 @@ export default function SideBar() {
         <Link className="nav-link" to="/excel-uplaod">
             <i className="fa fa-fw fa-upload"></i>
             <span className="nav-link-text">&nbsp;Excel Upload</span>
+          </Link>
+         
+        </li>
+        
+        <li className="nav-item" data-toggle="tooltip" data-placement="right" style={{borderBottomColor:"#183883", borderBottomWidth:"thin"}}  title=" User Excel Upload">
+        
+        <Link className="nav-link" to="/userexcelupload">
+            <i className="fa fa-fw fa-upload"></i>
+            <span className="nav-link-text">&nbsp; User Excel Upload</span>
           </Link>
          
         </li>

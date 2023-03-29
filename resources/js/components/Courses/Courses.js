@@ -34,10 +34,15 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
 
     const [search, setSearch] = React.useState('');
 
+    const [pageLength,setPageLength]=useState(3)
+
     const apiCtrl = new Api;
-    React.useEffect(()=>{
+    React.useEffect(() => {
         handleCampaign('all');
-    },[search])
+    },[search, pageLength, props.campaign_type])
+    const getCampaign = () => {
+        
+    }
     const handleCampaign = (filter) => {
         Swal.fire({
             title: 'Loading...',
@@ -45,23 +50,56 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                 Swal.showLoading()
             }
         })
-        apiCtrl.callAxios('get-campaign',{campaign_type:props.campaign_type}, {assigned:filter, search: search}).then((res)=>{
+        apiCtrl.callAxios('get-campaign',{campaign_type:props.campaign_type,length:pageLength}, {assigned:filter, search: search}).then((res)=>{
             console.log('Response ',res);
 
             if(res.success == true){
-                setCourses({...res.data});
+                setCourses({...res.data.aaData});
             }
             Swal.close();  
         })
        
     }
+   const handleLoadMoreFromBottom = () => {
+        console.log("Coming to bottom");
+        // this.vehiclelist(this.state.pageLength+10);
+        setPageLength(pageLength+10)
+        // handleCampaign('all')
 
-    React.useEffect(()=>{
-        handleCampaign('all');
        
-    }, [props.campaign_type])
+      }
+
+ 
+
+    function secondsToTime(uploaddate){
+        var x = moment(uploaddate);
+        var y = moment();
+
+        let seconds = y.diff(x)/1000;
+        //  console.log("seconds: "+seconds)
+        seconds = Number(seconds);
+        var d = Math.floor(seconds / (3600*24));
+        var h = Math.floor(seconds % (3600*24) / 3600);
+        var m = Math.floor(seconds % 3600 / 60);
+        var s = Math.floor(seconds % 60);
 
 
+
+        
+        // var dDisplay = d > 0 ? d + (d == 1 ? " day " : " Days ") : "";
+        var dDisplay = d > 0 ? d :"";
+        var hDisplay = h > 0 ? h + (h == 1 ? "": "") : "";
+        var mDisplay = m > 0 ? m + (m == 1 ? " min " : " Min ") : "";
+        var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+        //  console.log('TIme '+ dDisplay + hDisplay + mDisplay + sDisplay)
+        // console.log("dDisplay",dDisplay)
+        if(dDisplay !== "")  {
+            return {day:dDisplay , color: "#FFA6A6"}
+        } else {
+            return {day:0 , color: ""}
+        }
+        
+    }
     
 
   return (
@@ -167,33 +205,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                         // console.log("date=>",dateTime)
 
                         var days =  secondsToTime(uploaddate)                        ;
-                            function secondsToTime(uploaddate){
-                            var x = moment(uploaddate);
-                            var y = moment();
-                    
-                            let seconds = y.diff(x)/1000;
-                            //  console.log("seconds: "+seconds)
-                            seconds = Number(seconds);
-                            var d = Math.floor(seconds / (3600*24));
-                            var h = Math.floor(seconds % (3600*24) / 3600);
-                            var m = Math.floor(seconds % 3600 / 60);
-                            var s = Math.floor(seconds % 60);
-
-
-
-                            
-                            // var dDisplay = d > 0 ? d + (d == 1 ? " day " : " Days ") : "";
-                            var dDisplay = d > 0 ? d :"";
-                            var hDisplay = h > 0 ? h + (h == 1 ? "": "") : "";
-                            var mDisplay = m > 0 ? m + (m == 1 ? " min " : " Min ") : "";
-                            var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-                            //  console.log('TIme '+ dDisplay + hDisplay + mDisplay + sDisplay)
-                            // console.log("dDisplay",dDisplay)
-                            if(dDisplay !== "")  {
-                                return {day:dDisplay , color: "#FFA6A6"}
-                            }
-                            
-                            }
+                     
                     //  console.log("timer=.",day)
                      
                      
@@ -287,6 +299,8 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                            
 
                                         </div>
+
+                                        
                                         <ul>
                                         
                                         <li>
@@ -322,9 +336,13 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                         </ul>
                                     </div>
 
+
+                                  
                                 
                                             
                                 </div>
+
+                                
 
                             // <div className="box_list isotope-item popular">
                             //     <div className="row no-gutters">
@@ -370,8 +388,17 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                         )
                     })
                 }
-       
+                 </div>
+
+                 <div className='row'>
+                    <div className='col-md-12 d-flex justify-content-center'>
+                        <button type="button" class="btn btn-outline-dark" onClick={handleLoadMoreFromBottom}>View More</button>&nbsp;
+                                            
+                        {/* <span className='mt-2'>CountPage:{this.state.vehicles.length}</span>&nbsp;<span className='mt-2'>TotalPages:{this.state.totalRecords}</span> */}
                     </div>
+
+
+                 </div>
             
             </div>
             

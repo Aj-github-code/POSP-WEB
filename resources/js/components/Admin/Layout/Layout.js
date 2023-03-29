@@ -24,6 +24,7 @@ import { FileUploadCampaign } from '../Pages/File_upload_Campaign/File_Upload_Ca
 import { ExamAnswerList } from '../Pages/Result_History/Examanswer';
 import { Tag } from '../Pages/Master Tag/Tag';
 import Taglist from '../Pages/Master Tag/Tag_List';
+import UserExcelUpload from '../Pages/User_Excel_Upload/UserExcelUpload';
 
 
 
@@ -93,9 +94,10 @@ export default function Layout() {
               <Route path='/result-history' element={<ResultHistory/>}/>
               <Route path='/upload-file' element={<FileUploadCampaign/>}/>
               <Route path='/fileUploadCampaign' element={<FileUploadCampaign/>}/>
-              {/* <Route path='/examans-list' element={<ExamAnswerList/>}/> */}
+              <Route path='/examans-list' element={<ExamAnswerList/>}/>
               <Route path='/tag' element={<Tag/>}/>
-              <Route path='/tag-list' element={<Taglist/>}/>
+              <Route path='/source-list' element={<Taglist/>}/>
+              <Route path='/userexcelupload' element={<UserExcelUpload/>}/>
            
           
                

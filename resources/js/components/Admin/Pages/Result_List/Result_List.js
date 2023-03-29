@@ -145,9 +145,11 @@ export default class ResultList extends React.Component {
   }
   
         const columns = [
-            { field: 'id', headerName: 'ID', width: 100},
+            { field: 'id', headerName: 'Sr.No', width: 100},
+            { field: 'name', headerName: 'Name',  width: 120},
             { field: 'mobile', headerName: 'Mobile',  width: 120},
             { field: 'email', headerName: 'Email',  width: 120},
+            {field:"created_at",headerName:'Exam Date',width:120},
             { field: 'exam_code', headerName: 'Exam Code',  width: 190},
             { field: 'campaign_code', headerName: 'Campaign Code',  width: 100},
             { field: 'status', headerName: 'PASS/FAIL',  width: 190},

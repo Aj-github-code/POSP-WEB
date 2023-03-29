@@ -102,8 +102,10 @@ export const ExcelUpload=()=>{
                        
 
                 </div>
+
+                <Divider sx={{ borderColor: '#dac4c4',marginBottom:5}}    />
                 <div className="row mt-4">
-                    <div className="col-md-3">
+                         <div className="col-md-3">
                             {/* <Button style={{ backgroundColor: '#183883'}} type="submit">Submit</Button> */}
                            <a href={'https://online-exam.primarykeytech.in/api/public/upload/excel/Courses.xlsx'}> <Button style={{ backgroundColor: '#1F5B54'}}  type="button">Download Course Excel Format</Button></a>
                         </div>
@@ -112,6 +114,10 @@ export const ExcelUpload=()=>{
                             {/* <Button style={{ backgroundColor: '#183883'}} type="submit">Submit</Button> */}
                             <a href={'https://online-exam.primarykeytech.in/api/public/upload/excel/TrainingExcel.xlsx'}>  <Button style={{ backgroundColor: '#1F5B54'}} type="button">Download Training Excel Format</Button></a>
                         </div>
+                        {/* <div className="col-md-3">
+                        <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} size='small' onClick={()=>exportLmsSummary} >Export LMS Summary</Button>&nbsp;&nbsp;
+              
+                        </div> */}
                 </div>
 
             </form>

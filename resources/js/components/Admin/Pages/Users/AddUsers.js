@@ -162,14 +162,24 @@ export class AddUsers extends React.Component {
                         } 
                     } else if(key === 'min'){
                         if(fieldValue.length < value){
-                            error[fieldName] = `${name} must be more than ${value} characters`
-                            isValid = false;
+                            if(name=="Mobile"){
+                                error[fieldName] = `${name} must be more than ${value} Number`
+                                isValid = false;
+                            }else{
+                                error[fieldName] = `${name} must be more than ${value} characters`
+                                isValid = false;
+                            }
+                         
                         }
                     } else if(key === 'max'){
                         if(fieldValue.length > value){
-                            error[fieldName] = `${name} must be less than ${value} characters`
-                            isMax = value;
-                            isValid = false;
+                            if(name=="Mobile"){
+                                error[fieldName] = `${name} must be more than ${value} Number`
+                                isValid = false;
+                            }else{
+                                error[fieldName] = `${name} must be more than ${value} characters`
+                                isValid = false;
+                            }
                         }
                     } else if(key === 'type'){
                         if(value === 'alpha'){
@@ -443,7 +453,7 @@ export class AddUsers extends React.Component {
                  />
             </div>
             <div className="col-md-4 mb-4">
-                <MaterialTextField value={this.state.mobile?this.state.mobile:""} label={" Mobile *"} size="small" fullWidth name='mobile' onChange={(e)=>{handleChange(e)}} 
+                <MaterialTextField type={'number'} value={this.state.mobile?this.state.mobile:""} label={" Mobile *"} size="small" fullWidth name='mobile' onChange={(e)=>{handleChange(e)}} 
                  helperText={
                     this.state.errors.mobile
                     ? this.state.errors.mobile
@@ -482,7 +492,7 @@ export class AddUsers extends React.Component {
 
                     <div className="col-md-4  mb-4">
                         <SearchableInputTextfield
-                        placeholder="Search" size={"small"} name={"search"} value={this.state.tag&&this.state.tag} 
+                        placeholder="Search" label={"Source"} size={"small"} name={"search"} value={this.state.tag&&this.state.tag} 
                         onChange={handletag}
                         fullWidth
 

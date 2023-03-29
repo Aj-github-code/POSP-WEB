@@ -17,9 +17,10 @@ import './Login2.css'
 import swal from 'sweetalert'
 
 import Swal from 'sweetalert2'
-import banner from '../../../assets/img/banner.jpg';
+import banner from '../../../assets/img/banners.jpg';
 import footer from '../../../assets/img/26.png'
 import logo from '../../../assets/img/logo.png'
+import { fontWeight } from '@mui/system'
 
 
 
@@ -231,14 +232,15 @@ export default class Login extends React.Component {
 
 <header>
         <div className="container">
-            <img src={logo} className="logo"/>
+            {/* <img src={logo} className="logo"/> */}
+            <h3 className='title'>POSP TRAINING PORTAL</h3>
         </div>
     </header>
-    <section className="container-fluid bg-dark" style={{marginTop: "121px"}}>
+    <section className="container-fluid bg-dark" style={{marginTop: "80px"}}>
         <div className="row">
             <div className="col-lg-6 p-0">
                 <img src={banner} className="img-fluid banner-img"/>
-                {/* <img src=""/> */}
+                
             </div>
             <div className="col-lg-1">
 
@@ -291,8 +293,14 @@ export default class Login extends React.Component {
                 </div>
 
 
-                <div className="col-lg-3 order-md-2 order-1 p-md-0 px-3 overflow-hidden ">
+                {/* <div className="col-lg-3 order-md-2 order-1 p-md-0 px-3 overflow-hidden ">
                     <img className="ms-md-0 ms-3 img-fluid" src={footer}/>
+                    <h6 className="text-white">Anand Rathi Insurance Brokers Limited</h6>
+                    <p>10th Floor Regent Chambers, Jamnalal Bajaj Marg,<br/> Nariman Point, Mumbai, Maharashtra 400021
+                    </p>
+                </div> */}
+                  <div className="col-lg-3 order-md-2 order-1 p-md-0 px-3 overflow-hidden ">
+                    <img className="mb-2 footer-img " src={footer} />
                     <h6 className="text-white">Anand Rathi Insurance Brokers Limited</h6>
                     <p>10th Floor Regent Chambers, Jamnalal Bajaj Marg,<br/> Nariman Point, Mumbai, Maharashtra 400021
                     </p>

@@ -139,6 +139,18 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+.title{
+    color: #fff !important;
+    font-size: 189%;
+    font-weight: 900;
+}
+
+.footer-img{
+    margin-left: 146px !important;
+    width: 61%;
+}
+
+
 :root {
     --primary: #07403c;
     --primaryDark: #022f33;

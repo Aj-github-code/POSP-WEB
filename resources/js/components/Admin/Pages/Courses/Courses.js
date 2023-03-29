@@ -392,7 +392,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
                 <div className="col-md-12">
                     <table className="table">
                         <tr>
-                            <td>#</td>
+                            <td>Sr.No</td>
                             <td>Name</td>
                             <td>Action</td>
 

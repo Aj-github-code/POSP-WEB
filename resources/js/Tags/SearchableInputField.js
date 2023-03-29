@@ -87,8 +87,13 @@ useEffect(()=>{
 
             <TextField style={{position:"relative"}}
                 name={props.name ? props.name : 'search'}
-                label={props.label? props.label : ""}      
-                //  value={listval}
+                label={props.label? props.label : ""}  
+                
+                InputLabelProps={{ 
+                  //  style:  props.style  ? (props.style.label ? {...props.style.label} :  {...labelcss}) : {...labelcss},
+                    shrink: true,
+                }}     
+                            //  value={listval}
                 value={props.value?props.value:""}
                 fullWidth={props.fullWidth ? true : false}
                 className={props.className ? props.className :  null}

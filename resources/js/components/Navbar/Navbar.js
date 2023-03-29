@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../../../css/Style.css"
 import  "../../../assets/vendors.css"
 import { ProfileImage } from '../Admin/Pages/ProfileImage/ProfileImage'
@@ -12,13 +12,18 @@ import { Link } from 'react-router-dom';
 import Login from "../Login/Login";
 import Modals from "../Modal/Modals";
 import { useNavigate } from 'react-router-dom';
+import Api from '../../api'
 function Navbar(props){
    
 	const navigation = useNavigate();
+	const apiCtrl=new Api
 
 	const [modal, setmodal] = useState(false)
 
 	const [color, setColor] = useState(false);
+	const  [state,setState] =useState({
+		id:""
+	})
 	
 	const changeColor = () => {
 		if(window.scrollY >= 70){
@@ -27,7 +32,22 @@ function Navbar(props){
 			setColor(false)
 		}
 	}
+     
+	useEffect(()=>{
 
+		
+			const data={
+				id:"3"
+			}
+	
+			apiCtrl.callAxios("users/myprofile",data).then(res=>{
+	
+			//	console.log("response=>",res)
+				setState({...res.data})
+	
+			})
+		
+	},[state.id])
 
 	window.addEventListener('scroll', changeColor);
 	
@@ -75,9 +95,9 @@ function Navbar(props){
 									</div>
 									{"nikhil"} */}
 									<div className="img-nav me-2">
-									<img style={{borderRadius: "55%"}} width="50" height="50" src={props.img?props.img:"https://www.w3schools.com/howto/img_avatar.png"} />
+									<img style={{borderRadius: "55%"}} width="50" height="50" src={state.profile_image?state.profile_image:"https://www.w3schools.com/howto/img_avatar.png"} />
 									{/* <ProfileImage   borderRadius={"55%"}  width={'50'} height={'50'}/> */}
-									{"nikhil"}
+									&nbsp;&nbsp;<span style={{color:"#ffff"}}>{state.name}</span>
 									</div>
 									
 								</div>

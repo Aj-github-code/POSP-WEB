@@ -69,6 +69,12 @@ export default class Taglist extends React.Component{
   
   
     render(){
+      const handleReload = (status) =>{
+        if(status == true){
+  
+          this.getRolelist();
+        }
+       }
         
       const  handleClick = (data) => {
         //console.log("userdata",data)
@@ -85,11 +91,12 @@ export default class Taglist extends React.Component{
   
     return(
       <>
+         <BreadCrumb breadcrumb="Source" breadcrumbItem1={"List"} />
   
        <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}> 
       
          <div style={{ height: 400, width: '100%' }}>
-         <Button  type="button" style={{ backgroundColor: '#183883',width:"auto", marginBottom: "20px", marginLeft:"83%",color:"#fff"}} href="#exampleModalToggle1" data-bs-toggle="modal" size='large' >Creat Tag</Button>
+         <Button  type="button" style={{ backgroundColor: '#183883',width:"auto", marginBottom: "20px", marginLeft:"83%",color:"#fff"}} href="#exampleModalToggle1" data-bs-toggle="modal" size='large' >Create Source</Button>
      
         <DataGrid
           sx={{width:"100%", overflowX:"auto"}}
@@ -112,7 +119,7 @@ export default class Taglist extends React.Component{
         </div>
       </Box>
       <Model  />
-      <TagEdit params={this.state.roleData}/>
+      <TagEdit isLoading={handleReload}  params={this.state.roleData}/>
   
         
       </>
@@ -262,7 +269,7 @@ function Model(props){
           <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
           <div className="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Tag Create</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Create Source</h5>
               <div className="row ml-1" style={{ paddingTop: '2%'}}>
                   {/* <label><b>{props.params.any} Details</b></label> */}
               </div>
@@ -342,12 +349,15 @@ class TagEdit  extends React.Component {
                     icon: "success",
                     showConfirmButton: false,
                 })
+                  
                 setTimeout(() => {
+                  this.props.isLoading(true)
+               
                     Swal.close()
-                    this.state({
-                       
-                    })
-              }, 3000);
+                    
+                }, 3000);
+              // this.props.isLoading(true)
+              // $('.close').trigger('click')
             } else {
                 Swal.fire({
                     title: "Tag",
@@ -376,7 +386,7 @@ class TagEdit  extends React.Component {
                 <div className="modal-content">
                     <div className="modal-header">
                         <div className="row ml-1" style={{ paddingTop: '2%'}}>
-                            <label><b>Tag Update</b></label>
+                            <label><b>Update Source</b></label>
                             
                         </div>
                         <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">

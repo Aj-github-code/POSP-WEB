@@ -22,6 +22,7 @@ export default function MaterialSelect(props) {
      <FormControl fullWidth={props.fullWidth ? true : false}   >
      <InputLabel 
        id={props.labelId ? props.labelId : 'select-label-id'}
+     
        
        >
         {props.label? props.label : "Select Box"}
@@ -32,7 +33,8 @@ export default function MaterialSelect(props) {
       //  id={props.id ? props.id : 'select-id'}
        name={props.name ? props.name : 'select-name'}
        label={props.label? props.label : "Select Box"}
-       
+   
+      
        value={props.value? props.value : ''}
       //  onChange={(e)=>handleSelectBox(e.target.value)}
        {...props}

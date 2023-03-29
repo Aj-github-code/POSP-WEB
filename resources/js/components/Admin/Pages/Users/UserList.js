@@ -109,12 +109,12 @@ export  class UserList extends React.Component {
   render() {
 
     let user =  this.props.params.any.replace(/-/g, " "); 
-    //  var userType = user
-    //  .toLowerCase()
-    //  .split(' ')
-    //  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    //  .join(' ');
-     var userType= user.toUpperCase()
+     var userType = user
+     .toLowerCase()
+     .split(' ')
+     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+     .join(' ');
+    //  var userType= user.toUpperCase()
 
     const getstatedata = () => {
 
@@ -192,23 +192,40 @@ export  class UserList extends React.Component {
        {field:"state_name",headerName:'Area',width:190,renderCell:(params) => params.row.state_name !== null ? <span>{params.row.state_name}</span> : 'Not Assigned'},
        {field:"category",headerName:'Category',width:190,renderCell:(params) => params.row.category !== null ? <span>{params.row.category}</span> : 'Not Assigned'},
        {field:"manager",headerName:'Reporting Manager',width:300,renderCell:(params) => params.row.manager !== null ? <span>{params.row.manager}</span> : 'Not Assigned'},
-      { field: 'action', headerName: 'Action',  width: 300,  renderCell: (params) => <Action func={handleClick} isLoading={handleReload} userType={userType}  key={params.row.id} param={params.row} />, },
+      { field: 'action', headerName: 'Action',  width: 400,  renderCell: (params) => <Action func={handleClick} isLoading={handleReload} userType={userType}  key={params.row.id} param={params.row} />, },
     ];
 
     if(user === 'admin'){
       
       var columns = [
-        { field: 'sr_no', headerName: 'SR.No', width: 100 },
+        { field: 'sr_no', headerName: 'Sr.No', width: 100 },
         { field: 'name', headerName: 'Name', width: 190 },
         { field: 'email', headerName: 'Email', width: 300 },
         { field: 'mobile', headerName: 'Mobile', width: 190 },
-        {field:"tag",headerName:'Tag',width:190,renderCell:(params) => params.row.tag !== null ? <span>{params.row.tag}</span> : 'Not Assigned'},
+        {field:"tag",headerName:'Source',width:190,renderCell:(params) => params.row.tag !== null ? <span>{params.row.tag}</span> : 'Not Assigned'},
   
         {field:"state_name",headerName:'Area',width:190,renderCell:(params) => params.row.state_name !== null ? <span>{params.row.state_name}</span> : 'Not Assigned'},
         { field: 'action', headerName: 'Action',  width: 300,  renderCell: (params) => <Action func={handleClick} isLoading={handleReload} userType={userType}  key={params.row.id} param={params.row} />, },
       ];
     } 
 
+
+    const exportLmsSummary = () => {
+      // console.log('HII')
+      this.apiCtrl.callAxios('export-lms-summary').then((res)=>{
+        if(res.success == true){
+          window.open(res.data.link, '_blank')
+        }else {
+          Swal.fire({
+            title:'Export Lms Summary',
+            text:'Unable TO Export Lms Summary!',
+            icon:'error',
+            timer:3000,
+            showConfirmButton: false,
+          })
+        }
+      })
+     }
    
   //  console.log(this.state.role_name)
 
@@ -221,8 +238,11 @@ export  class UserList extends React.Component {
     <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}>
      
      <div className='row mb-3'>
-      <div className='col-md-3 mb-3'>
-        <Button  type="button" style={{ backgroundColor: '#1F5B54',width:"auto", color:"#fff"}} href="#exampleModalToggle1" data-bs-toggle="modal" size='large' >Add {userType}</Button>
+      <div className='col-md-4 mb-3 d-flex justify-content-between'>
+        <Button  type="button" style={{ backgroundColor: '#1F5B54',width:"auto", color:"#fff", marginBottom:10}} href="#exampleModalToggle1" data-bs-toggle="modal" size='large' >Add {userType}</Button>
+        {userType === 'Posp' &&
+               <Button  type="button"  style={{ backgroundColor: '#1F5B54',width:"auto",color:"#fff",marginBottom:10}} size='small' onClick={exportLmsSummary} >Export LMS Summary</Button>
+        }
       </div>
       <div className='col-md-3 mb-3'>
       <MaterialSelect value={this.state.state?this.state.state:""}
@@ -246,7 +266,7 @@ export  class UserList extends React.Component {
            
 
       </div>
-      <div className='col-md-3 mb-3'>
+      <div className='col-md-2 mb-3'>
          <MaterialTextField 
 
            label={"Search"}    size={"small"}   
@@ -373,7 +393,10 @@ function Action(props){
 
       
    }
-    
+   
+   
+
+
     return (  
       <>
 
@@ -382,7 +405,7 @@ function Action(props){
                {props.userType=="POSP"?<>
                 <Link key={props.key} to='/result-history' state={{param:props.param}}>  <Button  type="button"  style={{ backgroundColor: '#1F5B54',color:"#fff"}} size='small' >View Details</Button></Link>  
               
-               </>:""}
+               </>:""}&nbsp;&nbsp;
               
                
              
@@ -402,7 +425,7 @@ function Model(props){
     <>
    
       <div className="modal fade" id="exampleModalToggle1" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-        <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
         <div className="modal-header">
             {/* <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5> */}
@@ -623,16 +646,18 @@ function ViewResult(props){
 
  
   componentDidUpdate(prevProps,prevState){
-    if(prevProps.params.id !== this.props.params.id){
-      console.log('Propps', this.props.data)
+    if(prevProps.params.id !== this.props.params.id ){
+      console.log('Propps', this.props)
+     
+      this.setState(this.props.params)
+     
+      
       this.getstatedata()
       this.listadmin()
-  
-      this.setState(this.props.params)
       this.citylist()
     
        
-        // console.log("state=>",this.state)
+      
 
      
      
@@ -642,11 +667,11 @@ function ViewResult(props){
   }
 
 
-  componentDidMount(){
-    this.getstatedata()
-    this.listadmin()
-    this.citylist()
-  }
+  // componentDidMount(){
+  //   this.getstatedata()
+  //   this.listadmin()
+  //   this.citylist()
+  // }
 
 
  getstatedata = () => {
@@ -678,7 +703,9 @@ function ViewResult(props){
 }
 
 citylist=()=>{
-  this.apiCtrl.callAxios('cities/list',{search:{state_id:this.state.city}}).then(res => {
+   const city=this.props.params.state
+ 
+  this.apiCtrl.callAxios('cities/list',{search:{state_id:city}}).then(res => {
     res.data.map((value)=>{                  
     //    console.log("city==>",value)
             this.setState(old => ({...old, citydata:{ ...old.citydata, [value.id]:value.city_name}}))                
@@ -778,7 +805,7 @@ citylist=()=>{
               if(response.success == true){
                   Swal.fire({
                       title: "User",
-                      text: "Updated",
+                      text: response.message,
                       icon: "success",
                       timer: 3000,
                       showConfirmButton: false,
@@ -788,7 +815,7 @@ citylist=()=>{
               } else {
                   Swal.fire({
                       title: "user",
-                      text: "Not Updated!",
+                      text: response.message,
                       icon: "error",
                       timer: 3000,
                       showConfirmButton: false,
@@ -874,14 +901,23 @@ citylist=()=>{
                   } 
               } else if(key === 'min'){
                   if(fieldValue.length < value){
-                      error[fieldName] = `${name} must be more than ${value} characters`
-                      isValid = false;
+                      if(name=="Mobile"){
+                        error[fieldName] = `${name} must be more than ${value} Number`
+                        isValid = false;
+                    }else{
+                        error[fieldName] = `${name} must be more than ${value} characters`
+                        isValid = false;
+                    }
                   }
               } else if(key === 'max'){
                   if(fieldValue.length > value){
-                      error[fieldName] = `${name} must be less than ${value} characters`
-                      isMax = value;
-                      isValid = false;
+                      if(name=="Mobile"){
+                        error[fieldName] = `${name} must be more than ${value} Number`
+                        isValid = false;
+                    }else{
+                        error[fieldName] = `${name} must be more than ${value} characters`
+                        isValid = false;
+                    }
                   }
               } else if(key === 'type'){
                   if(value === 'alpha'){
@@ -998,263 +1034,263 @@ citylist=()=>{
 
   //  let user = '';
   
-const adminlist=()=>{
+  const adminlist=()=>{
 
-  if(this.state.admindata.length>0){
-      this.apiCtrl.callAxios('users/list',{role_name:"admin"}).then(res => {
+    if(this.state.admindata.length>0){
+        this.apiCtrl.callAxios('users/list',{role_name:"admin"}).then(res => {
 
-        //  console.log("admin res=>",res)
+          //  console.log("admin res=>",res)
 
-          res.data.aaData.map((value)=>{                  
-              //console.log("STATE==>",value)
-              this.setState(old => ({...old, admindata:{ ...old.admindata, [value.id]:value.name}}))                
-          })      
-      })
+            res.data.aaData.map((value)=>{                  
+                //console.log("STATE==>",value)
+                this.setState(old => ({...old, admindata:{ ...old.admindata, [value.id]:value.name}}))                
+            })      
+        })
+    }
+
+
+
   }
 
+  const handletag=(e)=>{
+      
+      this.setState(old=>({...old, tag:e.target.value}))
+      
+  }
+  const category =()=>{
 
 
-}
+      
+      if(this.state.categoryData.length>0){
+          this.apiCtrl.callAxios("product/product-category-list").then(res=>{
+            //  console.log("category",res)
 
-const handletag=(e)=>{
+              Object.entries(res.data).map(([key,value])=>{
+                  // console.log("value=>",value)
+
+              this.setState(old=>({...old,categoryData:{...old.categoryData,[value.id]:value.category_name}}))
+              })
+          })
+
+      }
+      
+  }
+
+ // console.log("state=>",this.state)
+  return (
+    <>   
+
+
+  <div className="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+  <div className="modal-dialog modal-lg modal-dialog-centered">
+  <div className="modal-content">
+  <div className="modal-header">
+      <h5 class="modal-title" id="exampleModalLongTitle"> Update {  userType } Details</h5>
+      <div className="row ml-1" style={{ paddingTop: '2%'}}>
+          {/* <label><b>{props.params.any} Details</b></label> */}
+      </div>
+      <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
     
-    this.setState(old=>({...old, tag:e.target.value}))
-    
-}
-const category =()=>{
+    <div className="modal-body m-body">
+      
+    <div className="row">
 
+    {/* <BreadCrumb breadcrumb="Users" breadcrumbItem1={'Create ' +   userType} /> */}
 
-    
-    if(this.state.categoryData.length>0){
-        this.apiCtrl.callAxios("product/product-category-list").then(res=>{
-          //  console.log("category",res)
+      <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}>
 
-            Object.entries(res.data).map(([key,value])=>{
-                // console.log("value=>",value)
-
-            this.setState(old=>({...old,categoryData:{...old.categoryData,[value.id]:value.category_name}}))
-            })
-        })
-
-    }
-    
-}
-
-// console.log("state=>",this.state)
-        return (
-          <>   
-
-
-      <div className="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-        <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-        <div className="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle"> Update {  userType } Details</h5>
-            <div className="row ml-1" style={{ paddingTop: '2%'}}>
-                {/* <label><b>{props.params.any} Details</b></label> */}
-            </div>
-            <button type="button"   data-bs-dismiss="modal" className="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+      <div className="row ml-1 mb-3">
           
-          <div className="modal-body m-body">
-            
-          <div className="row">
+          <label><b>Personal Information</b></label>
+      </div>
 
-          {/* <BreadCrumb breadcrumb="Users" breadcrumbItem1={'Create ' +   userType} /> */}
+      {/* <Button style={{ backgroundColor: '#183883'}} onClick={ getdatabyid }>getdatabyid</Button> */}
 
-            <Box sx={{ width: '100%', height: '100%', typography: 'body1', backgroundColor:'white', borderRadius:"6px", padding: '2%' }}>
+      
+      <div className="row ml-1" style={{ paddingTop: '2%'}}>
+          {/* <label><b>Personal Information</b></label> */}
+      </div>
+      <div className="row ">
 
-            <div className="row ml-1 mb-3">
-               
-                <label><b>Personal Information</b></label>
-            </div>
-
-            {/* <Button style={{ backgroundColor: '#183883'}} onClick={ getdatabyid }>getdatabyid</Button> */}
-
-           
-            <div className="row ml-1" style={{ paddingTop: '2%'}}>
-                {/* <label><b>Personal Information</b></label> */}
-            </div>
-            <div className="row ">
-
-                <div className="col-md-4 mb-4">
-                    <MaterialTextField 
-                      value={this.state.name?this.state.name:""}
-                      label={" Name *"} 
-                      size="small"
-                    
-                      fullWidth name='name' onChange={(e)=>{handleChange(e)}}
-                      helperText={
-                        this.state.errors.name
-                        ? this.state.errors.name
-                        : ''
-                       }
-                       error={this.state.errors.name?true:false}
-                      />
-                </div>
-                <div className="col-md-4 mb-4">
-                    <MaterialTextField value={this.state.email?this.state.email:""}   label={" Email *"} size="small" fullWidth name='email' onChange={(e)=>{handleChange(e)}}
-                    helperText={
-                      this.state.errors.email
-                      ? this.state.errors.email
-                      : ''
-                     }
-                     error={this.state.errors.email?true:false}
-                    />
-                </div>
-                <div className="col-md-4 mb-4">
-                    <MaterialTextField value={this.state.mobile?this.state.mobile:""} label={" Mobile *"} size="small" fullWidth name='mobile' onChange={(e)=>{handleChange(e)}}
-                    helperText={
-                      this.state.errors.mobile
-                      ? this.state.errors.mobile
-                      : ''
-                     }
-                     error={this.state.errors.mobile?true:false}
-                    />
-                </div>
-                {/* <div className="col-md-4 mb-4">
-                    <MaterialTextField    onKeyUp={submituser} value={this.state.password?this.state.password:""} type={"password"} label={  userType + " Password *"} size="small" fullWidth name='password' onChange={(e)=>this.setState({password : e.target.value})}/>
-                </div>
-               
-                <div className="col-md-4 mb-4">
-                    <MaterialTextField value={this.state.c_password?this.state.c_password:""} type={"password"} label="Confirm Password *" size="small" fullWidth name='c_password' onChange={(e)=>this.setState({c_password : e.target.value})}/>
-                </div> */}
-
-              {userType!=="Posp"?
-                <>
-
-
-                    <div className="col-md-4  mb-4">
-                        <SearchableInputTextfield
-                        placeholder="Search" size={"small"} name={"search"} value={this.state.tag&&this.state.tag} 
-                        onChange={handletag}
-
-                        />
-
-                    </div>
-
-                </>:
-                <>
-
-                    <div className='col-md-4 mb-4'>       
-                        <MaterialSelect value={this.state.reportingManager} onMouseEnter={adminlist} 
-                          size={"small"}   
-                            data={this.state.admindata}  id="state_id" labelId="state" name="reportingManager" onChange={(e)=>{handleChange(e)}}  label="Reporting Manager" fullWidth
-                        
-                        />
-                
-                    </div>
-
-
-
-                </>
-              }
-
-              {userType=="Posp"?<>
-
-                  <div className='col-md-4 mb-4'>
+          <div className="col-md-4 mb-4">
+              <MaterialTextField 
+                value={this.state.name?this.state.name:""}
+                label={" Name *"} 
+                size="small"
               
-                      <MaterialSelect value={this.state.category?this.state.category:""} 
-                              size={"small"}     
-                      data={this.state.categoryData}  id="state_id" labelId="state" name="category" onChange={(e)=>{handleChange(e)}} onMouseEnter={category} label="Category" fullWidth
-                      
-                      />
-                  </div>
-                  </>:""
-              }
-
-                
-                
-            </div>
-
-            <Divider sx={{ borderColor: '#dac4c4'}} />
-
-            <div className="row ml-1 mb-3" style={{ paddingTop: '2%'}}>
-                <label><b>Address</b></label>
-            </div>
-            <div className="row ">
-
-                <div className="col-md-4 mb-4">
-                    <MaterialTextField value={this.state.address?this.state.address:""} label="Address *" size="small" fullWidth name='address' onChange={(e)=>{handleChange(e)}} onKeyUp={(e)=>getLatLng(e.target.value)}
-                    helperText={
-                      this.state.errors.address
-                      ? this.state.errors.address
-                      : ''
-                     }
-                     error={this.state.errors.address?true:false}
-                    />
-                </div>
-                {/* <div className="col-md-4 mb-4">
-                    <MaterialTextField value={this.state.city?this.state.city:""}label="City *" size="small" fullWidth name='city' onChange={(e)=>this.setState({city : e.target.value})}/>
-                </div>
-                <div className="col-md-4 mb-4">
-                    <MaterialTextField value={this.state.state?this.state.state:""} label="State *" size="small" fullWidth name='state' onChange={(e)=>this.setState({state : e.target.value})}/>
-                </div> */}
-                <div className='col-md-4'>        
-              <MaterialSelect value={this.state.state?this.state.state:""}        data={this.state.statedata}  id="state_id" labelId="state" name="state" onChange={(e)=>{handleChange(e)}} label="State *" fullWidth
-              helperText={
-                this.state.errors.state
-                ? this.state.errors.state
-                : ''
-               }
-               error={this.state.errors.state?true:false}
-              />
-            </div>
-
-            <div className='col-md-4'>        
-              <MaterialSelect   value={this.state.city?this.state.city:""}      data={this.state.citydata}  id="city_id" labelId="city-id" name="city" onChange={(e)=>{handleChange(e)}} label="City *" fullWidth
-              helperText={
-                this.state.errors.city
-                ? this.state.errors.city
-                : ''
-               }
-               error={this.state.errors.city?true:false}
-              />
-            </div>
-                <div className="col-md-4 mb-4">
-                    <MaterialTextField value={this.state.pincode?this.state.pincode:""} label="Pincode *" size="small" fullWidth name='pincode' onChange={(e)=>{handleChange(e)}}
-                    helperText={
-                      this.state.errors.pincode
-                      ? this.state.errors.pincode
-                      : ''
-                     }
-                     error={this.state.errors.pincode?true:false}
-                    />
-                </div>
-                
-            </div>
-            <Divider sx={{ borderColor: '#dac4c4'}} />
-
-            <div className='row mt-2'>
-                <div className="col-md-3">
-                    <Button style={{ backgroundColor: '#1F5B54' ,color:"#fff"}} onClick={ submituser }>Update</Button>
-                </div>
-            </div>
-            </Box>
-         
-
+                fullWidth name='name' onChange={(e)=>{handleChange(e)}}
+                helperText={
+                  this.state.errors.name
+                  ? this.state.errors.name
+                  : ''
+                  }
+                  error={this.state.errors.name?true:false}
+                />
           </div>
-            
-          {/* <div className="modal-footer">
+          <div className="col-md-4 mb-4">
+              <MaterialTextField value={this.state.email?this.state.email:""}   label={" Email *"} size="small" fullWidth name='email' onChange={(e)=>{handleChange(e)}}
+              helperText={
+                this.state.errors.email
+                ? this.state.errors.email
+                : ''
+                }
+                error={this.state.errors.email?true:false}
+              />
+          </div>
+          <div className="col-md-4 mb-4">
+              <MaterialTextField value={this.state.mobile?this.state.mobile:""} label={" Mobile *"} size="small" fullWidth name='mobile' onChange={(e)=>{handleChange(e)}}
+              helperText={
+                this.state.errors.mobile
+                ? this.state.errors.mobile
+                : ''
+                }
+                error={this.state.errors.mobile?true:false}
+              />
+          </div>
+          {/* <div className="col-md-4 mb-4">
+              <MaterialTextField    onKeyUp={submituser} value={this.state.password?this.state.password:""} type={"password"} label={  userType + " Password *"} size="small" fullWidth name='password' onChange={(e)=>this.setState({password : e.target.value})}/>
+          </div>
+          
+          <div className="col-md-4 mb-4">
+              <MaterialTextField value={this.state.c_password?this.state.c_password:""} type={"password"} label="Confirm Password *" size="small" fullWidth name='c_password' onChange={(e)=>this.setState({c_password : e.target.value})}/>
+          </div> */}
+
+        {userType!=="Posp"?
+          <>
+
+
+              <div className="col-md-4  mb-4">
+                  <SearchableInputTextfield
+                  placeholder="Search" label={"Source"} size={"small"} name={"search"} value={this.state.tag&&this.state.tag} 
+                  onChange={handletag}
+
+                  />
+
+              </div>
+
+          </>:
+          <>
+
+              <div className='col-md-4 mb-4'>       
+                  <MaterialSelect value={this.state.reportingManager} onMouseEnter={adminlist} 
+                    size={"small"}   
+                      data={this.state.admindata}  id="state_id" labelId="state" name="reportingManager" onChange={(e)=>{handleChange(e)}}  label="Reporting Manager" fullWidth
                   
-
-                  <Button data-bs-dismiss="modal" style={{ backgroundColor: 'rgb(108 110 116)',color:"#fff"}}>Close</Button>&nbsp;&nbsp;
-                
+                  />
           
-                  {/* <Button data-bs-dismiss="modal" style={{ backgroundColor: '#183883',color:"#fff"}} onClick={ submituser }>Submit</Button> 
-                
-                </div>*/}
-          </div>  
+              </div>
 
-          
-        </div>
-      </div>
-      </div>
-            
+
+
           </>
-        )
+        }
+
+        {userType=="Posp"?<>
+
+            <div className='col-md-4 mb-4'>
+        
+                <MaterialSelect value={this.state.category?this.state.category:""} 
+                        size={"small"}     
+                data={this.state.categoryData}  id="state_id" labelId="state" name="category" onChange={(e)=>{handleChange(e)}} onMouseEnter={category} label="Category" fullWidth
+                
+                />
+            </div>
+            </>:""
+        }
+
+          
+          
+      </div>
+
+      <Divider sx={{ borderColor: '#dac4c4'}} />
+
+      <div className="row ml-1 mb-3" style={{ paddingTop: '2%'}}>
+          <label><b>Address</b></label>
+      </div>
+      <div className="row ">
+
+          <div className="col-md-4 mb-4">
+              <MaterialTextField value={this.state.address?this.state.address:""} label="Address *" size="small" fullWidth name='address' onChange={(e)=>{handleChange(e)}} onKeyUp={(e)=>getLatLng(e.target.value)}
+              helperText={
+                this.state.errors.address
+                ? this.state.errors.address
+                : ''
+                }
+                error={this.state.errors.address?true:false}
+              />
+          </div>
+          {/* <div className="col-md-4 mb-4">
+              <MaterialTextField value={this.state.city?this.state.city:""}label="City *" size="small" fullWidth name='city' onChange={(e)=>this.setState({city : e.target.value})}/>
+          </div>
+          <div className="col-md-4 mb-4">
+              <MaterialTextField value={this.state.state?this.state.state:""} label="State *" size="small" fullWidth name='state' onChange={(e)=>this.setState({state : e.target.value})}/>
+          </div> */}
+          <div className='col-md-4'>        
+        <MaterialSelect value={this.state.state?this.state.state:""}        data={this.state.statedata}  id="state_id" labelId="state" name="state" onChange={(e)=>{handleChange(e)}} label="State *" fullWidth
+        helperText={
+          this.state.errors.state
+          ? this.state.errors.state
+          : ''
+          }
+          error={this.state.errors.state?true:false}
+        />
+      </div>
+
+      <div className='col-md-4'>        
+        <MaterialSelect   value={this.state.city?this.state.city:""}      data={this.state.citydata}  id="city_id" labelId="city-id" name="city" onChange={(e)=>{handleChange(e)}} label="City *" fullWidth
+        helperText={
+          this.state.errors.city
+          ? this.state.errors.city
+          : ''
+          }
+          error={this.state.errors.city?true:false}
+        />
+      </div>
+          <div className="col-md-4 mb-4">
+              <MaterialTextField value={this.state.pincode?this.state.pincode:""} label="Pincode *" size="small" fullWidth name='pincode' onChange={(e)=>{handleChange(e)}}
+              helperText={
+                this.state.errors.pincode
+                ? this.state.errors.pincode
+                : ''
+                }
+                error={this.state.errors.pincode?true:false}
+              />
+          </div>
+          
+      </div>
+      <Divider sx={{ borderColor: '#dac4c4'}} />
+
+      <div className='row mt-2'>
+          <div className="col-md-3">
+              <Button style={{ backgroundColor: '#1F5B54' ,color:"#fff"}} onClick={ submituser }>Update</Button>
+          </div>
+      </div>
+      </Box>
+    
+
+    </div>
+      
+    {/* <div className="modal-footer">
+            
+
+            <Button data-bs-dismiss="modal" style={{ backgroundColor: 'rgb(108 110 116)',color:"#fff"}}>Close</Button>&nbsp;&nbsp;
+          
+    
+            {/* <Button data-bs-dismiss="modal" style={{ backgroundColor: '#183883',color:"#fff"}} onClick={ submituser }>Submit</Button> 
+          
+          </div>*/}
+    </div>  
+
+    
+  </div>
+  </div>
+  </div>
+      
+    </>
+  )
 }
 };
 
