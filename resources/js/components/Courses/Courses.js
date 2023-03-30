@@ -35,6 +35,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
     const [search, setSearch] = React.useState('');
 
     const [pageLength,setPageLength]=useState(3)
+    const [total,setTotal]=useState()
 
     const apiCtrl = new Api;
     React.useEffect(() => {
@@ -55,6 +56,8 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
 
             if(res.success == true){
                 setCourses({...res.data.aaData});
+               // total:response.data.iTotalRecords
+               setTotal(response.data.iTotalRecords)
             }
             Swal.close();  
         })
@@ -388,9 +391,10 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                         )
                     })
                 }
-                 </div>
+                </div>
+               {courses.length!==total?<>
 
-                 <div className='row'>
+                <div className='row'>
                     <div className='col-md-12 d-flex justify-content-center'>
                         <button type="button" class="btn btn-outline-dark" onClick={handleLoadMoreFromBottom}>View More</button>&nbsp;
                                             
@@ -398,7 +402,9 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                     </div>
 
 
-                 </div>
+                </div>
+               </>:""}
+               
             
             </div>
             
