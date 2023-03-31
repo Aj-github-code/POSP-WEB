@@ -27,14 +27,45 @@ import { BrowserRouter as Router , Routes, Route } from 'react-router-dom'
 import ResultHistory from '../Admin/Pages/Result_History/Result_History'
 import { ExamAnswerList } from '../Admin/Pages/Result_History/Examanswer'
 import My_Profile from '../MyProfile/My_Profile'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import Api from '../../api'
 
 
  const Frontend = () => {
+
+    const [state,setState]=useState({
+        id:""
+    })
+    const apiCtrl=new Api
+
+    useEffect(()=>{
+        var x = localStorage.getItem("user_details");
+        console.log("getlocatdata=>",x)
+
+        let localdata=JSON.parse(x) 
+        const data={
+            email:localdata.email
+            
+        }
+
+
+
+
+
+        apiCtrl.callAxios("users/myprofile",data).then(res=>{
+
+        //	console.log("response=>",res)
+            setState({...res.data})
+
+        })
+
+        },[state.id])
     return (
         <>
         <Router> 
 
-        <Navbar/>
+        <Navbar data={state}/>
         <Routes>       
 
             <Route exact path="/" element={ <Courses campaign_type={"training"} head={'margin_60_35'} />} />

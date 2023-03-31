@@ -53,9 +53,19 @@ import { ConstructionOutlined } from "@mui/icons-material";
     }
 
     pospprofiledata(){
+
+        var x = localStorage.getItem("user_details");
+             console.log("getlocatdata=>",x)
+
+         let localdata=JSON.parse(x) 
         const data={
-            id:"3"
+           email:localdata.email
+           
         }
+
+      //  console.log("localdata",data)
+
+
 
         this.apiCtrl.callAxios("users/myprofile",data).then(res=>{
 

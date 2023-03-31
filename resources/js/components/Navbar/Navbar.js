@@ -34,11 +34,18 @@ function Navbar(props){
 	}
      
 	useEffect(()=>{
+					var x = localStorage.getItem("user_details");
+					console.log("getlocatdata=>",x)
+
+				let localdata=JSON.parse(x) 
+			const data={
+				email:localdata.email
+				
+			}
+
 
 		
-			const data={
-				id:"3"
-			}
+			
 	
 			apiCtrl.callAxios("users/myprofile",data).then(res=>{
 	
@@ -95,9 +102,9 @@ function Navbar(props){
 									</div>
 									{"nikhil"} */}
 									<div className="img-nav me-2">
-									<img style={{borderRadius: "55%"}} width="50" height="50" src={state.profile_image?state.profile_image:"https://www.w3schools.com/howto/img_avatar.png"} />
+									<img style={{borderRadius: "55%"}} width="50" height="50" src={state.profile_image?state.profile_image:props.data.profile_image?props.data.profile_image:"https://www.w3schools.com/howto/img_avatar.png"} />
 									{/* <ProfileImage   borderRadius={"55%"}  width={'50'} height={'50'}/> */}
-									&nbsp;&nbsp;<span style={{color:"#ffff"}}>{state.name}</span>
+									&nbsp;&nbsp;<span style={{color:"#ffff"}}>{state.name?state.name:props.data.name}</span>
 									</div>
 									
 								</div>

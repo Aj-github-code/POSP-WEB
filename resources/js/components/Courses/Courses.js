@@ -57,9 +57,11 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
             if(res.success == true){
                 setCourses({...res.data.aaData});
                // total:response.data.iTotalRecords
-               setTotal(response.data.iTotalRecords)
+               setTotal(res.data.iTotalRecords)
+            //    Swal.close();  
             }
             Swal.close();  
+          
         })
        
     }
@@ -202,7 +204,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                         const uploaddate =value.created_at
                        
                             
-                        var date1 = new Date(value.previous_result.created);
+                        var date1 = new Date(value.previous_result?value.previous_result.created:"");
                         var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
                         // var date2= date1.moment().format('ddd MMM DD YYYY hh:mm:ss')
                         // console.log("date=>",dateTime)
@@ -291,7 +293,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                                     <span className='d-flex justify-content-between'  data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample"><label style={{width:'auto'}}><b>{"Previous Report"}</b></label></span>
                                             
                                                         <div className="row mb-4 collapse" id="collapseExample1">  
-                                                        <p> <span className="price">Marks: <strong>{value.previous_result.marks}</strong>,Result: <strong style={{color:'red'}}>{value.previous_result.status}</strong></span></p>
+                                                        <p> <span className="price">Marks: <strong>{value.previous_result?value.previous_result.marks:""}</strong>,Result: <strong style={{color:'red'}}>{value.previous_result?value.previous_result.status:""}</strong></span></p>
                                                         
                                                         <span>Exam Date & Time:{dateTime} </span> 
                                                     </div>
