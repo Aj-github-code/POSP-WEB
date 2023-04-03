@@ -41,8 +41,8 @@ export class AddUsers extends React.Component {
             mobile:{required:true, min:10, max:10, type:'numeric'}, 
             email:{required:true,min:6, type:'email'}, 
             // insured_nominee_name:{required:true,min:4, type:'alpha'}, 
-            password:{required:true,min:6, type:'AlphaNumeric'}, 
-            c_password:{required:true, type:'AlphaNumeric'}, 
+            password:{required:true,min:8, type:'password'}, 
+            c_password:{required:true, min:8,type:'password'}, 
             // district:{required:true, type:'AlphaNumeric'}, 
             address:{required:true, type:'AlphaNumeric'}, 
             // role:{required:true},
@@ -203,7 +203,13 @@ export class AddUsers extends React.Component {
                                 error[fieldName] = `${name} must be in Email format`
                                 isValid = false;
                             }
-                        } 
+                        }else if(value=="password"){
+                            let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
+                            if(!fieldValue.match(reg) ){
+                                error[fieldName] = `${name} must have Atleast 1 UpperCase, LowerCase, Number, Special Character format`
+                                isValid = false;
+                            }
+                        }
                            
                     }
                     if(isValid == true) {

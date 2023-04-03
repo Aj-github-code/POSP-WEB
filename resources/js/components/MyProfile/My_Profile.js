@@ -21,11 +21,13 @@ import { ConstructionOutlined } from "@mui/icons-material";
         errors:{}, 
         new_password:null,
         c_password:null,
+        old_password:null,
         
         validation:{
          
-            new_password:{required:true,min:5, type:'AlphaNumeric'}, 
-            c_password:{required:true, type:'AlphaNumeric'}, 
+            new_password:{required:true,min:8, type:'password'}, 
+            c_password:{required:true,min:8, type:'password'},
+            // old_password:{required:true,min:8, type:'password'},
             
           
         },
@@ -266,6 +268,12 @@ import { ConstructionOutlined } from "@mui/icons-material";
                                 error[fieldName] = `${name} must be in Email format`
                                 isValid = false;
                             }
+                        }else if(value=="password"){
+                            let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
+                            if(!fieldValue.match(reg) ){
+                                error[fieldName] = `${name} must have Atleast 1 UpperCase, LowerCase, Number, Special Character format`
+                                isValid = false;
+                            }
                         } 
                            
                     }
@@ -410,6 +418,8 @@ import { ConstructionOutlined } from "@mui/icons-material";
                             <div className="col-md-12 mb-3">
                                 <label for="exampleInputEmail1" className="form-label">Old Password</label>
                                 <input  name="old_password"  onChange={handleChange} type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                                {/* <label> <span style={{color: 'red',}} >{this.state.errors.old_password?this.state.errors.old_password:""}</span></label>
+                          */}
                               
                             
                             </div>

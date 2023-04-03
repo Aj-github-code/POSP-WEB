@@ -307,7 +307,7 @@ export default class Login extends React.Component {
                 text: 'Something wents wrong!',
                
               })
-              this.setState("")
+              
           });
            
         }
@@ -452,6 +452,7 @@ export default class Login extends React.Component {
                             {/* <input type="text" placeholder="Partner User Name"/> */}
                              <MaterialTextField 
                               size="small" fullWidth 
+                              
                                onChange={handleChange} 
                                 name="email" 
                                 helperText={
@@ -468,6 +469,7 @@ export default class Login extends React.Component {
                               <MaterialTextField 
                               type={"password"}    size="small" fullWidth 
                                onChange={handleChange} 
+                               autocomplete={false}
                                helperText={
                                 this.state.errors.password
                                 ? this.state.errors.password
