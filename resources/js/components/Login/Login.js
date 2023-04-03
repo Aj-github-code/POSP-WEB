@@ -31,201 +31,400 @@ export default class Login extends React.Component {
         this.apiCtrl = new Api;
 
         this.state = {
-            email : "",
-            password : "",
-            errors:{},
+            errors:{}, 
+            email :null,
+            password :null,
+           
             validation:{
                 email:{required:true,min:5, type:'email'}, 
                 password:{required:true,min:5, type:'AlphaNumeric'}, 
                 
             },
+            isValid:false,
+         
         }
     }
 
     render(){
 
+        const validation = (fieldName, fieldValue) => {
+            
+            let error={}
+            let isValid = true;
+            let isMax = 1000;
+            if(typeof this.state.validation[fieldName] !== "undefined"){
+                Object.entries(this.state.validation[fieldName]).map(([key,value])=>{
+             
+                    let temp =  fieldName.replace(/_/g, " "); 
+                    var name = temp
+                    .toLowerCase()
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+              
+                    if(key === 'required'){
+                        if((fieldValue.length < 0) || (fieldValue === '') || (fieldValue === null)){
+                            error[fieldName] = `${name} Field is required`
+                            isValid = false;
+                        } 
+                    } else if(key === 'min'){
+                        if(fieldValue.length < value){
+                            error[fieldName] = `${name} must be more than ${value} characters`
+                            isValid = false;
+                        }
+                    } else if(key === 'max'){
+                        if(fieldValue.length > value){
+                            error[fieldName] = `${name} must be less than ${value} characters`
+                            isMax = value;
+                            isValid = false;
+                        }
+                    } else if(key === 'type'){
+                        if(value === 'alpha'){
+                            if(!fieldValue.match(/^[A-Za-z\s]*$/)){
+                                error[fieldName] = `${name} must be String characters`
+                                isValid = false;
+                            }
+                        } else if(value === 'AlphaNumeric'){
+                            if(!fieldValue.match(/^[A-Za-z0-9,-.\s]*$/)){
+                                error[fieldName] = `${name} must be String Alpha Numeric`
+                                isValid = false;
+                            }
+                        } else if(value === 'Numeric'){
+                            if(!fieldValue.match(/^[0-9]*$/)){
+                                error[fieldName] = `${name} must be String Numeric`
+                                isValid = false;
+                            }
+                        } else if(value === 'email'){
+                            let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+                            if(!fieldValue.match(reg) ){
+                                error[fieldName] = `${name} must be in Email format`
+                                isValid = false;
+                            }
+                        }else if(value=="password"){
+                            let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/;
+                            if(!fieldValue.match(reg) ){
+                                error[fieldName] = `${name} must have Atleast 1 UpperCase, LowerCase, Number, Special Character format`
+                                isValid = false;
+                            }
+                        }
+
+                           
+                    }
+                    if(isValid == true) {
+                        
+                        error[fieldName] = '';
+                    }
+                })
+                this.setState(old=>({...old,errors:{ ...old.errors, ...error}})) 
+            }
+            // console.log("erorr=>",error)
+            // var count = 0;
+            // Object.entries(error).map(([key, value])=>{
+            //     console.log("value=>",value)
+            //     if(value !== ''){
+            //         count++;
+            //     }
+            // })
+            //  console.log("countinner=>",count)
+            
+            // if(count>0){
+    
+            //     return false;
+            // }
+    
+            if(isMax >= fieldValue.length){
+                this.setState(old => ({...old,[fieldName]: fieldValue }) )                
+            }
+        }
+
+
+        const handleChange = (e) => {
+
+            validation(e.target.name, e.target.value)
+          
+            
+          
+        }
+
+        
+
 
 
     const submituser= async (e) => {
         e.preventDefault();
-        var data = new FormData();
+        // var data = new FormData();
 
-        var errors = {};
-            var isValid = this.state.isValid;
-            Object.entries(this.state.validation).map(([key,value])=>{
-
-      
-                    if( (this.state[key] === "") ) {
-                        let temp =  key.replace(/_/g, " "); 
-                        var fieldName = temp
-                        .toLowerCase()
-                        .split(' ')
-                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(' ');
-                        if( value.required === true){
-                           
-                            errors[key] = `${fieldName} Field is Required`;
-                            isValid = false;
-                        }
-                } else {
-                    errors[key] = '';
-                }
-                this.setState(old=>({...old,errors:errors})) 
-            })
-    
-            var count = 0;
-            Object.entries(errors).map(([key, value])=>{
-                if(value !== ''){
-                    count += 1;
-                }
-            })
-            
-            if(count>0){
-                return false;
-            }
-        
-       
-
-
-    this.apiCtrl.callAxios('login', this.state, false).then(response => {
-        
-        if(response.success) {
-            localStorage.setItem('_token', response.access_token)
-            localStorage.setItem('user_roles',  JSON.stringify(response.data.user_roles));
-            localStorage.setItem('user_details', JSON.stringify(response.data.user_details));
-
-
-            Swal.fire({
-                title: "Login",
-                text: "Logged In Successfully!",
-                icon: "success",
-                showConfirmButton: false,
-            })
-            location.reload('/')
-            
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Login',
-                text: ''+response.message,
-               
-              })
-        }
-    }).catch(function (error) {
-  
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something wents wrong!',
-           
-          })
-      });
-
-    }
-
-
-    const handleChange = (e) => {
-
-        console.log('name'+e.target.name, 'value '+this.state.validation[e.target.name])
-        let error={}
+        let errors = {};
         let isValid = this.state.isValid;
-       
-        if(typeof this.state.validation[e.target.name] !== "undefined"){
+        Object.entries(this.state.validation).map(([key,value])=>{
 
-            Object.entries(this.state.validation[e.target.name]).map(([key,value])=>{
-         
-                let temp =  e.target.name.replace(/-/g, " "); 
-                var fieldName = temp
+            
+            if((typeof this.state[key] === 'undefined') || (this.state[key] === null) ||(this.state[key] === "")  ) {
+                let temp =  key.replace(/_/g, " "); 
+                var name = temp
                 .toLowerCase()
                 .split(' ')
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' ');
-                if(key === 'required'){
-                    if(e.target.value.length < 0){
-                        error[e.target.name] = `${fieldName} Field is required`
-                        // this.setState(old=>({...old,errors:error})) 
-                        isValid = false;
-                    } 
-                } else if(key === 'min'){
-                    if(e.target.value.length < value){
-                          error[e.target.name] = `${fieldName} must be more than ${value} characters`
-                        // error[e.target.name] = `${fieldName} must be less than ${value} characters`
-                        // this.setState(old=>({...old,errors:error})) 
-                        isValid = false;
-                    }
-                } else if(key === 'max'){
-                    if(e.target.value.length > value){
-                        // error[e.target.name] = `${fieldName} must be more than ${value} characters`
-                        error[e.target.name] = `${fieldName} must be less than ${value} characters`
-                        isValid = false;
-                        // this.setState(old=>({...old,errors:error})) 
-                    }
-                } else if(key === 'type'){
-                    if(value === 'alpha'){
-                        if(!e.target.value.match(/^[A-Za-z\s]*$/)){
-                            // this.setState(old=>({...old,errors:error})) 
-                            error[e.target.name] = `${fieldName} must be String characters`
-                            isValid = false;
-                        }
-                    } else if(value === 'AlphaNumeric'){
-                        if(!e.target.value.match(/^[A-Za-z0-9]*$/)){
-                            error[e.target.name] = `${fieldName} must be String Alpha Numeric`
-                            // this.setState(old=>({...old,errors:error})) 
-                            isValid = false;
-                        }
-                    } else if(value === 'Numeric'){
-                        if(!e.target.value.match(/^[0-9]*$/)){
-                            error[e.target.name] = `${fieldName} `
-                            // this.setState(old=>({...old,errors:error})) 
-                            isValid = false;
-                        }
-                    } else if(value === 'email'){
-                        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-                        if(reg.test(e.target.value) === false){
-                            error[e.target.name] = `${fieldName} Is Invalid `
-                            // this.setState(old=>({...old,errors:error})) 
-                            isValid = false;
-                        }
-                    }
-                       
-                } else {
-                    isValid = true;
-                    error[e.target.name] = '';
-                }
 
-              //console.log("val",value, key+"  key")
-            })
+                if(value.required === true){
+                    errors[key] = `${name} Field is Required`;
+                    isValid = false;
+                }
+                
+            } else {
+                errors[key] = '';
+                isValid = true;
+            }
+            this.setState(old=>({
+                ...old,
+                errors:errors
+            })) 
+        })
+
+
+        // Object.entries(this.state).map(([key1,value1])=>{
+
+        //     if(typeof this.state.validation[key1] !== "undefined"){
+        //         Object.entries(this.state.validation[key1]).map(([key,value])=>{
+            
+        //             let temp =  key.replace(/_/g, " "); 
+        //             var name = temp
+        //             .toLowerCase()
+        //             .split(' ')
+        //             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        //             .join(' ');
+            
+        //             if(key === 'required'){
+        //                 if((value1.length < 0) || (value1 === '') || (value1 === null)){
+        //                     error[key1] = `${name} Field is required`
+        //                     isValid = false;
+        //                 } 
+        //             } else if(key === 'min'){
+        //                 if(value1.length < value){
+        //                     error[key1] = `${name} must be more than ${value} characters`
+        //                     isValid = false;
+        //                 }
+        //             } else if(key === 'max'){
+        //                 if(value1.length > value){
+        //                     error[key1] = `${name} must be less than ${value} characters`
+        //                     isMax = value;
+        //                     isValid = false;
+        //                 }
+        //             } else if(key === 'type'){
+        //                 if(value === 'alpha'){
+        //                     if(value1.match(/^[A-Za-z\s]*$/)){
+        //                         error[key1] = `${name} must be String characters`
+        //                         isValid = false;
+        //                     }
+        //                 } else if(value === 'AlphaNumeric'){
+        //                     if(value1.match(/^[A-Za-z0-9,-.\s]*$/)){
+        //                         error[key1] = `${name} must be String Alpha Numeric`
+        //                         isValid = false;
+        //                     }
+        //                 } else if(value === 'Numeric'){
+        //                     if(value1.match(/^[0-9]*$/)){
+        //                         error[key1] = `${name} must be String Numeric`
+        //                         isValid = false;
+        //                     }
+        //                 } else if(value === 'email'){
+        //                     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        //                     if(value1.match(reg) ){
+        //                         error[key1] = `${name} must be in Email format`
+        //                         isValid = false;
+        //                     }
+        //                 } 
+                        
+        //             }
+        //             if(isValid == true) {
+                        
+        //                 error[key1] = '';
+        //             }
+        //         })
+        //         this.setState(old=>({...old,errors:{ ...old.errors, ...error}})) 
+        //     }
+
+        // })
+           
+    
+
+        var count = 0;
+        
+        Object.entries(this.state.errors).map(([key, value])=>{
+            if(value !== ''){
+                count =  count + 1;
+                isValid = false;
+            }
+        })
+        // Object.entries(this.state.error).map(([key, value])=>{
+        //     if(value !== ''){
+        //         count += 1;
+        //     }
+        // })
+        // console.log("errorout=>",error)
+        console.log("state=>",this.state)
+        
+        console.log("count=>",count)
+        if(!isValid){
+            console.log('false')
+            return false;
+        
+        } else {
+            const data={
+                email:this.state.email,
+                password:this.state.password
+            }
+    
+        this.apiCtrl.callAxios('login', data, false).then(response => {
+    
+            if(response.success) {
+                localStorage.setItem('_token', response.access_token)
+                localStorage.setItem('user_roles',  JSON.stringify(response.data.user_roles));
+                localStorage.setItem('user_details', JSON.stringify(response.data.user_details));
+    
+    
+                Swal.fire({
+                    title: "Login",
+                    text: "Logged In Successfully!",
+                    icon: "success",
+                    showConfirmButton: false,
+                })
+                location.reload('/')
+                
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login',
+                    text: ''+response.message,
+                   
+                  })
+            }
+        }).catch(function (error) {
+      
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something wents wrong!',
+               
+              })
+              this.setState("")
+          });
+           
         }
+
+     
+
+        }
+
+        
+
+    
+   
+
+
+
+
+    // const handleChange = (e) => {
+
+    //     console.log('name'+e.target.name, 'value '+this.state.validation[e.target.name])
+    //     let error={}
+    //     let isValid = this.state.isValid;
+       
+    //     if(typeof this.state.validation[e.target.name] !== "undefined"){
+
+    //         Object.entries(this.state.validation[e.target.name]).map(([key,value])=>{
+         
+    //             let temp =  e.target.name.replace(/-/g, " "); 
+    //             var fieldName = temp
+    //             .toLowerCase()
+    //             .split(' ')
+    //             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    //             .join(' ');
+    //             if(key === 'required'){
+    //                 if(e.target.value.length < 0){
+    //                     error[e.target.name] = `${fieldName} Field is required`
+    //                     // this.setState(old=>({...old,errors:error})) 
+    //                     isValid = false;
+    //                 } 
+    //             } else if(key === 'min'){
+    //                 if(e.target.value.length < value){
+    //                       error[e.target.name] = `${fieldName} must be more than ${value} characters`
+    //                     // error[e.target.name] = `${fieldName} must be less than ${value} characters`
+    //                     // this.setState(old=>({...old,errors:error})) 
+    //                     isValid = false;
+    //                 }
+    //             } else if(key === 'max'){
+    //                 if(e.target.value.length > value){
+    //                     // error[e.target.name] = `${fieldName} must be more than ${value} characters`
+    //                     error[e.target.name] = `${fieldName} must be less than ${value} characters`
+    //                     isValid = false;
+    //                     // this.setState(old=>({...old,errors:error})) 
+    //                 }
+    //             } else if(key === 'type'){
+    //                 if(value === 'alpha'){
+    //                     if(!e.target.value.match(/^[A-Za-z\s]*$/)){
+    //                         // this.setState(old=>({...old,errors:error})) 
+    //                         error[e.target.name] = `${fieldName} must be String characters`
+    //                         isValid = false;
+    //                     }
+    //                 } else if(value === 'AlphaNumeric'){
+    //                     if(!e.target.value.match(/^[A-Za-z0-9]*$/)){
+    //                         error[e.target.name] = `${fieldName} must be String Alpha Numeric`
+    //                         // this.setState(old=>({...old,errors:error})) 
+    //                         isValid = false;
+    //                     }
+    //                 } else if(value === 'Numeric'){
+    //                     if(!e.target.value.match(/^[0-9]*$/)){
+    //                         error[e.target.name] = `${fieldName} `
+    //                         // this.setState(old=>({...old,errors:error})) 
+    //                         isValid = false;
+    //                     }
+    //                 } else if(value === 'email'){
+    //                     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    //                     if(reg.test(e.target.value) === false){
+    //                         error[e.target.name] = `${fieldName} Is Invalid `
+    //                         // this.setState(old=>({...old,errors:error})) 
+    //                         isValid = false;
+    //                     }
+    //                 }
+                       
+    //             } else {
+    //                 isValid = true;
+    //                 error[e.target.name] = '';
+    //             }
+
+    //           //console.log("val",value, key+"  key")
+    //         })
+    //     }
 
            
                 
-                // this.setState({isValid : isValid});
-                this.setState(old => ({...old,[e.target.name]: e.target.value  }))
-                this.setState(old=>({...old,errors:error})) 
+    //             // this.setState({isValid : isValid});
+    //             this.setState(old => ({...old,[e.target.name]: e.target.value  }))
+    //             this.setState(old=>({...old,errors:error})) 
             
 
 
       
 
 
-    }
+    // }
 
-    var msg = Object.entries(this.state.errors);
+    // var msg = Object.entries(this.state.errors);
   
-    var str={};
-    //  var msgclr =false
+    // var str={};
+   
      
-         msg.map(([key, msg])=>{
-        //   console.log("api controller ",this.state.errors);
-        //  // console.log("key ", key, "value"+msg)
-          if(msg !== ""){
+    //      msg.map(([key, msg])=>{
+        
+    //       if(msg !== ""){
 
-              str[key] = msg;
+    //           str[key] = msg;
            
-          } else {
-            str[key] = "";
-          }
-         })
+    //       } else {
+    //         str[key] = "";
+    //       }
+    //      })
 
   return (
     <>
@@ -255,8 +454,12 @@ export default class Login extends React.Component {
                               size="small" fullWidth 
                                onChange={handleChange} 
                                 name="email" 
-                                helperText={str.email?str.email: ''}
-                                error={str.email?true:false}
+                                helperText={
+                                    this.state.errors.email
+                                    ? this.state.errors.email
+                                    : ''
+                                   }
+                                   error={this.state.errors.email?true:false}
                                 />
                               {/* <small className="text-danger">Error Messgae</small>   */}
                         </div>
@@ -265,8 +468,12 @@ export default class Login extends React.Component {
                               <MaterialTextField 
                               type={"password"}    size="small" fullWidth 
                                onChange={handleChange} 
-                               helperText={str.password?str.password: ''}
-                               error={str.password?true:false}
+                               helperText={
+                                this.state.errors.password
+                                ? this.state.errors.password
+                                : ''
+                               }
+                               error={this.state.errors.password?true:false}
                                 name="password" />
                         </div>
                         <a href="#">Forgot ID / Password ?</a>
