@@ -41,7 +41,7 @@ import Api from '../../api'
 
     useEffect(()=>{
         var x = localStorage.getItem("user_details");
-        console.log("getlocatdata=>",x)
+       // console.log("getlocatdata=>",x)
 
         let localdata=JSON.parse(x) 
         const data={
