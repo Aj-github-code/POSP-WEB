@@ -13,7 +13,12 @@ import Login from "../Login/Login";
 import Modals from "../Modal/Modals";
 import { useNavigate } from 'react-router-dom';
 import Api from '../../api'
+import Swal from 'sweetalert2'
+import Crypt from '../../Services/Crypt'
+
 function Navbar(props){
+
+	const cryptCtrl = new Crypt;
    
 	const navigation = useNavigate();
 	const apiCtrl=new Api
@@ -33,20 +38,41 @@ function Navbar(props){
 		}
 	}
      
-	useEffect(()=>{
-					var x = localStorage.getItem("user_details");
-					console.log("getlocatdata=>",x)
+	$(document).on('click', '.log-out', function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		console.log('logout')
+		apiCtrl.callAxios('logout', {}).then((res)=>{
+            if(res.success == true){
 
-				let localdata=JSON.parse(x) 
+                
+            } else {
+                Swal.fire({
+                    title: "Logout",
+                    text: "Unable To Logout",
+                    icon: "error",
+                    timer: 3000,
+                    showConfirmButton: false,
+                })
+            }
+        })
+		setTimeout(()=>{
+			localStorage.clear()
+			navigation('/')
+			location.reload('/')
+		},4000)
+
+	})
+	
+	useEffect(()=>{
+			var x = cryptCtrl.decrypt(localStorage.getItem("posp_user_details"));
+
+
+			let localdata=JSON.parse(x) 
 			const data={
 				email:localdata.email
 				
 			}
-
-
-		
-			
-	
 			apiCtrl.callAxios("users/myprofile",data).then(res=>{
 	
 			//	console.log("response=>",res)
@@ -57,9 +83,6 @@ function Navbar(props){
 	},[state.id])
 
 	window.addEventListener('scroll', changeColor);
-	
-
-	 console.log("navprops=>",props)
 	
 
   return (
@@ -115,9 +138,10 @@ function Navbar(props){
 					</Link>
 				   
 				</li>
-			<li><a className="login" id="sign-in" title="Logout" style={{color:'white'}}   onClick={()=>{localStorage.clear(),  navigation('/'), location.reload('/')}}><i className="fa fa-fw fa-sign-in"></i></a></li>
+			<li><span><a className="login log-out" id="logout" title="Logout"  href='javascript:void(0)'>Logout <i className="fa fa-fw fa-sign-in"></i></a></span></li>
 
 			</ul>
+			
 		</nav>
 		<Modals toggle={() => setmodal(!modal)} isOpen={modal} content={<Login />}></Modals>
 		
@@ -125,6 +149,7 @@ function Navbar(props){
 
   )
 }
+
 
 export default Navbar
 

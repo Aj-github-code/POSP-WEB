@@ -43,10 +43,10 @@ export default class Login extends React.Component {
         
         if(response.success) {
             console.log('Login Response', response)
-            localStorage.setItem('_token', response.access_token)
-             localStorage.setItem('user_roles',  JSON.stringify(response.data.user_roles));
-         //   localStorage.setItem('user_details', JSON.stringify(response.data));
-         localStorage.setItem('user_details', JSON.stringify(response.data.user_details));
+            localStorage.setItem('_token_posp', response.access_token)
+             localStorage.setItem('posp_user_roles',  JSON.stringify(response.data.user_roles));
+         //   localStorage.setItem('posp_user_details', JSON.stringify(response.data));
+         localStorage.setItem('posp_user_details', JSON.stringify(response.data.user_details));
 
 
             Swal.fire({

@@ -30,9 +30,11 @@ import My_Profile from '../MyProfile/My_Profile'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Api from '../../api'
+import Crypt from '../../Services/Crypt'
 
 
  const Frontend = () => {
+    const cryptCtrl = new Crypt;
 
     const [state,setState]=useState({
         id:""
@@ -40,7 +42,7 @@ import Api from '../../api'
     const apiCtrl=new Api
 
     useEffect(()=>{
-        var x = localStorage.getItem("user_details");
+        var x = cryptCtrl.decrypt(localStorage.getItem("posp_user_details"));
        // console.log("getlocatdata=>",x)
 
         let localdata=JSON.parse(x) 
@@ -53,14 +55,14 @@ import Api from '../../api'
 
 
 
-        apiCtrl.callAxios("users/myprofile",data).then(res=>{
+        apiCtrl.callAxios("users/myprofile",{}).then(res=>{
 
         //	console.log("response=>",res)
             setState({...res.data})
 
         })
 
-        },[state.id])
+        },[])
     return (
         <>
         <Router> 
@@ -80,7 +82,7 @@ import Api from '../../api'
             <Route path='/examans-list' element={<ExamAnswerList head={'margin_60_35'}/>}/>
             <Route path ='/dashboard' element={<Dashboard/>}/>
             {/* <Route path='/my-profile' element={<MyProfile/>}/> */}
-            {<Route path='/my-profile' element={<My_Profile/>}/>}
+            {<Route path='/my-profile' element={<My_Profile />}/>}
            
 
             {/* <Route path="/login" element={<Login />} /> */}

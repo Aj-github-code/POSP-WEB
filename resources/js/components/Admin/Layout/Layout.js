@@ -26,13 +26,17 @@ import { Tag } from '../Pages/Master Tag/Tag';
 import Taglist from '../Pages/Master Tag/Tag_List';
 import UserExcelUpload from '../Pages/User_Excel_Upload/UserExcelUpload';
 
-
+import Crypt from '../../../Services/Crypt';
 
 
 
 export default function Layout() {
-
-  var roles = JSON.parse(localStorage.getItem('user_roles'))
+  const cryptCtrl = new Crypt;
+  var roles = {};
+  if((localStorage.getItem('posp_user_roles') !== 'undefined') && (localStorage.getItem('posp_user_roles') !== null)){
+    var role = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_roles')))
+    roles = role[0];
+  }
 
   return (
     <Router>
@@ -75,7 +79,7 @@ export default function Layout() {
               : ''}  */}
 
 
-             {roles[0].role_code === "SA" || roles[0].role_code === "AD" || roles[0].role_code === "AS" ? 
+             {roles.role_code === "SA" || roles.role_code === "AD" || roles.role_code === "AS" ? 
               <Routes>
               <Route exact path="/" element={<Dashboard />} />
 

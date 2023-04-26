@@ -10,10 +10,14 @@ import MaterialSelect from'../../Tags/MaterialSelect'
 import Api from '../../api';
 import Swal from 'sweetalert2';
 import { Upload } from '@mui/icons-material';
+import Crypt from '../../Services/Crypt';
 
 export default function Courses(props) {
-    var roles = JSON.parse(localStorage.getItem('user_roles'))
-
+    const cryptCtrl = new Crypt;
+    var roles = [];
+    if((localStorage.getItem('posp_user_roles') !== 'undefined') && (localStorage.getItem('posp_user_roles') !== null)){
+        roles = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_roles')))
+    }
     const [courses, setCourses] = React.useState({});
 
 //     const apiCtrl = new Api;
@@ -25,7 +29,7 @@ export default function Courses(props) {
 // //             }
 // //         })
 // //     },[])
-console.log("props=>",props.campaign_type)
+// console.log("props=>",props.campaign_type)
 
 const [isVisible, setIsVisible] = React.useState({'-1':false})
     const [btnVariant1, setBtnVariant1] = React.useState({variant:'outlined', backgroundColor:"#1F5B54"});
@@ -152,7 +156,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
          */}
     
     <div className={`container ${props.head}`} style={props.head != '' ? {marginTop:'8%'} : {marginTop:'4%'} } >
-        {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
+        { (roles.length > 0) && ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
                                             ?
                                             <></>
                 :
@@ -786,8 +790,11 @@ const SelfAssigned = ({key, id, campaign_code})=>{
     
     const apiCtrl = new Api;
     const [reload, setReload] = React.useState(false);
-    var user_details = JSON.parse(localStorage.getItem('user_details'))
-    console.log(user_details)
+    var user_details = {};
+    if((localStorage.getItem('posp_user_details') !== 'undefined') && (localStorage.getItem('posp_user_details') !== null)){
+        user_details = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_details')))
+    }
+    // console.log(user_details)
 
     const handleAssign = (user_id) => {
         var data = {
@@ -795,7 +802,7 @@ const SelfAssigned = ({key, id, campaign_code})=>{
             user_id: user_id
         }
         apiCtrl.callAxios('assign-campaign', data).then((res)=>{
-            console.log('Response ',res);
+            // console.log('Response ',res);
             if(res.success == true){
                 setUser({...res.data});
                 Swal.fire({

@@ -11,6 +11,7 @@ import './myprofile.css'
 import { ProfileImage } from "../Admin/Pages/ProfileImage/ProfileImage";
 import Swal from "sweetalert2";
 import { ConstructionOutlined } from "@mui/icons-material";
+import Crypt from "../../Services/Crypt";
  class MyProfile extends React.Component {
     constructor(props){
       super(props);
@@ -20,13 +21,13 @@ import { ConstructionOutlined } from "@mui/icons-material";
         imageupload:"",
         errors:{}, 
         new_password:null,
-        c_password:null,
+        confirm_password:null,
         old_password:null,
         
         validation:{
          
             new_password:{required:true,min:8, type:'password'}, 
-            c_password:{required:true,min:8, type:'password'},
+            confirm_password:{required:true,min:8, type:'password'},
             // old_password:{required:true,min:8, type:'password'},
             
           
@@ -36,43 +37,24 @@ import { ConstructionOutlined } from "@mui/icons-material";
         
       }
       this.apiCtrl = new Api;
-    
+      this.cryptCtrl = new Crypt;
      
     }
 
     componentDidUpdate(prevProps, prevState){
         // console.log('update')
-        if ((prevState.id !== this.state.id)) {
-           
-            this.pospprofiledata()
-        } 
       }
     
 
     componentDidMount(){
         this.pospprofiledata()
-
     }
 
     pospprofiledata(){
-
-        var x = localStorage.getItem("user_details");
-             console.log("getlocatdata=>",x)
-
-         let localdata=JSON.parse(x) 
-        const data={
-           email:localdata.email
-           
-        }
-
-      //  console.log("localdata",data)
-
-
-
-        this.apiCtrl.callAxios("users/myprofile",data).then(res=>{
-
-            console.log("response=>",res)
-            this.setState({...res.data})
+        this.apiCtrl.callAxios("users/myprofile",{}).then(res=>{
+            if(res.success == true){
+                this.setState({...res.data})
+            }
 
         })
     }
@@ -108,31 +90,27 @@ import { ConstructionOutlined } from "@mui/icons-material";
                     }
                     
                 } else {
-                    errors[key] = '';
-                    isValid = true;
+                    validation(key, this.state[key]);
                 }
-                this.setState(old=>({
-                    ...old,
-                    errors:errors
-                })) 
+             
             })
     
-            var count = 0;
-            Object.entries(errors).map(([key, value])=>{
+            isValid = false;
+            Object.entries(this.state.errors).map(([key, value])=>{
                 if(value !== ''){
-                    count += 1;
+                    isValid = true;
                 }
             })
             
-            if(count>0){
-                return false;
+            if(isValid){
+                return isValid;
             }
 
 
             const statedata ={
                 old_password:this.state.old_password,
                 new_password:this.state.new_password,
-                c_password:this.state.c_password
+                confirm_password:this.state.confirm_password
 
               
 
@@ -140,16 +118,9 @@ import { ConstructionOutlined } from "@mui/icons-material";
 
             }
 
-           var data = new FormData()
-
-           Object.entries(statedata).map(([key,value])=>{
-            //   console.log("key",key,"value",value)
-
-              data.append(`${key}`, value)
-           })
-
-
-            this.apiCtrl.callAxiosFile("reset-password",data).then(res=>{
+            var encryptedData = this.cryptCtrl(JSON.stringify(statedata));
+           
+            this.apiCtrl.callAxios("reset-password",{request: encryptedData}).then(res=>{
 
                 if(res.success == true){
                     this.setState(old=>({...old,isdisabled:true}))
@@ -208,10 +179,7 @@ import { ConstructionOutlined } from "@mui/icons-material";
                 data.append(`${key}`,val)
             })
 
-            this.apiCtrl.callAxiosFile(`users/edit/${statedata.id}`,data).then(res=>{
-
-                console.log("Responseimage=>",res)
-            })
+      
             
         };
 
@@ -297,7 +265,7 @@ import { ConstructionOutlined } from "@mui/icons-material";
 
             let error={}
             let isValid = true;
-            if(e.target.name ==="c_password"){
+            if(e.target.name ==="confirm_password"){
                 if(e.target.value!==this.state.new_password){
                     error[e.target.name] = `Password and confirm password does not match`
                     isValid = false;
@@ -308,7 +276,7 @@ import { ConstructionOutlined } from "@mui/icons-material";
                 // }
                 if(isValid == true) {
                         
-                    error.c_password = '';
+                    error.confirm_password = '';
                 }
 
                 
@@ -431,8 +399,8 @@ import { ConstructionOutlined } from "@mui/icons-material";
                             </div>
                             <div className="col-md-12">
                                 <label for="exampleInputEmail1" className="form-label">Confirm password</label>
-                                <input  name="c_password"  onChange={handleChange} type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-                                <label> <span style={{color: 'red',}} >{this.state.errors.c_password?this.state.errors.c_password:""}</span></label>
+                                <input  name="confirm_password"  onChange={handleChange} type="password" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                                <label> <span style={{color: 'red',}} >{this.state.errors.confirm_password?this.state.errors.confirm_password:""}</span></label>
                          </div>
                          <div className="col-md-12 mb-3">
                             <button type="submit" class="btn btn-primary mt-2" onClick={submit}>Submit</button>

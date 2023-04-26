@@ -3,14 +3,34 @@ import logo from "../../../../assets/img/logo.png";
 import logo_sticky from "../../../../assets/img/logo_sticky.png";
 import SideBar from '../SideBar/SideBar';
 import { useNavigate } from 'react-router-dom';
-
+import Api from '../../../api';
+import Swal from 'sweetalert2'
 export default function NavBar() {
-
+	const apiCtrl=new Api
 const navigation = useNavigate();
     const logout = () => {
-        localStorage.clear()
-        navigation('/')
-        location.reload('/')
+        
+
+        apiCtrl.callAxios('logout', {}).then((res)=>{
+            if(res.success == true){
+
+                
+            } else {
+                Swal.fire({
+                    title: "Logout",
+                    text: "Unable To Logout",
+                    icon: "error",
+                    timer: 3000,
+                    showConfirmButton: false,
+                })
+            }
+			
+        })
+        setTimeout(()=>{
+            localStorage.clear()
+            navigation('/')
+            location.reload('/')
+        },4000)
         
     }
   return (

@@ -22,6 +22,8 @@ import footer from '../../../assets/img/26.png'
 import logo from '../../../assets/img/logo.png'
 import { fontWeight } from '@mui/system'
 
+import Crypt from '../../Services/Crypt'
+
 
 
 export default class Login extends React.Component {
@@ -30,6 +32,7 @@ export default class Login extends React.Component {
         super(props);
         this.apiCtrl = new Api;
 
+        this.cryptCtrl = new Crypt;
         this.state = {
             errors:{}, 
             email :null,
@@ -37,7 +40,7 @@ export default class Login extends React.Component {
            
             validation:{
                 email:{required:true,min:5, type:'email'}, 
-                password:{required:true,min:5, type:'AlphaNumeric'}, 
+                password:{required:true,min:5, type:'password'}, 
                 
             },
             isValid:false,
@@ -145,11 +148,6 @@ export default class Login extends React.Component {
             
           
         }
-
-        
-
-
-
     const submituser= async (e) => {
         e.preventDefault();
         // var data = new FormData();
@@ -173,144 +171,102 @@ export default class Login extends React.Component {
                 }
                 
             } else {
-                errors[key] = '';
-                isValid = true;
+                validation(key, this.state[key]);
             }
-            this.setState(old=>({
-                ...old,
-                errors:errors
-            })) 
         })
 
-
-        // Object.entries(this.state).map(([key1,value1])=>{
-
-        //     if(typeof this.state.validation[key1] !== "undefined"){
-        //         Object.entries(this.state.validation[key1]).map(([key,value])=>{
-            
-        //             let temp =  key.replace(/_/g, " "); 
-        //             var name = temp
-        //             .toLowerCase()
-        //             .split(' ')
-        //             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        //             .join(' ');
-            
-        //             if(key === 'required'){
-        //                 if((value1.length < 0) || (value1 === '') || (value1 === null)){
-        //                     error[key1] = `${name} Field is required`
-        //                     isValid = false;
-        //                 } 
-        //             } else if(key === 'min'){
-        //                 if(value1.length < value){
-        //                     error[key1] = `${name} must be more than ${value} characters`
-        //                     isValid = false;
-        //                 }
-        //             } else if(key === 'max'){
-        //                 if(value1.length > value){
-        //                     error[key1] = `${name} must be less than ${value} characters`
-        //                     isMax = value;
-        //                     isValid = false;
-        //                 }
-        //             } else if(key === 'type'){
-        //                 if(value === 'alpha'){
-        //                     if(value1.match(/^[A-Za-z\s]*$/)){
-        //                         error[key1] = `${name} must be String characters`
-        //                         isValid = false;
-        //                     }
-        //                 } else if(value === 'AlphaNumeric'){
-        //                     if(value1.match(/^[A-Za-z0-9,-.\s]*$/)){
-        //                         error[key1] = `${name} must be String Alpha Numeric`
-        //                         isValid = false;
-        //                     }
-        //                 } else if(value === 'Numeric'){
-        //                     if(value1.match(/^[0-9]*$/)){
-        //                         error[key1] = `${name} must be String Numeric`
-        //                         isValid = false;
-        //                     }
-        //                 } else if(value === 'email'){
-        //                     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-        //                     if(value1.match(reg) ){
-        //                         error[key1] = `${name} must be in Email format`
-        //                         isValid = false;
-        //                     }
-        //                 } 
-                        
-        //             }
-        //             if(isValid == true) {
-                        
-        //                 error[key1] = '';
-        //             }
-        //         })
-        //         this.setState(old=>({...old,errors:{ ...old.errors, ...error}})) 
-        //     }
-
-        // })
-           
-    
-
-        var count = 0;
-        
+        isValid = false;
         Object.entries(this.state.errors).map(([key, value])=>{
             if(value !== ''){
-                count =  count + 1;
-                isValid = false;
+                isValid = true;
             }
         })
-        // Object.entries(this.state.error).map(([key, value])=>{
-        //     if(value !== ''){
-        //         count += 1;
-        //     }
-        // })
-        // console.log("errorout=>",error)
-        console.log("state=>",this.state)
         
-        console.log("count=>",count)
-        if(!isValid){
-            console.log('false')
-            return false;
-        
-        } else {
-            const data={
-                email:this.state.email,
-                password:this.state.password
-            }
-    
-        this.apiCtrl.callAxios('login', data, false).then(response => {
-    
+        if(isValid){
+            return isValid;
+        }
+        // console.log("count=>",count)
+     
+        const data={
+            email:this.state.email,
+            password:this.state.password
+        }
+
+        var encryptedData = this.cryptCtrl.encrypt(JSON.stringify(data));
+        this.apiCtrl.callAxios('login', {request: encryptedData}, false).then(response => {
+            
             if(response.success) {
-                localStorage.setItem('_token', response.access_token)
-                localStorage.setItem('user_roles',  JSON.stringify(response.data.user_roles));
-                localStorage.setItem('user_details', JSON.stringify(response.data.user_details));
-    
-    
+
+                var decryptedData = JSON.parse(this.cryptCtrl.decrypt(response.data));
+           
+                localStorage.setItem('_token_posp',  this.cryptCtrl.encrypt(response.access_token))
+                localStorage.setItem('posp_user_roles',  this.cryptCtrl.encrypt(JSON.stringify(decryptedData.user_roles)));
+                localStorage.setItem('posp_user_details', this.cryptCtrl.encrypt(JSON.stringify(decryptedData.user_details)));
+
                 Swal.fire({
                     title: "Login",
                     text: "Logged In Successfully!",
                     icon: "success",
                     showConfirmButton: false,
                 })
-                location.reload('/')
+                // setTimeout(()=>{
+                //     location.reload('/')
+                // }, 3000)
                 
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Login',
                     text: ''+response.message,
-                   
-                  })
+                
+                })
             }
         }).catch(function (error) {
-      
+    
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Something wents wrong!',
+            
+            })
+        });
+
+        // this.apiCtrl.callAxios('login', data, false).then(response => {
+    
+        //     if(response.success) {
+        //         localStorage.setItem('_token', response.access_token)
+        //         localStorage.setItem('user_roles',  JSON.stringify(response.data.user_roles));
+        //         localStorage.setItem('user_details', JSON.stringify(response.data.user_details));
+    
+    
+        //         Swal.fire({
+        //             title: "Login",
+        //             text: "Logged In Successfully!",
+        //             icon: "success",
+        //             showConfirmButton: false,
+        //         })
+        //         location.reload('/')
+                
+        //     } else {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Login',
+        //             text: ''+response.message,
+                   
+        //           })
+        //     }
+        // }).catch(function (error) {
+      
+        //     Swal.fire({
+        //         icon: 'error',
+        //         title: 'Oops...',
+        //         text: 'Something wents wrong!',
                
-              })
+        //       })
               
-          });
+        //   });
            
-        }
+        
 
      
 
@@ -469,7 +425,7 @@ export default class Login extends React.Component {
                               <MaterialTextField 
                               type={"password"}    size="small" fullWidth 
                                onChange={handleChange} 
-                               autocomplete={false}
+                               autoComplete={'off'}
                                helperText={
                                 this.state.errors.password
                                 ? this.state.errors.password
@@ -479,7 +435,7 @@ export default class Login extends React.Component {
                                 name="password" />
                         </div>
                         <a href="#">Forgot ID / Password ?</a>
-                        <input type="submit" value="Submit" className="submitBtn" submituser/>
+                        <input type="submit" value="Submit" className="submitBtn" />
                     </form>
                 </div>
             </div>

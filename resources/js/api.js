@@ -7,10 +7,11 @@ const axiosRequestConfig = {
   }
 export const URL = process.env.MIX_URL;
  export const API_CONSTANTS = process.env.MIX_API_URL;
+ import Crypt from './Services/Crypt';
 export default class Api extends React.Component {
     constructor(props) {
         super(props);
-
+        this.cryptCtrl = new Crypt;
       }
 
    getBaseUrl(){
@@ -38,17 +39,18 @@ export default class Api extends React.Component {
               method: 'post',
               url: API_CONSTANTS+'refresh',
               headers: { 
-                  'Authorization': 'Bearer '+localStorage.getItem('_token')
+                  'Authorization': 'Bearer '+localStorage.getItem('_token_posp')
               },
           };
             axios(config).then(function (response) {
               // console.log(response);
               if(response.data.access_token){
+                localStorage.setItem('_session_start_posp', (Date.now() + response.data.expires_in))
                 // let timeObject = new Date();
                 // let milliseconds= 3600 * 1000; // 10 seconds = 10000 milliseconds
                 // timeObject = new Date(timeObject.getTime() + milliseconds);
                 // localStorage.setItem('expire_token', timeObject);
-                localStorage.setItem('_token',response.data.access_token)
+                localStorage.setItem('_token_posp',  this.cryptCtrl.encrypt(response.data.access_token))
               resolve(response.data.access_token);
               }
             })
@@ -57,16 +59,19 @@ export default class Api extends React.Component {
     
   }
 
-  getToken(){
+ 
+   getToken(){
     return new Promise((resolve,reject)=>{
-        if(localStorage.getItem('_token')){
-          // if(this.tokenValid()){
-            // console.log(localStorage.getItem('_token'))
-            resolve(localStorage.getItem('_token'))
-          // } else {
-          //   resolve(this.refreshToken())
-           
-          // }
+        if(localStorage.getItem('_token_posp')){
+          var token = null;
+          token = this.cryptCtrl.decrypt(localStorage.getItem('_token_posp'))
+          if(token != null){
+            if(this.parseJwt(token)){
+              resolve(token)
+            } else {
+              resolve(this.refreshToken())
+            }
+          }
         } else {
             resolve(false);
         }       
@@ -74,8 +79,26 @@ export default class Api extends React.Component {
     
   }
 
+  checkTimeout() {
+      if (Date.now() > localStorage.getItem('_posp_time_out_session')) {
+          clearInterval(interval);
+          alert("Your current Session is over due to inactivity.");
+      }
+  }
+  componentDidUpdate(prevProps, prevState){
+  };
+  
+  parseJwt(token){        
+      const decode = JSON.parse(atob(token.split('.')[1]));
+      // console.log('Decode', decode.exp);
+      if ((decode.exp * 1000) < (new Date().getTime() + 15000)) {
+        return false;
+      } else {
+        return true;
+      }
+  }
+  
   callAxios(endPoint, reqData, auth=true,type='application/json'){
-    console.log( 'data', reqData)
       return new Promise((resolve, reject) => {
           Promise.all([this.getBaseUrl(),this.getToken()])
           .then(data => {
@@ -111,7 +134,7 @@ export default class Api extends React.Component {
                     // let milliseconds= 3600 * 1000; // 10 seconds = 10000 milliseconds
                     // timeObject = new Date(timeObject.getTime() + milliseconds);
                     // localStorage.setItem('expire_token', timeObject);
-                    resolve({success: true, access_token: response.data.access_token, data:response.data.data, message: response.data.message});
+                    resolve({success: true, access_token: response.data.access_token, ...response.data, data:response.data.data, message: response.data.message});
                    }else if(response.data.aaData){
                     resolve({success: true, data: response.data});
                   }else if(response.data.status == "success") {
@@ -123,7 +146,7 @@ export default class Api extends React.Component {
                       console.log("message=",msg);
                       $str = '';
                       msg.map((msg, key)=>{
-                        console.log("api controller ".msg);
+                        // console.log("api controller ".msg);
                         $str+=msg[1]+"<br>";
                       })
   

@@ -8,7 +8,9 @@ import Api from '../../../../api';
 import Swal from 'sweetalert2';
 import { Box } from '@material-ui/core';
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
+import Crypt from '../../../../Services/Crypt';
 export default function Courses() {
+    const cryptCtrl = new Crypt;
     var roles = JSON.parse(localStorage.getItem('user_roles'))
 
     const [courses, setCourses] = React.useState({});
@@ -432,7 +434,7 @@ const SelfAssigned = ({key, id, campaign_code})=>{
     
     const apiCtrl = new Api;
     const [reload, setReload] = React.useState(false);
-    var user_details = JSON.parse(localStorage.getItem('user_details'))
+    var user_details = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_details')))
     console.log(user_details)
 
     const handleAssign = (user_id) => {
@@ -441,7 +443,7 @@ const SelfAssigned = ({key, id, campaign_code})=>{
             user_id: user_id
         }
         apiCtrl.callAxios('assign-campaign', data).then((res)=>{
-            console.log('Response ',res);
+            // console.log('Response ',res);
             if(res.success == true){
                 setUser({...res.data});
                 Swal.fire({
