@@ -6,7 +6,8 @@ const axiosRequestConfig = {
     headers: { 'Content-Type': 'application/json' }
   }
 export const URL = process.env.MIX_URL;
- export const API_CONSTANTS = process.env.MIX_API_URL;
+//  export const API_CONSTANTS = process.env.MIX_API_URL;
+import { API_CONSTANTS } from './Services/constant';
  import Crypt from './Services/Crypt';
 export default class Api extends React.Component {
     constructor(props) {
@@ -15,7 +16,8 @@ export default class Api extends React.Component {
       }
 
    getBaseUrl(){
-    return API_CONSTANTS;
+    // return API_CONSTANTS;
+    return API_CONSTANTS.BASE_URL;
   }
 
 //  tokenValid() {
