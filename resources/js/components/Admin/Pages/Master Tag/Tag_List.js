@@ -35,7 +35,7 @@ export default class Taglist extends React.Component{
             data = {...data, filter: this.state.filter};
           }
       this.apiCtrl.callAxios('tags/list').then(response => {
-        console.log("tagelistres+>",response)
+        // console.log("tagelistres+>",response)
         var res = response.data
         if(response.success == true){
           this.setState(old => ({...old, data:response.data}))
@@ -51,7 +51,7 @@ export default class Taglist extends React.Component{
       }
       this.setState(old => ({...old, isLoading:false}))
        // this.setState(res)
-        console.log(res)
+        // console.log(res)
   
       })
     }
@@ -154,7 +154,7 @@ function IsActive(props){
 const [state,setState]=useState(props.param)
 const apiCtrl=new Api;
 const deletestestimonialdata=(e)=>{
-    console.log("event",e.target.checked?1:0)
+    // console.log("event",e.target.checked?1:0)
     setState(old=>({...old,is_active:e.target.checked?1:0}))
     
     const data={
@@ -196,7 +196,7 @@ msg1=msg_1.text_4
     if (result.value) {
         apiCtrl.callAxios("tags/delete",data).then(response => {
 
-        console.log("response=======>",response)
+        // console.log("response=======>",response)
 
         if(response.success == true){
             Swal.fire({
@@ -224,7 +224,7 @@ msg1=msg_1.text_4
             }, 5000);
             }
             
-        console.log('deleted res', response);
+        // console.log('deleted res', response);
 
         
         });

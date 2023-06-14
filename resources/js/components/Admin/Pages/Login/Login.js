@@ -42,7 +42,7 @@ export default class Login extends React.Component {
     this.apiCtrl.callAxios('login', this.state, false).then(response => {
         
         if(response.success) {
-            console.log('Login Response', response)
+            // console.log('Login Response', response)
             localStorage.setItem('_token_posp', response.access_token)
              localStorage.setItem('posp_user_roles',  JSON.stringify(response.data.user_roles));
          //   localStorage.setItem('posp_user_details', JSON.stringify(response.data));

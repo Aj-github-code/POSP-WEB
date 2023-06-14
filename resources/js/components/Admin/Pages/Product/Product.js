@@ -33,7 +33,7 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
   //   // const array={}
   //    this.setState({data: res.data});
     
-  //       console.log(this.state.data)
+        // console.log(this.state.data)
   //     })
 
   //   }
@@ -52,15 +52,15 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
     // const array={}
      this.setState({data: res.data});
     
-        console.log(this.state.data)
+        // console.log(this.state.data)
       })
     }
   }
 
     componentDidUpdate(prevProps,prevState){
 
-      console.log("prevProps-->",prevProps)
-      console.log("prevState-->",prevState)
+      // console.log("prevProps-->",prevProps)
+      // console.log("prevState-->",prevState)
 
       if (prevProps.data.id !== this.props.data.id)  {
      
@@ -79,7 +79,7 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
       
     };
 
-    console.log("URL : "+process.env.MIX_API_URL);
+    // console.log("URL : "+process.env.MIX_API_URL);
     // alert(process.env.MIX_API_URL);
     const submituser= async (e) => {
       e.preventDefault();
@@ -114,11 +114,11 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
                           })
                       }
                      // location.reload('/user-list')
-                      console.log("Updateproduct===>",response);
+                      // console.log("Updateproduct===>",response);
                       // sessionStorage.setItem('_token', response.data.)
                       
                     }).catch(function (error) {
-                      console.log("Updateuser===>",error);
+                      // console.log("Updateuser===>",error);
                     });
               }else{
                 this.apiCtrl.callAxios('product/create-product', data).then(response => {
@@ -141,11 +141,11 @@ import MaterialSelect from '../../../../Tags/MaterialSelect';
         
         
                       location.reload('/')
-                      console.log("Product===>",response);
+                      // console.log("Product===>",response);
                       // sessionStorage.setItem('_token', response.data.)
                       
                     }).catch(function (error) {
-                      console.log("product===>",error);
+                      // console.log("product===>",error);
                     });
               }
 

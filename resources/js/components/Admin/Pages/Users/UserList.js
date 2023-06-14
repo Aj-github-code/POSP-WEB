@@ -86,7 +86,7 @@ export  class UserList extends React.Component {
         
     }).catch(function (error) {
         this.setState(old => ({...old, isLoading:false}))
-        console.log(error);
+        // console.log(error);
     });
     // this.apiCtrl.callAxios('users/admin', []).then(response => {
       
@@ -126,7 +126,7 @@ export  class UserList extends React.Component {
                   Swal.showLoading()
               }
           })
-          console.log('loader stART', Object.keys(this.state.statedata).length)
+          // console.log('loader stART', Object.keys(this.state.statedata).length)
           this.apiCtrl.callAxios('states/list',{search:{country_id:1}}).then(res => {
 
               var dataOfstate=[];
@@ -140,7 +140,7 @@ export  class UserList extends React.Component {
               this.setState(old => ({...old, statedata: dataOfstate}));
               Swal.close();     
             })
-          console.log('loader close')
+          // console.log('loader close')
       }
   }
 
@@ -647,7 +647,7 @@ function ViewResult(props){
  
   componentDidUpdate(prevProps,prevState){
     if(prevProps.params.id !== this.props.params.id ){
-      console.log('Propps', this.props)
+      // console.log('Propps', this.props)
      
       this.setState(this.props.params)
      
@@ -739,7 +739,7 @@ citylist=()=>{
 
           
           if((typeof this.state[key] === 'undefined') || (this.state[key] === null) ||(this.state[key] === "")  ) {
-             console.log("key=>",this.state[key])
+            //  console.log("key=>",this.state[key])
               let temp =  key.replace(/_/g, " "); 
               var name = temp
               .toLowerCase()
@@ -824,7 +824,7 @@ citylist=()=>{
 
               
             }).catch(function (error) {
-              console.log(error);
+              // console.log(error);
             });
      
    
@@ -970,7 +970,7 @@ citylist=()=>{
 
         //  console.log("res==>",response)
          const { lat, lng } = response.results[0].geometry.location;
-                console.log("lat lan==>",lat, lng);
+                // console.log("lat lan==>",lat, lng);
                 this.setState(old => ({...old,lat:lat,lng:lng})) 
                 
         },
@@ -1001,9 +1001,9 @@ citylist=()=>{
 
   const handleChange = (e) => {
 
-    console.log('id', e.target.value)
+    // console.log('id', e.target.value)
       validation(e.target.name, e.target.value)
-      console.log(e.target.value)
+      // console.log(e.target.value)
       let error={}
       let isValid = true;
       if(e.target.name ==="c_password"){

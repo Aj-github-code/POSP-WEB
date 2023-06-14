@@ -30,6 +30,7 @@ const handleTextField = (event) => {
 
     InputProps={{ 
         style: props.style  ? (props.style.input ?{...props.style.input} :  {...inputcss}) :  {...inputcss},
+        autoComplete: props.autoComplete ? props.autoComplete : 'on'
        
       //  disableUnderline: props.disableUnderline ? props.disableUnderline : false
     }} 

@@ -205,7 +205,7 @@ export const ViewResult=(props)=>{
               //  location.reload('/user-list')
   
               if(response.data.length > 0){
-                  console.log("res=>",response)
+                  // console.log("res=>",response)
                   // setState(old=>({isLoading:false}))
                   Object.entries(response.data).map(([index,value])=>{
       
@@ -243,7 +243,7 @@ export const ViewResult=(props)=>{
             setState({isLoading:true})
           }
 
-          console.log("state=>",state)
+          // console.log("state=>",state)
   return(<>
 
     <div className="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">

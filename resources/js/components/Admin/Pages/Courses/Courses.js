@@ -36,7 +36,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
     },[])
     const handleCampaign = (filter) => {
         apiCtrl.callAxios('get-campaign', {assigned:filter}).then((res)=>{
-            console.log('Response ',res);
+            // console.log('Response ',res);
             if(res.success == true){
                 setCourses({...res.data});
             }
@@ -348,7 +348,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
     const userList = () => {
         setUser({});
         apiCtrl.callAxios('user-list-campaign', {campaign_code: campaign_code}).then((res)=>{
-            console.log('Response ',res);
+            // console.log('Response ',res);
             if(res.success == true){
                 setUser({...res.data});
                 Swal.close();
@@ -362,7 +362,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
             user_id: user_id
         }
         apiCtrl.callAxios('assign-campaign', data).then((res)=>{
-            console.log('Response ',res);
+            // console.log('Response ',res);
             if(res.success == true){
                 // setUser({...res.data});
                 Swal.fire({
@@ -435,7 +435,7 @@ const SelfAssigned = ({key, id, campaign_code})=>{
     const apiCtrl = new Api;
     const [reload, setReload] = React.useState(false);
     var user_details = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_details')))
-    console.log(user_details)
+    // console.log(user_details)
 
     const handleAssign = (user_id) => {
         var data = {

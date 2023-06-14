@@ -20,10 +20,6 @@ if (parts.length >= 3) {
     domain = parts[1];
   }
 
-  var location = window.location;
-  if(window.location.search('localhost') || window.location.search('127.0.')){
-    location = 'https://online-exam.primarykeytech.in/'
-  }
   // subdomain = 'dealer-website';
   // Remove the subdomain from the parts list
   // parts.splice(0, 1);
@@ -31,10 +27,15 @@ if (parts.length >= 3) {
   // window.location = protocol + "//" + parts.join(".") + "/" + subdomain;
 } 
 
+var location = window.location.origin;
+// console.log('location',location);
+if(location.search('localhost') || location.search('127.0.')){
+  location = 'https://online-exam.primarykeytech.in'
+}
 // BASE_URL: `http://127.0.0.1:8003/api`, //'https://primarykeytech.in/glocal/api',
 export const API_CONSTANTS = {
-  BASE_URL: `${location}api/api/`, //'https://primarykeytech.in/glocal/api',
-  URL:  `${location}api`,
+  BASE_URL: `${location}/api/api/`, //'https://primarykeytech.in/glocal/api',
+  URL:  `${location}/api`,
     login: "/login", //used
     refresh: "/refresh",
     setupList: "/setup/list",

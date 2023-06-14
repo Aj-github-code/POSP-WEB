@@ -27,7 +27,7 @@ export const Tag=()=>{
     }
 
     const handlechange=(e)=>{
-        console.log('Handle Change',e.target.value)
+        // console.log('Handle Change',e.target.value)
       setval(e.target.value)
     }
 

@@ -55,14 +55,14 @@ class ProductCategory extends React.Component {
 
     componentDidUpdate(prevProps,prevState){
       if(prevProps.data.id !== this.props.data.id){
-        console.log('Propps', this.props.data)
+        // console.log('Propps', this.props.data)
         this.setState(this.props.data)
       } 
     }
 
       // componentDidUpdate(prevProps,prevState){
       //   if(prevProps.data.id !== this.props.data.id){
-      //     console.log('Propps', this.props.data)
+          // console.log('Propps', this.props.data)
       //     this.setState(this.props.data)
       //   } 
     
@@ -100,7 +100,7 @@ class ProductCategory extends React.Component {
        
 
           
-                 console.log(data);
+                //  console.log(data);
                 // return;
                 if(this.props.data.id){
 
@@ -129,11 +129,11 @@ class ProductCategory extends React.Component {
                     // }
 
 
-                    console.log(" CategoryUpdate===>",response);
+                    // console.log(" CategoryUpdate===>",response);
                     // sessionStorage.setItem('_token', response.data.)
                     
                   }).catch(function (error) {
-                    console.log(error);
+                    // console.log(error);
                   });
 
                 }else{
@@ -155,11 +155,11 @@ class ProductCategory extends React.Component {
                         })
                     }
                   
-                    console.log("CategoryCreate===>",response);
+                    // console.log("CategoryCreate===>",response);
                     // sessionStorage.setItem('_token', response.data.)
                     
                   }).catch(function (error) {
-                    console.log(error);
+                    // console.log(error);
                   });
              
                 }
@@ -169,9 +169,9 @@ class ProductCategory extends React.Component {
                   
               } 
 
-              console.log("productdataprps--",this.props)
+              // console.log("productdataprps--",this.props)
                
-              console.log("this State--",this.state)
+              // console.log("this State--",this.state)
                
             return(
                 <>
@@ -287,7 +287,7 @@ class ProductCategoryList extends React.Component{
 
         this.setState(old => ({...old, isLoading:true}))
         this.apiCtrl.callAxios('product/product-category-list').then(response => {
-            console.log(response);
+            // console.log(response);
             
             if(response.success == true){
                 this.setState(old => ({...old, data:response.data, total:response.data.iTotalRecords}))
@@ -300,7 +300,7 @@ class ProductCategoryList extends React.Component{
             
         }).catch(function (error) {
             this.setState(old => ({...old, isLoading:false}))
-            console.log(error);
+            // console.log(error);
         });
       }
 
@@ -388,7 +388,7 @@ const  apiCtrl = new Api;
       is_active:event.is_active
     }
     // data.push({})
-    console.log("data",data)
+    // console.log("data",data)
 
 
     Swal.fire({
@@ -425,7 +425,7 @@ const  apiCtrl = new Api;
                 });
               }
             
-          console.log('deleted res', response);
+          // console.log('deleted res', response);
 
          // this.getAllproduct();
         });
@@ -456,7 +456,7 @@ const  apiCtrl = new Api;
 
 function Model(props){
 
-    console.log( "model-->",props)
+    // console.log( "model-->",props)
     
     return(
       <>

@@ -22,7 +22,7 @@ export const ExcelUpload=()=>{
 
      const submit= async (e)=>{
         e.preventDefault();
-        console.log("file=>",file)
+        // console.log("file=>",file)
 
         const formData = new FormData();
         // formData.append('excel_file', file);
@@ -42,7 +42,7 @@ export const ExcelUpload=()=>{
        
        let response=  axios(config)
        if(response.success == true){
-           console.log("response=>",response)
+        //    console.log("response=>",response)
            Swal.fire({
             title: "Excel",
             text: "Upload Successfully",

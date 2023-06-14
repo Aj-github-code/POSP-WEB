@@ -48,7 +48,7 @@ export default class RolesList extends React.Component{
     }
     this.setState(old => ({...old, isLoading:false}))
      // this.setState(res)
-      console.log(res)
+      // console.log(res)
 
     })
   }
@@ -124,7 +124,7 @@ function Action(props) {
   } 
 
   const deleteRoledata =(event)=>{
-    console.log(event)
+    // console.log(event)
   }
       return(
        <>
@@ -233,12 +233,12 @@ function Model(props){
 //             .then(function (response) {
           
 //               var res = response.data.aaData;
-//               console.log(response);
+              // console.log(response);
 //               setDatarows(res);
               
 //               })
 //         .catch(function (error) {
-//           console.log(error);
+          // console.log(error);
 //         });
     
 

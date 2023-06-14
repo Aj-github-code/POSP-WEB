@@ -38,7 +38,7 @@ export default class ProductList extends React.Component {
 
     this.setState(old => ({...old, isLoading:true}))
     this.apiCtrl.callAxios('product/list').then(response => {
-        console.log(response);
+        // console.log(response);
         
         if(response.success == true){
             this.setState(old => ({...old, data:response.data, total:response.data.iTotalRecords}))
@@ -51,7 +51,7 @@ export default class ProductList extends React.Component {
         
     }).catch(function (error) {
         this.setState(old => ({...old, isLoading:false}))
-        console.log(error);
+        // console.log(error);
     });
   }
 
@@ -124,7 +124,7 @@ function Action(props){
       id:event.id,
       is_active:event.is_active
     }
-    console.log("productdeletedata",data)
+    // console.log("productdeletedata",data)
 
     Swal.fire({
       title: 'Are you sure?',
@@ -160,7 +160,7 @@ function Action(props){
                 });
               }
             
-          console.log('deleted res', response);
+          // console.log('deleted res', response);
 
        
         });

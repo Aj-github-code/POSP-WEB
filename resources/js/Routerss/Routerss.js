@@ -20,7 +20,7 @@ const isLoggedIn = () => {
 
 function parseJwt(token){        
   const decode = JSON.parse(atob(token.split('.')[1]));
-  console.log('Decode', decode.exp);
+  // console.log('Decode', decode.exp);
   if ((decode.exp * 1000) < new Date().getTime()) {
     alert('Session Timeout Due To In-Activity', 'Please Login Again');
     localStorage.clear()

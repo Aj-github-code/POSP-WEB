@@ -64,7 +64,7 @@ const UserExcelUpload=()=>{
 
             
           }).catch(function (error) {
-            console.log("Adduser===>",error);
+            // console.log("Adduser===>",error);
         });
 
      

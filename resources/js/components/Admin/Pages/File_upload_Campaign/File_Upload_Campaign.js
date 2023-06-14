@@ -37,13 +37,13 @@ export  class FileUploadCampaign extends React.Component {
 
  
     deletebyid=(id)=>{
-       console.log("id=>",id)
+      //  console.log("id=>",id)
         const linksrow =this.state.LinkUrl
-        console.log("linksrow",linksrow)
+        // console.log("linksrow",linksrow)
          delete linksrow[id]
        // console.log("deletedata=>",datadelete)
          this.setState(old=>({...old, linksrow}))
-       console.log("state",this.state)
+      //  console.log("state",this.state)
     }
      
   
@@ -82,11 +82,11 @@ export  class FileUploadCampaign extends React.Component {
      
           if(Object.keys(this.state.files).length > 0){
              
-           console.log("satecomponent=>",this.state.files)
+          //  console.log("satecomponent=>",this.state.files)
             
               this.apiCtrl.callAxiosFile("upload-docs-campaign",data).then((response)=>{
           
-          console.log("respomnse=>",response)
+          // console.log("respomnse=>",response)
           
               if(response.success === true){
                   this.setState(old=>({...old,files:[""]}))
@@ -103,14 +103,14 @@ export  class FileUploadCampaign extends React.Component {
     }
 
     handleChange = (file,types) => {
-      console.log("file",file)
+      // console.log("file",file)
   
       
           var array = [];
       if(typeof file!=="undefined"&& typeof types!=="undefined"){
         this.setState(old=>({...old,types:types}))
         Object.entries(file).map(([index, image])=>{
-        //   console.log("image=.",image)
+          // console.log("image=.",image)
             array = [...array, image]
       
           // array = [...array, image]
@@ -131,7 +131,7 @@ export  class FileUploadCampaign extends React.Component {
       
       const filedownload = () => {
         this.apiCtrl.callAxios('vehicle/export-vehicle-format', {vehicle_type:1}).then((res)=>{
-          console.log(res);
+          // console.log(res);
           if(res.success == true){
             window.open(res.message)
           }
@@ -144,7 +144,7 @@ export  class FileUploadCampaign extends React.Component {
         }
 
 
-       console.log("state =>",this.state)
+      //  console.log("state =>",this.state)
 
         return(<>
 

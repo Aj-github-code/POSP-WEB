@@ -28,13 +28,13 @@ export default function Video(){
     const startExamination = () => {
 
         apiCtrl.callAxios('question-answer-list', {campaign_code: campaign_code}).then((res)=>{
-            console.log("questionlist=>",res)
-            console.log("length=>",res.data.length)
+            // console.log("questionlist=>",res)
+            // console.log("length=>",res.data.length)
            setExamlist(res.data)
 
            if(res.data.length > 0){
             apiCtrl.callAxios('create-user-exam-result', {campaign_code: campaign_code}).then((res)=>{
-                        console.log("resExam =>",res)
+                        // console.log("resExam =>",res)
                        
                         if(res.success == true){
                             Swal.fire({
@@ -87,7 +87,7 @@ export default function Video(){
             }
     
             // Set the video duration\
-            console.log("timesec=>",minutes + ':' + seconds)
+            // console.log("timesec=>",minutes + ':' + seconds)
           
            setTimeduration( minutes + ':' + seconds)
             setDuration(durations)
@@ -134,7 +134,7 @@ export default function Video(){
             }
 
             setTime( mins + ':' + secs)
-            console.log("currenttime=>",time)
+            // console.log("currenttime=>",time)
         //counter.textContent = mins + ':' + secs;
         //console.log("minsec=>", mins + ':' + secs)
     }

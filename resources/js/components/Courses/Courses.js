@@ -20,18 +20,18 @@ export default function Courses(props) {
     }
     const [courses, setCourses] = React.useState({});
 
-//     const apiCtrl = new Api;
-// //     React.useEffect(()=>{
-// //         apiCtrl.callAxios('get-campaign').then((res)=>{
-// // console.log('Response ',res);
-// //             if(res.success == true){
-// //                 setCourses({...res.data});
-// //             }
-// //         })
-// //     },[])
-// console.log("props=>",props.campaign_type)
+        //     const apiCtrl = new Api;
+        // //     React.useEffect(()=>{
+        // //         apiCtrl.callAxios('get-campaign').then((res)=>{
+        // // console.log('Response ',res);
+        // //             if(res.success == true){
+        // //                 setCourses({...res.data});
+        // //             }
+        // //         })
+        // //     },[])
+        // console.log("props=>",props.campaign_type)
 
-const [isVisible, setIsVisible] = React.useState({'-1':false})
+    const [isVisible, setIsVisible] = React.useState({'-1':false})
     const [btnVariant1, setBtnVariant1] = React.useState({variant:'outlined', backgroundColor:"#1F5B54"});
     const [btnVariant2, setBtnVariant2] = React.useState({variant:'contained', backgroundColor:"#1F5B54"});
     const [btnVariant3, setBtnVariant3] = React.useState({variant:'contained', backgroundColor:"#1F5B54"});
@@ -56,7 +56,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
             }
         })
         apiCtrl.callAxios('get-campaign',{campaign_type:props.campaign_type,length:pageLength}, {assigned:filter, search: search}).then((res)=>{
-            console.log('Response ',res);
+            // console.log('Response ',res);
 
             if(res.success == true){
                 setCourses({...res.data.aaData});
@@ -70,7 +70,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
        
     }
    const handleLoadMoreFromBottom = () => {
-        console.log("Coming to bottom");
+        // console.log("Coming to bottom");
         // this.vehiclelist(this.state.pageLength+10);
         setPageLength(pageLength+10)
         // handleCampaign('all')
@@ -220,9 +220,9 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                      
 
                         return(
-                                <div class="col-xl-4 col-lg-6 col-md-6 isotope-item popular">
+                                <div className="col-xl-4 col-lg-6 col-md-6 isotope-item popular" key={index}>
                                   
-                                    <div class="box_grid">
+                                    <div className="box_grid">
                                      {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
                                             ?
                                             <Button 
@@ -273,7 +273,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                                     <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
                                                 </figure>
                                             }   
-                                        {/* <div class="wrapper" >
+                                        {/* <div className="wrapper" >
                                              
                                             <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
                                             <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
@@ -283,7 +283,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
                                             <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
                                         </div> */}
 
-                                        <div class="wrapper" >
+                                        <div className="wrapper" >
                                              
                                             <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
                                             <p style={{marginBottom:'7px'}}>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>                                       
@@ -402,7 +402,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
 
                 <div className='row'>
                     <div className='col-md-12 d-flex justify-content-center'>
-                        <button type="button" class="btn btn-outline-dark" onClick={handleLoadMoreFromBottom}>View More</button>&nbsp;
+                        <button type="button" className="btn btn-outline-dark" onClick={handleLoadMoreFromBottom}>View More</button>&nbsp;
                                             
                         {/* <span className='mt-2'>CountPage:{this.state.vehicles.length}</span>&nbsp;<span className='mt-2'>TotalPages:{this.state.totalRecords}</span> */}
                     </div>
@@ -453,7 +453,7 @@ const [isVisible, setIsVisible] = React.useState({'-1':false})
   )
 }
 
-const AssignCampaign = ({key, id, visible, campaign_code})=>{
+const AssignCampaign = ({ id, visible, campaign_code})=>{
 
     const [user, setUser] = React.useState([]);
     const [userdata,setUserdata]=useState([])
@@ -514,7 +514,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
             user_id: assign
         }
         apiCtrl.callAxios('assign-campaign', data).then((res)=>{
-            console.log('Response ',res);
+            // console.log('Response ',res);
             if(res.success == true){
                 // setUser({...res.data});
                 Swal.fire({
@@ -539,32 +539,32 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
         })
     }
 
-    const handleChange = (e,index) => {
-        //console.log("e==>",e.target.checked)
-        console.log("value" ,e.target.value,"index",index)
-     const  value=e.target.value
-      //  alert()
-      if(e.target.checked){
-        
-          setAssign(old =>({...old,[index]:value}))
-          //setAssign(old =>({...old,[index]:value }))
-                    // console.log("assign=>",assign)
-            }else{
+        const handleChange = (e,index) => {
+            //console.log("e==>",e.target.checked)
+            // console.log("value" ,e.target.value,"index",index)
+            const  value=e.target.value
+                //  alert()
+            if(e.target.checked){
+            
+            setAssign(old =>({...old,[index]:value}))
+            //setAssign(old =>({...old,[index]:value }))
+                        // console.log("assign=>",assign)
+                }else{
 
-                setAllcheck(false)
-              
-                //setUncheckall(false)                
-                const assignData = assign
-                console.log("deletedata=>",assignData[index])
-                setAssign(old =>({...old,[index]:''}))
-                assignData[index] = false
+                    setAllcheck(false)
                 
-                // setAssign(...assignData)              
-            }
+                    //setUncheckall(false)                
+                    const assignData = assign
+                    // console.log("deletedata=>",assignData[index])
+                    setAssign(old =>({...old,[index]:''}))
+                    assignData[index] = false
+                    
+                    // setAssign(...assignData)              
+                }
             
             
             
-            console.log("value" ,e.target.value,"index",index)
+            // console.log("value" ,e.target.value,"index",index)
         };
 
         const checkall=(e)=>{
@@ -605,11 +605,11 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
             //    console.log("datastate=>",dataOfstate)
                
              setStatedata(dataOfstate);
-             console.log("datastate=>",statedata)
+            //  console.log("datastate=>",statedata)
              
                 Swal.close();     
               })
-            console.log('loader close')
+            // console.log('loader close')
         }
     }
      
@@ -641,7 +641,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
     }
 
 
-      console.log("assign=>",assign)
+    //   console.log("assign=>",assign)
     //  console.log("allcheck=>",allcheck)
 
     return(
@@ -651,7 +651,7 @@ const AssignCampaign = ({key, id, visible, campaign_code})=>{
             <div className="modal-dialog  modal-dialog modal-lg modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Assign To POSP</h5>
+                        <h5 className="modal-title" id="exampleModalLongTitle">Assign To POSP</h5>
                         
                         <div className="row ml-1" style={{ paddingTop: '2%'}}>
                             {/* <label><b>{props.params.any} Details</b></label> */}

@@ -151,7 +151,7 @@ import Crypt from "../../Services/Crypt";
         };
 
         const handleChang = (e) => {
-            console.log()
+            // console.log()
         //   const  image=URL.createObjectURL(e.target.files[0])
         //     Navbar(image)
            this.setState(old=>({...old,profile_image:e.target.files[0]}))

@@ -24,8 +24,8 @@ export default class AddRoles extends React.Component {
 
     componentDidUpdate(prevProps,prevState){
 
-      console.log("prevProps-->",prevProps)
-      console.log("prevState-->",prevState)
+      // console.log("prevProps-->",prevProps)
+      // console.log("prevState-->",prevState)
 
       if (prevProps.data.id !== this.props.data.id)  {
      
@@ -74,11 +74,11 @@ export default class AddRoles extends React.Component {
                   })
               }
              // location.reload('/user-list')
-              console.log("Updateuser===>",response);
+              // console.log("Updateuser===>",response);
               // sessionStorage.setItem('_token', response.data.)
               
             }).catch(function (error) {
-              console.log("Updateuser===>",error);
+              // console.log("Updateuser===>",error);
             });
       }else{
         this.apiCtrl.callAxios('users/roles', data).then(response => {
@@ -100,11 +100,11 @@ export default class AddRoles extends React.Component {
 
 
               location.reload('/')
-              console.log("Addrole===>",response);
+              // console.log("Addrole===>",response);
               // sessionStorage.setItem('_token', response.data.)
               
             }).catch(function (error) {
-              console.log("Addrole===>",error);
+              // console.log("Addrole===>",error);
             });
       }
   
@@ -121,7 +121,7 @@ export default class AddRoles extends React.Component {
      
       } 
 
-      console.log("this State--",this.state)
+      // console.log("this State--",this.state)
   return (
     <>
       {/* <BreadCrumb breadcrumb="Roles" breadcrumbItem1='Create' /> */}

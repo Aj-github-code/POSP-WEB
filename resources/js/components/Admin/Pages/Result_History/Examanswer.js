@@ -34,7 +34,7 @@ export const ExamAnswerList=(props)=>{
        
         apiCtrl.callAxios('userexamlist',data).then((res)=>{
             setIsloading(false)
-            console.log("res=>",res)
+            // console.log("res=>",res)
             setExamanswer(res.data)
 
         })
@@ -43,7 +43,7 @@ export const ExamAnswerList=(props)=>{
     //     alert()
 
     //     apiCtrl.callAxios("userexamlist",{exam_code:"exam-camp_1V5w0m-3-7"}).then((res)=>{
-    //         console.log("res=>",res)
+            // console.log("res=>",res)
             
     //     })
 
@@ -56,7 +56,7 @@ export const ExamAnswerList=(props)=>{
           {!isLoading?<>
                 {examanswer.length >0?
                     Object.entries(examanswer).map(([key, val])=>{
-                        console.log("key",key,"val",val)
+                        // console.log("key",key,"val",val)
                     //   console.log("userans=>",val.user_ans)
                         
                         return(<>
@@ -72,7 +72,7 @@ export const ExamAnswerList=(props)=>{
                                             //    console.log("key2",key1,"val2",val1)
                                             // console.log("Isans=>",val1.is_ans)
                                             let ansval = val.user_ans.find(i => i == val1.id);
-                                            console.log("ansval=>",ansval)
+                                            // console.log("ansval=>",ansval)
                                             return(<>
                                                 <strong></strong>
                                                 {/* <label className="options rounded d-flex justify-content-between  "  style={val.user_ans[0]==val1.id?{background:"#ADE792", color:"#fff"}:{color:""}}><span >{val1.answers}</span> <span >{val.user_ans[0]==val1.id?<><i className="fa fa-fw fa-angle-left  "></i></>:""}</span> </label>  */}

@@ -94,7 +94,7 @@ export class AddUsers extends React.Component {
         
                 //  console.log("res==>",response)
                  const { lat, lng } = response.results[0].geometry.location;
-                        console.log("lat lan==>",lat, lng);
+                        // console.log("lat lan==>",lat, lng);
                         this.setState(old => ({...old,lat:lat,lng:lng})) 
                         
                 },
@@ -227,7 +227,7 @@ export class AddUsers extends React.Component {
         const handleChange = (e) => {
 
             validation(e.target.name, e.target.value)
-            console.log(e.target.value)
+            // console.log(e.target.value)
             let error={}
             let isValid = true;
             if(e.target.name ==="c_password"){
@@ -357,7 +357,7 @@ export class AddUsers extends React.Component {
                 // sessionStorage.setItem('_token', response.data.)
                 
               }).catch(function (error) {
-                console.log("Adduser===>",error);
+                // console.log("Adduser===>",error);
               });
         
      
@@ -370,7 +370,7 @@ export class AddUsers extends React.Component {
         if(this.state.admindata.length>0){
             this.apiCtrl.callAxios('users/list',{role_name:"admin"}).then(res => {
 
-                console.log("admin res=>",res)
+                // console.log("admin res=>",res)
 
                 res.data.aaData.map((value)=>{                  
                     //console.log("STATE==>",value)
@@ -394,7 +394,7 @@ export class AddUsers extends React.Component {
             
             if(this.state.categoryData.length>0){
                 this.apiCtrl.callAxios("product/product-category-list").then(res=>{
-                    console.log("category",res)
+                    // console.log("category",res)
 
                     Object.entries(res.data).map(([key,value])=>{
                         // console.log("value=>",value)

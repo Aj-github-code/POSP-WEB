@@ -25,7 +25,7 @@ export default function Results() {
 
     useEffect(()=>{
         let isMounted = true;  
-        console.log('Exam Code', exam_code)
+        // console.log('Exam Code', exam_code)
         var data = {exam_code: exam_code}
         apiCtrl.callAxios('get-campaign-by-campaign-code', {campaign_code: params.any}).then((res)=>{
             if(res.success == true){

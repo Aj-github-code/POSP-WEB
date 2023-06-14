@@ -1,13 +1,15 @@
 
 import  React, {useState} from 'react';
 
+import { API_CONSTANTS } from './Services/constant';
+
 import axios from 'axios';
 const axiosRequestConfig = {
     headers: { 'Content-Type': 'application/json' }
   }
-export const URL = process.env.MIX_URL;
+export const URL = API_CONSTANTS.BASE_URL;
 //  export const API_CONSTANTS = process.env.MIX_API_URL;
-import { API_CONSTANTS } from './Services/constant';
+// import { API_CONSTANTS } from './Services/constant';
  import Crypt from './Services/Crypt';
 export default class Api extends React.Component {
     constructor(props) {
@@ -39,7 +41,7 @@ export default class Api extends React.Component {
       return new Promise((resolve,reject)=>{
           var config = {
               method: 'post',
-              url: API_CONSTANTS+'refresh',
+              url: API_CONSTANTS.BASE_URL+'refresh',
               headers: { 
                   'Authorization': 'Bearer '+localStorage.getItem('_token_posp')
               },
@@ -104,7 +106,7 @@ export default class Api extends React.Component {
       return new Promise((resolve, reject) => {
           Promise.all([this.getBaseUrl(),this.getToken()])
           .then(data => {
-              console.log(reqData);
+              // console.log(reqData);
             
             // console.log('================================>');
             // console.log('URL: ' + data[0] + endPoint);
@@ -117,8 +119,8 @@ export default class Api extends React.Component {
             const authtoken = auth ?  'Bearer '+ data[1] : "";
             
             if ( data[0] != null) {
-              console.log( { headers: { 'Content-Type': type,
-              'Authorization': authtoken}})
+              // console.log( { headers: { 'Content-Type': type,
+              // 'Authorization': authtoken}})
               axios
                 .post(
                   data[0] + endPoint,
@@ -145,7 +147,7 @@ export default class Api extends React.Component {
                     var $str = response.data.data;
                     if(typeof response.data.errorcode!=='undefined' && response.data.errorcode===409){
                       var msg = Object.entries(response.data.message);
-                      console.log("message=",msg);
+                      // console.log("message=",msg);
                       $str = '';
                       msg.map((msg, key)=>{
                         // console.log("api controller ".msg);
@@ -177,7 +179,7 @@ export default class Api extends React.Component {
             }
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       });
   
@@ -187,11 +189,11 @@ export default class Api extends React.Component {
 
   
   callAxiosFile(endPoint, reqData, auth=true){
-    console.log( 'data', reqData)
+    // console.log( 'data', reqData)
       return new Promise((resolve, reject) => {
           Promise.all([this.getBaseUrl(),this.getToken()])
           .then(data => {
-              console.log(reqData);
+              // console.log(reqData);
             
             // console.log('================================>');
             // console.log('URL: ' + data[0] + endPoint);
@@ -204,8 +206,8 @@ export default class Api extends React.Component {
             const authtoken = auth ?  'Bearer '+ data[1] : "";
             
             if ( data[0] != null) {
-              console.log( { headers: { 'Content-Type': "multipart/form-data",
-              'Authorization': authtoken}})
+              // console.log( { headers: { 'Content-Type': "multipart/form-data",
+              // 'Authorization': authtoken}})
               axios
                 .post(
                   data[0] + endPoint,
@@ -232,10 +234,10 @@ export default class Api extends React.Component {
                     var $str = response.data.data;
                     if(typeof response.data.errorcode!=='undefined' && response.data.errorcode===409){
                       var msg = Object.entries(response.data.message);
-                      console.log("message=",msg);
+                      // console.log("message=",msg);
                       $str = '';
                       msg.map((msg, key)=>{
-                        console.log("api controller ".msg);
+                        // console.log("api controller ".msg);
                         $str+=msg[1]+"<br>";
                       })
   
@@ -264,7 +266,7 @@ export default class Api extends React.Component {
             }
           })
           .catch(err => {
-            console.log(err);
+            // console.log(err);
           });
       });
   
@@ -276,9 +278,9 @@ export default class Api extends React.Component {
     return new Promise((resolve, reject) => {
       Promise.all([this.getBaseUrl(),this.getToken()])
         .then(data => {
-          console.log(data);
+          // console.log(data);
        //   console.log('================================>');
-          console.log('URL: ' + data[0] + endPoint);
+          // console.log('URL: ' + data[0] + endPoint);
          // console.log('TOKEN: ' + data[1]);
           // const reqDataHeader = {
           //   ...reqData,
@@ -314,19 +316,19 @@ export default class Api extends React.Component {
           }
         })
         .catch(err => {
-          console.log(err);
-          console.log(err);
+          // console.log(err);
+          // console.log(err);
         });
     });
   }
   callAxiosWithoutSession(endPoint, reqData){
-    console.log(endPoint,' ',reqData)
+    // console.log(endPoint,' ',reqData)
     return new Promise((resolve, reject) => {
       Promise.all([this.getBaseUrl()])
         .then(data => {
       //    console.log(data);
          // console.log('================================>');
-          console.log('URL: ' + data[0] + endPoint);
+          // console.log('URL: ' + data[0] + endPoint);
           const reqDataHeader = {
             ...reqData,
           };
@@ -359,14 +361,14 @@ export default class Api extends React.Component {
           }
         })
         .catch(err => {
-          console.log(err);
-          console.log(err);
+          // console.log(err);
+          // console.log(err);
         });
     });
   }
 
   callAxiosGetWithoutSession(endPoint){
-    console.log(endPoint)
+    // console.log(endPoint)
     return new Promise((resolve, reject) => {
       Promise.all([this.getBaseUrl()])
         .then(data => {
@@ -389,7 +391,7 @@ export default class Api extends React.Component {
                 
               })
               .catch(err => {
-         //      console.log('Request Respomse', err);
+              // console.log('Request Respomse', err);
                // resolve({success: false, data: err.message});
                 resolve({success: false, data:'Some Error occured!'});
               });
@@ -398,8 +400,8 @@ export default class Api extends React.Component {
           }
         })
         .catch(err => {
-          console.log(err);
-          console.log(err);
+          // console.log(err);
+          // console.log(err);
         });
     });
   }

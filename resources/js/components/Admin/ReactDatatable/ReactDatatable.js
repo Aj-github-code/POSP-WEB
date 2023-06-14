@@ -66,10 +66,10 @@ const style = {
     wH = $(window).height(),
     wS = $(this).scrollTop();
     if (wS > ((hT+hH-wH)-500)){
-    console.log('H1 on the view!');
+    // console.log('H1 on the view!');
 
       setTimeout(() => {
-        console.log(DataLength-range);
+        // console.log(DataLength-range);
         if(DataLength !== rows){
 
           if((DataLength-range) > limit){
@@ -85,13 +85,13 @@ const style = {
               setRows(rows+DataLength-range);
             }
           }else {
-            console.log('scroll off')
+            // console.log('scroll off')
             // $(window).off('scroll');
           
           }
         }
-        console.log('Rows: '+rows);
-        console.log('Range: '+range);
+        // console.log('Rows: '+rows);
+        // console.log('Range: '+range);
       }, 1500);
     }
  });

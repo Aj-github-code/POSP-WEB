@@ -99,7 +99,7 @@ export default class ResultList extends React.Component {
                     Swal.showLoading()
                 }
             })
-            console.log('loader stART', Object.keys(this.state.statedata).length)
+            // console.log('loader stART', Object.keys(this.state.statedata).length)
             this.apiCtrl.callAxios('states/list',{search:{country_id:1}}).then(res => {
   
                 var dataOfstate=[];
@@ -113,7 +113,7 @@ export default class ResultList extends React.Component {
                 this.setState(old => ({...old, statedata: dataOfstate}));
                 Swal.close();     
               })
-            console.log('loader close')
+            // console.log('loader close')
         }
     }
   

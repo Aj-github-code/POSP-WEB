@@ -9,7 +9,7 @@ export default function MaterialSelect(props) {
 
   const handleSelectBox = (event) => {
     setSelectBox(event.target.value)
-    console.log(event.target.value)
+    // console.log(event.target.value)
   
     }
 
