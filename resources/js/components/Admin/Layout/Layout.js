@@ -86,8 +86,8 @@ export default function Layout() {
               <Route exact path="/qna" element={<Qna />} />
               <Route path='/create-qna' element={<Qna_question/>}/>
               <Route path='/qna-list' element={<Campaign/>}/>
-              <Route path='/product-list' element={<ProductList/>}/>
-              <Route path='/product-category' element={<ProductCategoryList/>}/>
+              {/* <Route path='/product-list' element={<ProductList/>}/>
+              <Route path='/product-category' element={<ProductCategoryList/>}/> */}
               <Route path='/excel-uplaod' element={<ExcelUpload/>}/>
               <Route path="/user-list/:any" element={<UserList />} /> 
               <Route path="/create-role" element={<AddRoles />} /> 
