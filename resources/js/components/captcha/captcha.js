@@ -51,9 +51,9 @@ import RefreshIcon from '@mui/icons-material/Refresh';
     return (
     <>
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-4 captcha">
 
-                  <div className="h3">{captcha}</div>
+                  <div className="wave-line">{captcha}</div>
                 </div>
                 <div className="col-md-4">
 

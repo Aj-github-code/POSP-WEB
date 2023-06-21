@@ -44,7 +44,7 @@ import Crypt from '../../Services/Crypt'
     useEffect(()=>{
         var x = cryptCtrl.decrypt(localStorage.getItem("posp_user_details"));
        // console.log("getlocatdata=>",x)
-
+   
         let localdata=JSON.parse(x) 
         const data={
             email:localdata.email

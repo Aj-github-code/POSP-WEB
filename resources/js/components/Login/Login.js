@@ -39,7 +39,7 @@ export default class Login extends React.Component {
             errors:{}, 
             email :null,
             password :null,
-           
+            data:{},
             validation:{
                 email:{required:true,min:5, type:'email'}, 
                 password:{required:true,min:5, type:'password'}, 
@@ -50,9 +50,19 @@ export default class Login extends React.Component {
         }
     }
 
+    componentDidMount(){
+        this.setState(old=>({...old,data:this.props.data}))
+    }
+    componentDidUpdate(prevProps,prevState){
+        if(prevProps !== this.props){
+            this.setState(old=>({...old,data:{...this.props.data}}))
+           //console.log("Location ",this.props.location)
+        } 
+      }
     render(){
 
-        console.log('Login Props=>>',this.ref)
+
+        // console.log('Login Props=>>',this.ref)
         const validation = (fieldName, fieldValue) => {
             
             let error={}
@@ -133,9 +143,6 @@ export default class Login extends React.Component {
         const handleChange = (e) => {
 
             validation(e.target.name, e.target.value)
-          
-            
-          
         }
     const submituser= async (e) => {
         e.preventDefault();
@@ -231,13 +238,14 @@ export default class Login extends React.Component {
         <header>
             <div className="container">
                 {/* <img src={logo} className="logo"/> */}
-                <h3 className='title'>POSP TRAINING PORTAL</h3>
+                {/* <h3 className='title'>POSP TRAINING PORTAL</h3> */}
+                <h3 className='title'>{this.state.data.company_name?this.state.data.company_name.toUpperCase():""}</h3>
             </div>
         </header>
-        <section className="container-fluid bg-dark" style={{marginTop: "80px"}}>
+        <section className="container-fluid bg-dark" style={{marginTop: "100px"}}>
             <div className="row">
                 <div className="col-lg-6 p-0">
-                    <img src={banner} className="img-fluid banner-img"/>
+                    <img src={this.state.data.about_company_image?this.state.data.about_company_image : banner} className="login-banner"/>
                     
                 </div>
                 <div className="col-lg-1">
@@ -293,13 +301,14 @@ export default class Login extends React.Component {
             <div className="container-fluid p-0">
                 <div className="row mx-0">
                     <div className="col-lg-9 ps-md-5 order-md-1 order-2">
-                        <p className=" pt-4 mb-1">Corporate &amp; Registered Office Address: 10th Floor, Regent Chambers,
+                        {/* <p className=" pt-4 mb-1">Corporate &amp; Registered Office Address: 10th Floor, Regent Chambers,
                             Jamnalal Bajaj Road, Nariman Point, Mumbai - 400 021 India. CIN: U67120MH1992PLC066006 | ISO:
                             9001:2005: GSTIN: 27AAACP3441M2ZA | IRDA Composite License No: 175 (Valid till 08/06/2024).
                             Insurance is a subject matter of Solicitation. Sarathi is a partnership program for POS (Point
                             of Sale Person) associated with Anand Rathi Insurance Brokers Ltd. * Claim settlement process is
                             undertaken by the Insurer. Income is subject to performance and as per defined terms, conditions
-                            and in adherence to the regulatory purview.</p>
+                            and in adherence to the regulatory purview.</p> */}
+                            <p className=" pt-4 mb-1">{this.state.data.about_company?this.state.data.about_company:""}</p>
                         <a className="text-light">Privacy Policy</a>
                     </div>
 
@@ -310,11 +319,37 @@ export default class Login extends React.Component {
                         <p>10th Floor Regent Chambers, Jamnalal Bajaj Marg,<br/> Nariman Point, Mumbai, Maharashtra 400021
                         </p>
                     </div> */}
-                    <div className="col-lg-3 order-md-2 order-1 p-md-0 px-3 overflow-hidden ">
+                    {/* <div className="col-lg-3 order-md-2 order-1 p-md-0 px-3 overflow-hidden ">
                         <img className="mb-2 footer-img " src={footer} />
                         <h6 className="text-white">Anand Rathi Insurance Brokers Limited</h6>
                         <p>10th Floor Regent Chambers, Jamnalal Bajaj Marg,<br/> Nariman Point, Mumbai, Maharashtra 400021
                         </p>
+                    </div> */}
+
+                    <div className="col-lg-3 order-md-2 order-1 p-md-0 px-3 overflow-hidden ">
+                        {Object.keys(this.state.data).length>0&&
+                            Object.entries(this.state.data).map(([key,val])=>{
+                            // console.log("key",key,"val1",val)
+                            if(key=="website_config"){
+                                
+                                return Object.entries(val).map(([key1,val1])=>{
+                                    // console.log("key1",key1,"val1",val1)
+                                        if(key1=="site_settings"){
+                                            if(val1.logo!==undefined&&val1.logo!==null){
+                                                return   <img className="mb-2 footer-img " src={ val1.logo} alt={""}/>
+                                            
+                                                }
+                                        }
+                                    
+                                        
+                                    })
+                                }
+                            })
+                        }
+                        
+                        {/* <h6 className="text-white">Anand Rathi Insurance Brokers Limited</h6>
+                        <p>10th Floor Regent Chambers, Jamnalal Bajaj Marg,<br/> Nariman Point, Mumbai, Maharashtra 400021
+                        </p> */}
                     </div>
                 </div>
             </div>

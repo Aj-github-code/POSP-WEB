@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Layout from '../components/Admin/Layout/Layout'
 
@@ -6,6 +6,8 @@ import Login  from '../components/Login/Login'
 import Frontend from '../components/Frontend/Frontend'
 
 import Crypt from '../Services/Crypt'
+
+import Api from '../api'
 
 const isLoggedIn = () => {
   
@@ -39,6 +41,17 @@ const Routerss = () => {
     var role = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_roles')))
     roles = role[0];
   }
+
+  const [logData, setLogdata] = React.useState({});
+
+  const apiCtrl = new Api;
+
+  useEffect(()=>{
+    apiCtrl.callAxiosGet("company/expose").then(res=>{
+      console.log('expose Data', res.data.data);
+      setLogdata({...res.data.data})
+    })
+  },[])
   return (
     <div>
       
@@ -56,7 +69,7 @@ const Routerss = () => {
         </>
           
         :
-        <Login />
+        <Login data={logData} />
  
         
         }

@@ -18,6 +18,7 @@ export default function Courses(props) {
     if((localStorage.getItem('posp_user_roles') !== 'undefined') && (localStorage.getItem('posp_user_roles') !== null)){
         roles = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_roles')))
     }
+    
     const [courses, setCourses] = React.useState({});
 
         //     const apiCtrl = new Api;

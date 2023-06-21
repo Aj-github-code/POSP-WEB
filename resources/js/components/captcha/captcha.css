@@ -19,3 +19,29 @@
     text-align: center;
     color: white;
   }
+
+  .captcha {
+  width: 90%;
+  height: 40px;
+  position: relative;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  /* background-color: #f2f2f2; */
+  /* border: 1px solid #ccc; */
+  background-color: black;
+}
+
+.wave-line {
+  /* position: absolute; */
+  width: 90%;
+  height: 30px;
+  color:white;
+  margin-top: 5px;
+  /* background-color: black; */
+  text-align: center;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  transform: skewX(45deg);
+  animation: wave 2s linear infinite;
+}
