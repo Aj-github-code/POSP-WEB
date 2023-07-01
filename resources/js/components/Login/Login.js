@@ -184,9 +184,11 @@ export default class Login extends React.Component {
             }
             // console.log("count=>",count)
          
+            var _personal_token =  Math.random().toString(36).substring(2,10);
             const data={
                 email:this.state.email,
-                password:this.state.password
+                password:this.state.password,
+                personal_token: _personal_token
             }
     
             var encryptedData = this.cryptCtrl.encrypt(JSON.stringify(data));
@@ -195,17 +197,28 @@ export default class Login extends React.Component {
                 if(response.success) {
     
                     var decryptedData = JSON.parse(this.cryptCtrl.decrypt(response.data));
-               
-                    localStorage.setItem('_token_posp',  this.cryptCtrl.encrypt(response.access_token))
-                    localStorage.setItem('posp_user_roles',  this.cryptCtrl.encrypt(JSON.stringify(decryptedData.user_roles)));
-                    localStorage.setItem('posp_user_details', this.cryptCtrl.encrypt(JSON.stringify(decryptedData.user_details)));
-    
-                    Swal.fire({
-                        title: "Login",
-                        text: "Logged In Successfully!",
-                        icon: "success",
-                        showConfirmButton: false,
-                    })
+               console.log(decryptedData, _personal_token)
+                        if(decryptedData.personal_token !== _personal_token){
+                            Swal.fire({
+                                title: "Login",
+                                text: "Invalid Login Attempt",
+                                icon: "error",
+                                showConfirmButton: false,
+                            })
+                         
+                        } else{
+
+                        localStorage.setItem('_token_posp',  this.cryptCtrl.encrypt(response.access_token))
+                        localStorage.setItem('posp_user_roles',  this.cryptCtrl.encrypt(JSON.stringify(decryptedData.user_roles)));
+                        localStorage.setItem('posp_user_details', this.cryptCtrl.encrypt(JSON.stringify(decryptedData.user_details)));
+        
+                        Swal.fire({
+                            title: "Login",
+                            text: "Logged In Successfully!",
+                            icon: "success",
+                            showConfirmButton: false,
+                        })
+                    }
                     setTimeout(()=>{
                         location.reload('/')
                     }, 3000)

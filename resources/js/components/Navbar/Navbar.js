@@ -97,7 +97,7 @@ function Navbar(props){
 			</Link>
 
 
-    <a href="#menu" className="btn_mobile">
+		<a href="#menu" className="btn_mobile">
 			<div className="hamburger hamburger--spin" id="hamburger">
 				<div className="hamburger-box">
 					<div className="hamburger-inner"></div>
@@ -134,11 +134,10 @@ function Navbar(props){
 							</div>
 		
 						</div>
-					
 					</Link>
 				   
 				</li>
-			<li><span><a className="login log-out" id="logout" title="Logout"  href='javascript:void(0)'>Logout <i className="fa fa-fw fa-sign-in"></i></a></span></li>
+			<li><span><a className="login log-out" id="logout" title="Logout"  href=''>Logout <i className="fa fa-fw fa-sign-in"></i></a></span></li>
 
 			</ul>
 			

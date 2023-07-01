@@ -91,7 +91,7 @@ export default function Login() {
 						  <span className="checkmark"></span>
 						</label>
 					</div>
-					<div className="float-right mt-1"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>
+					<div className="float-right mt-1"><a id="forgot" href="#">Forgot Password?</a></div>
 				</div>
 				<div className="text-center"><input type="submit" value="Log In" className="btn_1 full-width" /></div>
 				<div className="text-center">

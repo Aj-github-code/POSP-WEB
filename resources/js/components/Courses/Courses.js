@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 import { Upload } from '@mui/icons-material';
 import Crypt from '../../Services/Crypt';
 
+import moment from 'moment';
+
 export default function Courses(props) {
     const cryptCtrl = new Crypt;
     var roles = [];
@@ -203,199 +205,201 @@ export default function Courses(props) {
                 <div className="row">
                 {
                     Object.entries(courses).map(([index, value])=>{
-                        var values = JSON.parse(value.other_parameter) 
-                        const {system_settings, user_parameters, campaign } = values;
-                        //  console.log('Value ', values)
-                        const uploaddate =value.created_at
-                       
-                            
-                        var date1 = new Date(value.previous_result?value.previous_result.created:"");
-                        var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
-                        // var date2= date1.moment().format('ddd MMM DD YYYY hh:mm:ss')
-                        // console.log("date=>",dateTime)
+                     
+                        try { 
+                            var values = JSON.parse(value.other_parameter) 
+                            const {system_settings, user_parameters, campaign } = values;
+                            //  console.log('Value ', values)
+                            const uploaddate =value.created_at
+                        
+                                
+                            var date1 = new Date(value.previous_result?value.previous_result.created:"");
+                            var dateTime = moment.utc(date1).format("DD-MMM-YYYY HH:mm:ss");
+                            // var date2= date1.moment().format('ddd MMM DD YYYY hh:mm:ss')
+                            // console.log("date=>",dateTime)
 
-                        var days =  secondsToTime(uploaddate)                        ;
-                     
-                    //  console.log("timer=.",day)
-                     
-                     
+                            var days =  secondsToTime(uploaddate)                        ;
+                        
 
-                        return(
-                                <div className="col-xl-4 col-lg-6 col-md-6 isotope-item popular" key={index}>
-                                  
-                                    <div className="box_grid">
-                                     {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
-                                            ?
-                                            <Button 
-                                                 onClick={()=>{setIsVisible(old=>({...old, [index]:true}))}} key={index} data-bs-toggle="modal" size='small' href={`#exampleModalToggle${index}`}
-                                                
-                                                >
+                            return(
+                                    <div className="col-xl-4 col-lg-6 col-md-6 isotope-item popular" key={index}>
+                                    
+                                        <div className="box_grid">
+                                        {  ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
+                                                ?
+                                                <Button 
+                                                    onClick={()=>{setIsVisible(old=>({...old, [index]:true}))}} key={index} data-bs-toggle="modal" size='small' href={`#exampleModalToggle${index}`}
                                                     
-                                                <figure>
-                                                {days.day<=7?<>
-                                                    <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
-                                                    
-                                                    </>:""} 
-                                               
-                                                    <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-                                                    <small>{value.campaign_type}</small>
-                                                </figure>
-                                            </Button>
-                                            :
-                                            (value.assigned_name !== null) ?
-                                            <Link 
-                                                to={{
-                                                pathname: '/training',
-                                                state: {data:value}}} state={{ value }} >
-                                                <figure>
+                                                    >
+                                                        
+                                                    <figure>
                                                     {days.day<=7?<>
-                                                    <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
-                                                    
-                                                    </>:""}
-                                                  
-                                                  
-                                                    <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-                                                    
-
-                                                    <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
-                                                   
-                                                </figure>
-                                            </Link>
-                                            
-                                                :
-                                              
-                                                <figure>
-                                                     {days.day<=7?<>
-                                                    <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
-                                                    
-                                                    </>:""} 
-                                                    <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-
-                                                    <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
-                                                </figure>
-                                            }   
-                                        {/* <div className="wrapper" >
-                                             
-                                            <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
-                                            <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
-                                         
-                                            <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
-                                        <br />
-                                            <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
-                                        </div> */}
-
-                                        <div className="wrapper" >
-                                             
-                                            <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
-                                            <p style={{marginBottom:'7px'}}>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>                                       
-                                            <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
-                                            <br />
-                                            <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
-                                            <br />
-                                            {((roles[0].role_code === "AG"))
-                                                ?
-                                                <>
-                                                    <span className='d-flex justify-content-between'  data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample"><label style={{width:'auto'}}><b>{"Previous Report"}</b></label></span>
-                                            
-                                                        <div className="row mb-4 collapse" id="collapseExample1">  
-                                                        <p> <span className="price">Marks: <strong>{value.previous_result?value.previous_result.marks:""}</strong>,Result: <strong style={{color:'red'}}>{value.previous_result?value.previous_result.status:""}</strong></span></p>
+                                                        <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
                                                         
-                                                        <span>Exam Date & Time:{dateTime} </span> 
-                                                    </div>
-
-                                                   
-                                                </>:""
-                                            }
-                                           
-
-                                        </div>
-
-                                        
-                                        <ul>
-                                        
-                                        <li>
-                                        {
-                                                ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
-                                                ?
-                                          
-                                                    <div className="modal fade" id={`exampleModalToggle${index}`} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
-                                                          <AssignCampaign visible={isVisible[index] === true ? true : false} key={index} id={index} campaign_code={value.campaign_code} />
-                                                        
-                                                    </div>
+                                                        </>:""} 
+                                                
+                                                        <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+                                                        <small>{value.campaign_type}</small>
+                                                    </figure>
+                                                </Button>
                                                 :
-                                                <div className="col-lg-12 d-flex" style={{justifyContent:'right'}}>
-                                                {
-                                                    (value.assigned_name === null) ?
-                                                    <SelfAssigned key={index} id={index} campaign_code={value.campaign_code} />
-                                                    :
-                                                    <Link 
+                                                (value.assigned_name !== null) ?
+                                                <Link 
                                                     to={{
                                                     pathname: '/training',
                                                     state: {data:value}}} state={{ value }} >
-                                                        <Button variant={'contained'} style={{ backgroundColor: '#1F5B54'}}  >
-                                                         Start Module Training
-                                                        </Button>
-                                                        </Link>
+                                                    <figure>
+                                                        {days.day<=7?<>
+                                                        <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
+                                                        
+                                                        </>:""}
+                                                    
+                                                    
+                                                        <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+                                                        
 
+                                                        <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
+                                                    
+                                                    </figure>
+                                                </Link>
+                                                
+                                                    :
+                                                
+                                                    <figure>
+                                                        {days.day<=7?<>
+                                                        <span className="badge rounded-pill  bg-danger " style={{position:"absolute",top: "10px", right:"10px"}}>New</span>
+                                                        
+                                                        </>:""} 
+                                                        <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+
+                                                        <small title={value.assigned_name}>Assigned By: {value.role_name}</small>
+                                                    </figure>
+                                                }   
+                                            {/* <div className="wrapper" >
+                                                
+                                                <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
+                                                <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
+                                            
+                                                <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
+                                            <br />
+                                                <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
+                                            </div> */}
+
+                                            <div className="wrapper" >
+                                                
+                                                <h4 style={{ color: '#1F5B54'}}>{campaign.title.toUpperCase()}</h4>
+                                                <p style={{marginBottom:'7px'}}>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>                                       
+                                                <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
+                                                <br />
+                                                <span> {(value.created_at != null) ? `Uploaded: ${value.created_at}` : ''}</span>
+                                                <br />
+                                                {((roles[0].role_code === "AG"))
+                                                    ?
+                                                    <>
+                                                        <span className='d-flex justify-content-between'  data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample"><label style={{width:'auto'}}><b>{"Previous Report"}</b></label></span>
+                                                
+                                                            <div className="row mb-4 collapse" id="collapseExample1">  
+                                                            <p> <span className="price">Marks: <strong>{value.previous_result?value.previous_result.marks:""}</strong>,Result: <strong style={{color:'red'}}>{value.previous_result?value.previous_result.status:""}</strong></span></p>
+                                                            
+                                                            <span>Exam Date & Time:{dateTime} </span> 
+                                                        </div>
+
+                                                    
+                                                    </>:""
                                                 }
-                                                </div>
-                                            }
-                                        </li>
-                                             <li></li>
-                                           
-                                        </ul>
+                                            
+
+                                            </div>
+
+                                            
+                                            <ul>
+                                            
+                                            <li>
+                                            {
+                                                    ((roles[0].role_code === "SA") || (roles[0].role_code === "AD")) 
+                                                    ?
+                                            
+                                                        <div className="modal fade" id={`exampleModalToggle${index}`} aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
+                                                            <AssignCampaign visible={isVisible[index] === true ? true : false} key={index} id={index} campaign_code={value.campaign_code} />
+                                                            
+                                                        </div>
+                                                    :
+                                                    <div className="col-lg-12 d-flex" style={{justifyContent:'right'}}>
+                                                    {
+                                                        (value.assigned_name === null) ?
+                                                        <SelfAssigned key={index} id={index} campaign_code={value.campaign_code} />
+                                                        :
+                                                        <Link 
+                                                        to={{
+                                                        pathname: '/training',
+                                                        state: {data:value}}} state={{ value }} >
+                                                            <Button variant={'contained'} style={{ backgroundColor: '#1F5B54'}}  >
+                                                            Start Module Training
+                                                            </Button>
+                                                            </Link>
+
+                                                    }
+                                                    </div>
+                                                }
+                                            </li>
+                                                <li></li>
+                                            
+                                            </ul>
+                                        </div>
+
+
+                                    
+                                    
+                                                
                                     </div>
 
+                                    
 
-                                  
+                                // <div className="box_list isotope-item popular">
+                                //     <div className="row no-gutters">
+                                //         <div className="col-lg-5">
+                                //             <figure>
+                                //                 <small>{value.campaign_type}</small>
+                                //                  <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
+                                //                 <a href="#"> 
+                                //                 {/* <i style={{ color: '#1F5B54', position:'absolute', top:0, bottom:0, margin: 'auto 0'}} className="fa fa-fw fa-play"></i> */}
+                                //                 {/* <img src={restaurant_1} /> */}
+                                //                 <div className="read_more">
+                                //                     <span>Read more</span></div></a>
+                                //             </figure>
+                                //         </div>
+                                //         <div className="col-lg-7">
+                                //             <div className="wrapper">
                                 
-                                            
-                                </div>
-
-                                
-
-                            // <div className="box_list isotope-item popular">
-                            //     <div className="row no-gutters">
-                            //         <div className="col-lg-5">
-                            //             <figure>
-                            //                 <small>{value.campaign_type}</small>
-                            //                  <video src={`${value.video}`} className="img-fluid"  alt="" width="800" height="533"  />
-                            //                 <a href="#"> 
-                            //                 {/* <i style={{ color: '#1F5B54', position:'absolute', top:0, bottom:0, margin: 'auto 0'}} className="fa fa-fw fa-play"></i> */}
-                            //                 {/* <img src={restaurant_1} /> */}
-                            //                 <div className="read_more">
-                            //                     <span>Read more</span></div></a>
-                            //             </figure>
-                            //         </div>
-                            //         <div className="col-lg-7">
-                            //             <div className="wrapper">
-                            
-                            //                 {/* <a href="#0" className="wish_bt"><i style={{ color: '#1F5B54'}} className="fa fa-fw fa-pin"></i></a> */}
-                            //                 <h3 style={{ color: '#1F5B54'}}>{campaign.reference_type.toUpperCase()}</h3>
-                            //                 <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
-                            //                 {/* <p>Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.</p> */}
-                            //                 <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
-                            //             </div>
-                            //             <ul>
-                            //                 <li>
-                            //                 {/* <i className="ti-eye"></i> 164 views */}
-                            //                 </li>
-                            //                 <li>
-                            //                         <Link 
-                            //                             to={{
-                                //                             pathname: '/exam',
-                            //                             state: {data:value}}} state={{ value }} >
-                            //                             <Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  label="Assign" >Start</Button></Link>
-                            //                     <div className="score">
-                            //                         {/* <span>Superb<em>350 Reviews</em></span><strong>8.9</strong> */}
-                            //                     </div>
-                            //                 </li>
-                            //             </ul>
-                            //         </div>
-                            //     </div>
-                            // </div>
-            
-                        )
+                                //                 {/* <a href="#0" className="wish_bt"><i style={{ color: '#1F5B54'}} className="fa fa-fw fa-pin"></i></a> */}
+                                //                 <h3 style={{ color: '#1F5B54'}}>{campaign.reference_type.toUpperCase()}</h3>
+                                //                 <p>Time: <strong>{system_settings.exam_time.split(':').reduce((acc,time) => (60 * acc) + +time)/(60 * 60)} Hours</strong></p>
+                                //                 {/* <p>Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore percipitur definitiones ex, nihil utinam recusabo mel no.</p> */}
+                                //                 <span className="price">Total Marks: <strong>{system_settings.total_marks}</strong>, Passing: <strong style={{color:'red'}}>{system_settings.passing_marks}</strong></span>
+                                //             </div>
+                                //             <ul>
+                                //                 <li>
+                                //                 {/* <i className="ti-eye"></i> 164 views */}
+                                //                 </li>
+                                //                 <li>
+                                //                         <Link 
+                                //                             to={{
+                                    //                             pathname: '/exam',
+                                //                             state: {data:value}}} state={{ value }} >
+                                //                             <Button name="Assign" variant='contained' style={{ backgroundColor: '#1F5B54'}}  label="Assign" >Start</Button></Link>
+                                //                     <div className="score">
+                                //                         {/* <span>Superb<em>350 Reviews</em></span><strong>8.9</strong> */}
+                                //                     </div>
+                                //                 </li>
+                                //             </ul>
+                                //         </div>
+                                //     </div>
+                                // </div>
+                
+                            )
+                        } catch (e) {  
+                          return false;
+                          }
                     })
                 }
                 </div>
@@ -792,6 +796,7 @@ const SelfAssigned = ({key, id, campaign_code})=>{
     const apiCtrl = new Api;
     const [reload, setReload] = React.useState(false);
     var user_details = {};
+    const cryptCtrl = new Crypt;
     if((localStorage.getItem('posp_user_details') !== 'undefined') && (localStorage.getItem('posp_user_details') !== null)){
         user_details = JSON.parse(cryptCtrl.decrypt(localStorage.getItem('posp_user_details')))
     }

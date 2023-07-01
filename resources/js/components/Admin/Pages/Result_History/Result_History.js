@@ -15,7 +15,7 @@ import { Loader } from "../../../Loader/Loader";
 import { useReactToPrint } from "react-to-print";
 import { Table } from 'react-bootstrap'
 
-
+import moment from 'moment';
 export default class ResultHistory extends React.Component {
     constructor(props){
         super(props);

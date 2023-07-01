@@ -15,6 +15,8 @@ import Crypt from "../../Services/Crypt";
  class MyProfile extends React.Component {
     constructor(props){
       super(props);
+      this.apiCtrl = new Api;
+      this.cryptCtrl = new Crypt;
       this.state = {
         id:"",
         isdisabled:true,
@@ -36,8 +38,7 @@ import Crypt from "../../Services/Crypt";
        
         
       }
-      this.apiCtrl = new Api;
-      this.cryptCtrl = new Crypt;
+   
      
     }
 
@@ -51,12 +52,19 @@ import Crypt from "../../Services/Crypt";
     }
 
     pospprofiledata(){
-        this.apiCtrl.callAxios("users/myprofile",{}).then(res=>{
-            if(res.success == true){
-                this.setState({...res.data})
-            }
-
-        })
+        if(localStorage.getItem('my_profile')){
+            
+            var decryptedData = JSON.parse(this.cryptCtrl.decrypt(localStorage.getItem('my_profile')));
+            this.setState({...decryptedData})
+            
+        } else {
+            this.apiCtrl.callAxios("users/myprofile",{}).then(res=>{
+                if(res.success == true){
+                    this.setState({...res.data})
+                    localStorage.setItem('my_profile',  this.cryptCtrl.encrypt(res.data))
+                }     
+            })
+        }
     }
 
 
@@ -118,7 +126,7 @@ import Crypt from "../../Services/Crypt";
 
             }
 
-            var encryptedData = this.cryptCtrl(JSON.stringify(statedata));
+            var encryptedData = this.cryptCtrl.encrypt(JSON.stringify(statedata));
            
             this.apiCtrl.callAxios("reset-password",{request: encryptedData}).then(res=>{
 
@@ -131,6 +139,15 @@ import Crypt from "../../Services/Crypt";
                         icon: "success",
                         showConfirmButton: false,
                     })
+                    this.apiCtrl.callAxios('logout', {}).then((res)=>{
+                      
+                        setTimeout(()=>{
+                            localStorage.clear()
+                            // navigation('/')
+                            location.reload('/')
+                        },3000)
+                    })
+                   
                 } else {
                     Swal.fire({
                         title: "Passsword",

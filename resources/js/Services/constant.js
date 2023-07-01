@@ -30,7 +30,7 @@ if (parts.length >= 3) {
 var location = window.location.origin;
 // console.log('location',location);
 if(location.search('localhost') || location.search('127.0.')){
-  location = 'https://primarykey.in'
+  // location = 'https://primarykey.in'
 }
 // BASE_URL: `http://127.0.0.1:8003/api`, //'https://primarykeytech.in/glocal/api',
 export const API_CONSTANTS = {
